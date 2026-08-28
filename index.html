@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#07111f" />
-  <meta name="description" content="F300 Karting Championship standings and race calendar." />
+  <meta name="description" content="F300 Karting Championship standings, race results and calendar." />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="F300" />
@@ -18,7 +18,10 @@
   <div class="app-shell">
     <header class="topbar">
       <div class="brand-row">
-        <img src="./icons/logo.png" alt="F300 Karting Championship" class="brand-logo" />
+        <div class="brand-mark" aria-label="F300 Karting Championship logo">
+          <span class="brand-fallback">F300</span>
+          <img src="./icons/logo.png" alt="F300 Karting Championship" class="brand-logo" onerror="this.style.display='none'" />
+        </div>
         <div class="brand-copy">
           <span class="eyebrow">KARTING CHAMPIONSHIP</span>
           <h1>F300 <span>2026</span></h1>
@@ -30,56 +33,49 @@
     <main>
       <section class="view active" id="standings-view" data-view="standings">
         <div class="section-heading">
-          <div>
-            <span class="eyebrow">CURRENT ORDER</span>
-            <h2>Championship Standings</h2>
-          </div>
+          <div><span class="eyebrow">CURRENT ORDER</span><h2>Championship Standings</h2></div>
           <div class="updated" id="updated-label"></div>
         </div>
         <div class="leader-card" id="leader-card"></div>
         <div class="standings-list" id="standings-list"></div>
       </section>
 
+      <section class="view" id="results-view" data-view="results">
+        <div class="section-heading results-heading">
+          <div><span class="eyebrow">RACE WEEKENDS</span><h2>Race Results</h2></div>
+        </div>
+        <div class="round-scroller" id="round-scroller" aria-label="Choose race round"></div>
+        <div class="round-summary" id="round-summary"></div>
+        <div class="results-list" id="results-list"></div>
+      </section>
+
       <section class="view" id="calendar-view" data-view="calendar">
         <div class="section-heading">
-          <div>
-            <span class="eyebrow">2026 SEASON</span>
-            <h2>Race Calendar</h2>
-          </div>
+          <div><span class="eyebrow">2026 SEASON</span><h2>Race Calendar</h2></div>
         </div>
         <div class="calendar-list" id="calendar-list"></div>
       </section>
 
       <section class="view" id="info-view" data-view="info">
-        <div class="section-heading">
-          <div>
-            <span class="eyebrow">F300</span>
-            <h2>Championship App</h2>
-          </div>
-        </div>
+        <div class="section-heading"><div><span class="eyebrow">F300</span><h2>Championship App</h2></div></div>
         <div class="info-card">
           <h3>Made for race weekends</h3>
-          <p>This mobile app is the public championship view for F300. Standings, race weekends and driver information will all live here.</p>
+          <p>A phone-first public view of the F300 championship, with standings, complete race-weekend results and the season calendar.</p>
           <div class="info-grid">
-            <div><strong>14</strong><span>Drivers</span></div>
-            <div><strong>5</strong><span>Scoring rounds</span></div>
+            <div><strong id="driver-count">—</strong><span>Drivers</span></div>
+            <div><strong id="completed-count">—</strong><span>Completed rounds</span></div>
             <div><strong>2026</strong><span>Season</span></div>
           </div>
-          <p class="muted">Version 1 uses a snapshot of the current Google Sheet. The next step is connecting it to the live sheet so updates appear automatically.</p>
+          <p class="muted">Current version uses a snapshot of the championship Google Sheet. We can connect it to the live sheet next so race updates appear automatically.</p>
         </div>
       </section>
     </main>
 
     <nav class="bottom-nav" aria-label="Main navigation">
-      <button class="nav-button active" data-target="standings" aria-label="Standings">
-        <span class="nav-icon">🏆</span><span>Standings</span>
-      </button>
-      <button class="nav-button" data-target="calendar" aria-label="Calendar">
-        <span class="nav-icon">🏁</span><span>Calendar</span>
-      </button>
-      <button class="nav-button" data-target="info" aria-label="Info">
-        <span class="nav-icon">ℹ️</span><span>Info</span>
-      </button>
+      <button class="nav-button active" data-target="standings" aria-label="Standings"><span class="nav-icon">🏆</span><span>Standings</span></button>
+      <button class="nav-button" data-target="results" aria-label="Race Results"><span class="nav-icon">🏎️</span><span>Results</span></button>
+      <button class="nav-button" data-target="calendar" aria-label="Calendar"><span class="nav-icon">🏁</span><span>Calendar</span></button>
+      <button class="nav-button" data-target="info" aria-label="Info"><span class="nav-icon">ℹ️</span><span>Info</span></button>
     </nav>
   </div>
 
