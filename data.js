@@ -147,49 +147,57 @@ window.F300_DATA = {
       "round": 1,
       "track": "Lydd",
       "date": "9th–10th May",
-      "status": "Complete"
+      "status": "Complete",
+      "dateKey": "2026-05-09"
     },
     {
       "round": 2,
       "track": "Whilton Mill",
       "date": "30th–31st May",
-      "status": "Complete"
+      "status": "Complete",
+      "dateKey": "2026-05-30"
     },
     {
       "round": null,
       "track": "Clay Pigeon",
       "date": "4th–5th July",
-      "status": "Cancelled"
+      "status": "Cancelled",
+      "dateKey": "2026-07-04"
     },
     {
       "round": 3,
       "track": "Wombwell",
       "date": "8th–9th August",
-      "status": "Complete"
+      "status": "Complete",
+      "dateKey": "2026-08-08"
     },
     {
       "round": 4,
       "track": "Lydd",
       "date": "6th September",
-      "status": "Upcoming"
+      "status": "Upcoming",
+      "dateKey": "2026-09-06"
     },
     {
       "round": null,
       "track": "Llandow",
       "date": "12th–13th September",
-      "status": "Cancelled"
+      "status": "Cancelled",
+      "dateKey": "2026-09-12"
     },
     {
       "round": 5,
       "track": "Lydd",
       "date": "11th October",
-      "status": "Upcoming"
+      "status": "Upcoming",
+      "dateKey": "2026-10-11"
     },
     {
       "round": null,
       "track": "Fulbeck",
       "date": "10th–11th October",
-      "status": "Cancelled"
+      "status": "Cancelled",
+      "dateKey": "2026-10-10"
     }
   ],
   "raceResults": [
