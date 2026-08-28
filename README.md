@@ -1,18 +1,18 @@
-# F300 Championship Web App — v3
+# F300 Championship Web App
 
-Mobile-first F300 Karting Championship PWA for GitHub Pages.
+Mobile-first F300 Karting Championship PWA.
 
-## v3 changes
-- Logo paths now point to image files in the repository **root** (`logo.png`, `icon-*.png`) so they match the current GitHub upload.
-- Calendar defaults to **Upcoming races** with a **Show all races** button.
-- Race Results are ordered by **Final result: winner to last**; DNF/DNS appear after classified finishers.
-- Large mobile race selector with Previous/Next buttons, a dropdown, and horizontally scrollable round cards.
-- Driver filter on Race Results. The selected driver is remembered on that phone.
-- Driver profile popup includes a shortcut to that driver's race results.
-- More mobile spacing/wrapping fixes throughout.
+## Version 4.0 — 29 Aug 2026
 
-## Upload to GitHub
-Upload/replace every file in this folder directly in the repository root and commit to `main`.
-Do **not** create an `icons` folder for this version; the PNG files intentionally live in the root to match the existing repo.
+- Compact all-round race selector
+- Results ordered by Final finishing position
+- Driver self-filter on Results
+- Upcoming-first calendar with full-season toggle
+- App update notes and 2026 rights notice in Info
 
-GitHub Pages remains: `main` + `/(root)`.
+Hosted from the repository root as a static Cloudflare/GitHub deployment.
+
+
+## Version 4.1
+- Added an F300 branded startup splash screen on app launch.
+- Retains the v4 mobile race selector, driver filter, calendar behaviour and legal footer.

@@ -14,7 +14,16 @@
   <link rel="icon" href="./icon-192.png" />
   <link rel="stylesheet" href="./styles.css" />
 </head>
-<body>
+<body class="splash-active">
+  <div id="startup-splash" class="startup-splash" aria-label="F300 Championship loading">
+    <div class="splash-inner">
+      <img src="./logo.png" alt="F300 Karting Championship" class="splash-logo" />
+      <div class="splash-title">F300 CHAMPIONSHIP</div>
+      <div class="splash-season">2026</div>
+      <div class="splash-loader" aria-hidden="true"><span></span></div>
+    </div>
+  </div>
+
   <div class="app-shell">
     <header class="topbar">
       <div class="brand-row">
@@ -47,12 +56,7 @@
 
         <div class="results-controls">
           <div class="control-label">Choose race</div>
-          <div class="race-switcher">
-            <button class="switch-button" id="previous-round" aria-label="Previous race">‹</button>
-            <select id="round-select" class="mobile-select" aria-label="Choose race round"></select>
-            <button class="switch-button" id="next-round" aria-label="Next race">›</button>
-          </div>
-          <div class="round-scroller" id="round-scroller" aria-label="Race rounds"></div>
+          <div class="round-tabs" id="round-scroller" aria-label="Race rounds"></div>
           <div class="driver-filter-row">
             <label for="driver-filter">Driver</label>
             <select id="driver-filter" class="mobile-select"><option value="">All drivers</option></select>
@@ -87,6 +91,23 @@
           </div>
           <p class="muted">Current version uses a snapshot of the championship Google Sheet. The data connection can be made live later without redesigning the app.</p>
         </div>
+
+        <div class="update-card">
+          <div class="update-card-head">
+            <div><span class="eyebrow">APP UPDATE</span><h3>Version 4.1</h3></div>
+            <span class="version-badge">29 Aug 2026</span>
+          </div>
+          <p>Latest app improvements:</p>
+          <ul class="update-list">
+            <li>Added an F300 startup splash screen for a more app-like launch.</li>
+            <li>All race rounds now sit together in one compact selector.</li>
+            <li>Race results stay ordered from Final winner through to last place.</li>
+            <li>Drivers can filter the Results page to show only themselves.</li>
+            <li>The Calendar opens with upcoming races first, with full-season history available on demand.</li>
+          </ul>
+        </div>
+
+        <footer class="app-rights">© 2026 F300 Championship. All rights reserved.</footer>
       </section>
     </main>
 

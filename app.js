@@ -1,3 +1,18 @@
+function setupStartupSplash() {
+  const splash = document.getElementById("startup-splash");
+  if (!splash) {
+    document.body.classList.remove("splash-active");
+    return;
+  }
+  const hide = () => {
+    splash.classList.add("is-hiding");
+    document.body.classList.remove("splash-active");
+    window.setTimeout(() => splash.remove(), 380);
+  };
+  const reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  window.setTimeout(hide, reduced ? 450 : 1450);
+}
+
 const data = window.F300_DATA;
 const standings = data.standings || [];
 const raceResults = data.raceResults || [];
@@ -184,39 +199,20 @@ function setupDriverFilter() {
 
 function setupResults() {
   const rounds = getRounds();
-  const select = $("#round-select");
-  select.innerHTML = rounds.map(r => `<option value="${r.round}">Round ${r.round} · ${escapeHtml(r.track)}</option>`).join("");
-  $("#round-scroller").innerHTML = rounds.map(r => `<button class="round-chip" data-round="${r.round}"><span>R${r.round}</span>${escapeHtml(r.track)}</button>`).join("");
+  const tabs = $("#round-scroller");
+  tabs.style.setProperty("--round-count", Math.max(rounds.length, 1));
+  tabs.innerHTML = rounds.map(r => `<button class="round-chip" data-round="${r.round}" title="Round ${r.round} · ${escapeHtml(r.track)}" aria-label="Round ${r.round}, ${escapeHtml(r.track)}"><span>R${r.round}</span></button>`).join("");
 
   function choose(round) {
     selectedRound = round;
-    select.value = String(round);
     document.querySelectorAll(".round-chip").forEach(b => b.classList.toggle("active", Number(b.dataset.round) === round));
-    const active = document.querySelector(`.round-chip[data-round="${round}"]`);
-    if (active) active.scrollIntoView({behavior:"smooth", inline:"center", block:"nearest"});
     renderResults(round);
-    updateRoundButtons(rounds);
   }
 
-  select.addEventListener("change", () => choose(Number(select.value)));
   document.querySelectorAll(".round-chip").forEach(btn => btn.addEventListener("click", () => choose(Number(btn.dataset.round))));
-  $("#previous-round").addEventListener("click", () => {
-    const idx = rounds.findIndex(r => r.round === selectedRound);
-    if (idx > 0) choose(rounds[idx-1].round);
-  });
-  $("#next-round").addEventListener("click", () => {
-    const idx = rounds.findIndex(r => r.round === selectedRound);
-    if (idx >= 0 && idx < rounds.length-1) choose(rounds[idx+1].round);
-  });
 
   const initial = rounds.length ? rounds[rounds.length - 1].round : null;
   if (initial !== null) choose(initial);
-}
-
-function updateRoundButtons(rounds) {
-  const idx = rounds.findIndex(r => r.round === selectedRound);
-  $("#previous-round").disabled = idx <= 0;
-  $("#next-round").disabled = idx < 0 || idx >= rounds.length - 1;
 }
 
 function navigateTo(target) {
@@ -232,7 +228,6 @@ function showDriverResults(driverName) {
   const history = raceResults.filter(r => r.driver === driverName).sort((a,b) => b.round-a.round);
   if (history.length) {
     selectedRound = history[0].round;
-    $("#round-select").value = String(selectedRound);
     document.querySelectorAll(".round-chip").forEach(b => b.classList.toggle("active", Number(b.dataset.round) === selectedRound));
     renderResults(selectedRound);
   }
@@ -282,6 +277,7 @@ $("#driver-dialog").addEventListener("click", e => { if (e.target === $("#driver
 $("#driver-count").textContent = standings.length;
 $("#completed-count").textContent = getRounds().length;
 
+setupStartupSplash();
 setupLogoFallbacks();
 renderStandings();
 renderCalendar();
