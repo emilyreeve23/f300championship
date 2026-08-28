@@ -19,7 +19,8 @@ const raceResults = data.raceResults || [];
 const $ = (sel) => document.querySelector(sel);
 
 let selectedRound = null;
-let selectedDriver = localStorage.getItem("f300-driver-filter") || "";
+localStorage.removeItem("f300-driver-filter");
+let selectedDriver = "";
 let calendarShowingAll = false;
 
 function suffix(n) {
@@ -192,7 +193,6 @@ function setupDriverFilter() {
   select.value = selectedDriver;
   select.addEventListener("change", () => {
     selectedDriver = select.value;
-    if (selectedDriver) localStorage.setItem("f300-driver-filter", selectedDriver); else localStorage.removeItem("f300-driver-filter");
     if (selectedRound !== null) renderResults(selectedRound);
   });
 }
@@ -223,7 +223,6 @@ function navigateTo(target) {
 
 function showDriverResults(driverName) {
   selectedDriver = driverName;
-  localStorage.setItem("f300-driver-filter", driverName);
   $("#driver-filter").value = driverName;
   const history = raceResults.filter(r => r.driver === driverName).sort((a,b) => b.round-a.round);
   if (history.length) {
