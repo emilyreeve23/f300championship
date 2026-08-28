@@ -20,3 +20,8 @@ Hosted from the repository root as a static Cloudflare/GitHub deployment.
 
 ## v4.2
 Added smart install-to-Home-Screen support: native Chromium/Android install prompt when available, iOS/iPadOS Add to Home Screen guidance, installed-state detection, and a one-time install suggestion.
+
+## Version 4.3
+- Added a Contact F300 mail link to `contact@f300championship.co.uk`.
+- Replaced internal Google Sheet/snapshot wording with public-facing data and error-reporting guidance.
+- Cache bumped to v4.3.
