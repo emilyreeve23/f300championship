@@ -92,13 +92,27 @@
           <p class="muted">Current version uses a snapshot of the championship Google Sheet. The data connection can be made live later without redesigning the app.</p>
         </div>
 
+
+        <div class="install-card" id="install-card">
+          <div class="install-card-icon"><img src="./icon-192.png" alt="" /></div>
+          <div class="install-card-copy">
+            <span class="eyebrow">ADD TO YOUR PHONE</span>
+            <h3>Install the F300 app</h3>
+            <p id="install-copy">Save F300 to your Home Screen for quick, full-screen access on race weekends.</p>
+            <div class="install-status" id="install-status" aria-live="polite"></div>
+          </div>
+          <button class="primary-button install-main-button" id="install-button" type="button">Install F300 App</button>
+        </div>
+
         <div class="update-card">
           <div class="update-card-head">
-            <div><span class="eyebrow">APP UPDATE</span><h3>Version 4.1</h3></div>
+            <div><span class="eyebrow">APP UPDATE</span><h3>Version 4.2</h3></div>
             <span class="version-badge">29 Aug 2026</span>
           </div>
           <p>Latest app improvements:</p>
           <ul class="update-list">
+            <li>Added a smart Install F300 App section for Android and iPhone/iPad.</li>
+            <li>Added an optional one-time Home Screen install suggestion for new visitors.</li>
             <li>Added an F300 startup splash screen for a more app-like launch.</li>
             <li>All race rounds now sit together in one compact selector.</li>
             <li>Race results stay ordered from Final winner through to last place.</li>
@@ -118,6 +132,24 @@
       <button class="nav-button" data-target="info" aria-label="Info"><span class="nav-icon">ℹ️</span><span>Info</span></button>
     </nav>
   </div>
+
+  <aside id="install-nudge" class="install-nudge" hidden aria-label="Install F300 app">
+    <img src="./icon-192.png" alt="" />
+    <div><strong>Add F300 to your phone</strong><span>Open it from your Home Screen like an app.</span></div>
+    <button id="install-nudge-button" class="install-nudge-action" type="button">Install</button>
+    <button id="install-nudge-close" class="install-nudge-close" type="button" aria-label="Dismiss install suggestion">×</button>
+  </aside>
+
+  <dialog id="install-dialog" class="install-dialog">
+    <button class="dialog-close install-dialog-close" id="install-dialog-close" aria-label="Close">×</button>
+    <div class="install-dialog-content">
+      <img src="./icon-192.png" class="install-dialog-icon" alt="F300 app icon" />
+      <span class="eyebrow">INSTALL F300</span>
+      <h3 id="install-dialog-title">Add F300 to your Home Screen</h3>
+      <div id="install-dialog-body"></div>
+      <button class="primary-button" id="install-dialog-done" type="button">Got it</button>
+    </div>
+  </dialog>
 
   <dialog id="driver-dialog" class="driver-dialog">
     <button class="dialog-close" id="dialog-close" aria-label="Close">×</button>

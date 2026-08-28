@@ -271,6 +271,143 @@ function setupLogoFallbacks() {
   });
 }
 
+
+// v4.2 install-to-home-screen experience
+let deferredInstallPrompt = null;
+
+function isStandaloneApp() {
+  return window.matchMedia?.("(display-mode: standalone)").matches || window.navigator.standalone === true;
+}
+
+function isIOSDevice() {
+  return /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+}
+
+function isAndroidDevice() {
+  return /android/i.test(navigator.userAgent);
+}
+
+function updateInstallUI() {
+  const button = $("#install-button");
+  const copy = $("#install-copy");
+  const status = $("#install-status");
+  if (!button || !copy || !status) return;
+
+  if (isStandaloneApp()) {
+    button.textContent = "Installed ✓";
+    button.disabled = true;
+    copy.textContent = "F300 is already installed on this device and can be opened from your Home Screen.";
+    status.textContent = "Installed as a web app";
+    $("#install-nudge")?.setAttribute("hidden", "");
+    return;
+  }
+
+  button.disabled = false;
+  button.textContent = "Install F300 App";
+  if (deferredInstallPrompt) {
+    copy.textContent = "Tap Install and your phone will show its secure app-install confirmation.";
+    status.textContent = "Ready to install";
+  } else if (isIOSDevice()) {
+    copy.textContent = "On iPhone or iPad, tap Install for the short Add to Home Screen guide.";
+    status.textContent = "iPhone / iPad instructions available";
+  } else if (isAndroidDevice()) {
+    copy.textContent = "Tap Install. If your browser supports direct PWA installation, its native install prompt will open.";
+    status.textContent = "Android install";
+  } else {
+    copy.textContent = "Tap Install for instructions for your browser or device.";
+    status.textContent = "Installation help available";
+  }
+}
+
+function openInstallInstructions() {
+  const dialog = $("#install-dialog");
+  const title = $("#install-dialog-title");
+  const body = $("#install-dialog-body");
+  if (!dialog || !title || !body) return;
+
+  if (isIOSDevice()) {
+    title.textContent = "Install F300 on iPhone / iPad";
+    body.innerHTML = `<ol class="install-steps">
+      <li><strong>Open the Share menu</strong><span>Tap the Share button in your browser.</span></li>
+      <li><strong>Choose Add to Home Screen</strong><span>Scroll the Share menu if you do not see it immediately.</span></li>
+      <li><strong>Keep Open as Web App enabled</strong><span>If that option is shown on your iPhone/iPad.</span></li>
+      <li><strong>Tap Add</strong><span>The F300 icon will appear on your Home Screen.</span></li>
+    </ol>`;
+  } else if (isAndroidDevice()) {
+    title.textContent = "Install F300 on Android";
+    body.innerHTML = `<ol class="install-steps">
+      <li><strong>Open your browser menu</strong><span>In Chrome, tap the three-dot menu.</span></li>
+      <li><strong>Choose Install app</strong><span>It may also be labelled Add to Home screen.</span></li>
+      <li><strong>Confirm Install</strong><span>F300 will then appear with your other apps.</span></li>
+    </ol>`;
+  } else {
+    title.textContent = "Install F300";
+    body.innerHTML = `<p class="install-help-text">Use your browser's <strong>Install app</strong>, <strong>Add to Home Screen</strong>, or equivalent menu option to save F300 as an app.</p>`;
+  }
+
+  if (typeof dialog.showModal === "function") dialog.showModal();
+}
+
+async function requestAppInstall() {
+  if (isStandaloneApp()) {
+    updateInstallUI();
+    return;
+  }
+
+  if (deferredInstallPrompt) {
+    const prompt = deferredInstallPrompt;
+    deferredInstallPrompt = null;
+    await prompt.prompt();
+    const choice = await prompt.userChoice.catch(() => null);
+    if (choice?.outcome === "accepted") {
+      localStorage.setItem("f300-install-nudge-dismissed", "1");
+      $("#install-nudge")?.setAttribute("hidden", "");
+    }
+    updateInstallUI();
+    return;
+  }
+
+  openInstallInstructions();
+}
+
+function maybeShowInstallNudge() {
+  const nudge = $("#install-nudge");
+  if (!nudge || isStandaloneApp() || localStorage.getItem("f300-install-nudge-dismissed")) return;
+  window.setTimeout(() => {
+    if (!isStandaloneApp()) nudge.removeAttribute("hidden");
+  }, 2600);
+}
+
+function setupInstallExperience() {
+  window.addEventListener("beforeinstallprompt", event => {
+    event.preventDefault();
+    deferredInstallPrompt = event;
+    updateInstallUI();
+  });
+
+  window.addEventListener("appinstalled", () => {
+    deferredInstallPrompt = null;
+    localStorage.setItem("f300-install-nudge-dismissed", "1");
+    $("#install-nudge")?.setAttribute("hidden", "");
+    updateInstallUI();
+  });
+
+  $("#install-button")?.addEventListener("click", requestAppInstall);
+  $("#install-nudge-button")?.addEventListener("click", requestAppInstall);
+  $("#install-nudge-close")?.addEventListener("click", () => {
+    localStorage.setItem("f300-install-nudge-dismissed", "1");
+    $("#install-nudge")?.setAttribute("hidden", "");
+  });
+  $("#install-dialog-close")?.addEventListener("click", () => $("#install-dialog")?.close());
+  $("#install-dialog-done")?.addEventListener("click", () => $("#install-dialog")?.close());
+  $("#install-dialog")?.addEventListener("click", event => {
+    if (event.target === $("#install-dialog")) $("#install-dialog")?.close();
+  });
+
+  updateInstallUI();
+  maybeShowInstallNudge();
+}
+
 $("#calendar-toggle").addEventListener("click", () => { calendarShowingAll = !calendarShowingAll; renderCalendar(); });
 $("#dialog-close").addEventListener("click", () => $("#driver-dialog").close());
 $("#driver-dialog").addEventListener("click", e => { if (e.target === $("#driver-dialog")) $("#driver-dialog").close(); });
@@ -279,6 +416,7 @@ $("#completed-count").textContent = getRounds().length;
 
 setupStartupSplash();
 setupLogoFallbacks();
+setupInstallExperience();
 renderStandings();
 renderCalendar();
 setupDriverFilter();
