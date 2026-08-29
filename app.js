@@ -106,7 +106,7 @@ function renderLeader(driver) {
 }
 
 function renderStandings() {
-  $("#updated-label").textContent = `Updated ${data.updated}`;
+  $("#updated-label").textContent = `Data last updated: ${data.updated}`;
   if (!standings.length) return;
   renderLeader(standings[0]);
   $("#standings-list").innerHTML = standings.slice(1).map(d => `
@@ -185,6 +185,51 @@ function finalSortValue(value) {
   return 1002;
 }
 
+/*
+  Small decorative circuit outlines for the Results header.
+  These are stylised illustrations rather than official circuit maps.
+*/
+const TRACK_ART = {
+  "lydd": {
+    viewBox: "0 0 180 90",
+    path: "M20 35 C18 18 34 10 54 13 C83 17 110 26 125 40 C137 52 144 61 158 56 C171 51 174 34 165 24 C154 12 137 13 124 17 C105 23 92 38 78 48 C62 60 45 66 31 58 C23 53 19 44 20 35 Z",
+    start: [29, 56, 42, 62]
+  },
+  "whilton mill": {
+    viewBox: "0 0 180 90",
+    path: "M18 61 C30 75 53 74 64 60 C74 47 65 36 52 38 C39 40 36 55 46 61 C58 68 75 62 82 51 C91 37 80 22 91 14 C101 7 119 12 124 23 C130 37 119 47 110 55 C100 65 107 78 124 78 L151 78 C164 78 170 69 170 57 L170 33 C170 21 162 15 152 17 C142 19 139 30 143 38 C148 49 148 57 139 61 C127 67 117 57 112 47",
+    start: [132, 73, 145, 81]
+  },
+  "wombwell": {
+    viewBox: "0 0 180 90",
+    path: "M19 62 C25 76 43 79 56 72 C67 66 68 54 60 48 C51 41 40 46 42 56 C44 66 58 67 67 61 C80 52 74 36 84 25 C94 14 111 12 122 20 C134 29 128 42 118 47 C108 52 104 64 114 72 C125 81 146 78 158 67 C172 54 171 36 162 24 C153 12 135 10 121 15",
+    start: [150, 64, 162, 70]
+  }
+};
+
+function normaliseTrackName(track) {
+  return String(track || "").trim().toLowerCase();
+}
+
+function trackIllustration(track) {
+  const key = normaliseTrackName(track);
+  const art = TRACK_ART[key];
+
+  if (!art) {
+    return `<svg class="track-art" viewBox="0 0 180 90" role="img" aria-label="Stylised ${escapeHtml(track)} circuit illustration">
+      <path class="track-art-shadow" d="M22 59 C35 75 57 75 69 63 C80 52 75 38 86 27 C99 14 120 13 137 22 C154 31 166 43 159 57 C152 70 132 76 116 69 C100 62 90 53 77 55 C62 57 49 67 37 66 C30 65 25 63 22 59 Z"></path>
+      <path class="track-art-line" d="M22 59 C35 75 57 75 69 63 C80 52 75 38 86 27 C99 14 120 13 137 22 C154 31 166 43 159 57 C152 70 132 76 116 69 C100 62 90 53 77 55 C62 57 49 67 37 66 C30 65 25 63 22 59 Z"></path>
+    </svg>`;
+  }
+
+  const [x1, y1, x2, y2] = art.start;
+  return `<svg class="track-art" viewBox="${art.viewBox}" role="img" aria-label="Stylised ${escapeHtml(track)} circuit illustration">
+    <path class="track-art-shadow" d="${art.path}"></path>
+    <path class="track-art-line" d="${art.path}"></path>
+    <line class="track-start-line" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"></line>
+  </svg>`;
+}
+
 function renderResults(round) {
   const allRoundRows = raceResults.filter(r => r.round === round);
   if (!allRoundRows.length) {
@@ -198,7 +243,14 @@ function renderResults(round) {
   let rows = selectedDriver ? sortedAll.filter(r => r.driver === selectedDriver) : sortedAll;
 
   const visibleText = selectedDriver ? `${rows.length ? 1 : 0} selected driver` : `${rows.length} drivers`;
-  $("#round-summary").innerHTML = `<div><strong>${escapeHtml(allRoundRows[0].track)}</strong><span>${visibleText} · ordered by Final result</span></div><div class="summary-round">ROUND ${round}</div>`;
+  const roundTrack = allRoundRows[0].track;
+  $("#round-summary").innerHTML = `
+    <div class="round-summary-copy">
+      <strong>${escapeHtml(roundTrack)}</strong>
+      <span>${visibleText} · ordered by Final result</span>
+    </div>
+    <div class="round-track-art">${trackIllustration(roundTrack)}</div>
+    <div class="summary-round">ROUND ${round}</div>`;
 
   if (!rows.length) {
     $("#results-list").innerHTML = `<div class="empty-state"><strong>No result for ${escapeHtml(selectedDriver)}</strong><span>This driver did not record a result in Round ${round}. Choose another race or select All drivers.</span></div>`;
