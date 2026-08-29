@@ -142,7 +142,11 @@ function renderCalendar() {
     const status = event.status.toLowerCase();
     return `<div class="calendar-card ${status}">
       <div class="round-badge ${status === "cancelled" ? "cancelled" : ""}">${event.round ?? "—"}</div>
-      <div><div class="calendar-track">${escapeHtml(event.track)}</div><div class="calendar-date">${escapeHtml(event.date)}${event.round ? ` · Round ${event.round}` : ""}</div></div>
+      <div class="calendar-copy">
+        <div class="calendar-track">${escapeHtml(event.track)}</div>
+        <div class="calendar-date">${escapeHtml(event.date)}${event.round ? ` · Round ${event.round}` : ""}</div>
+      </div>
+      <div class="calendar-track-art">${trackIllustration(event.track)}</div>
       <span class="status ${status}">${escapeHtml(event.status)}</span>
     </div>`;
   }).join("");
@@ -204,6 +208,21 @@ const TRACK_ART = {
     viewBox: "0 0 180 90",
     path: "M19 62 C25 76 43 79 56 72 C67 66 68 54 60 48 C51 41 40 46 42 56 C44 66 58 67 67 61 C80 52 74 36 84 25 C94 14 111 12 122 20 C134 29 128 42 118 47 C108 52 104 64 114 72 C125 81 146 78 158 67 C172 54 171 36 162 24 C153 12 135 10 121 15",
     start: [150, 64, 162, 70]
+  },
+  "clay pigeon": {
+    viewBox: "0 0 180 90",
+    path: "M19 48 C22 31 38 20 55 22 C73 24 78 39 68 49 C58 60 42 57 39 46 C36 34 48 29 59 34 C73 40 81 58 96 65 C111 72 131 69 143 58 C155 47 151 34 141 29 C131 23 119 29 116 39 C113 49 122 58 134 59 C149 61 165 52 168 39",
+    start: [27, 40, 39, 45]
+  },
+  "llandow": {
+    viewBox: "0 0 180 90",
+    path: "M18 60 C29 73 47 76 61 68 C76 59 73 45 63 39 C51 31 39 38 42 50 C45 61 60 62 72 55 C88 45 83 25 98 17 C111 10 129 14 136 25 C144 38 136 49 125 56 C113 64 115 75 130 77 C146 79 162 70 168 57 C173 46 168 34 158 30",
+    start: [147, 69, 158, 62]
+  },
+  "fulbeck": {
+    viewBox: "0 0 180 90",
+    path: "M20 64 C31 75 49 75 58 65 C67 55 61 44 51 42 C40 40 34 50 39 59 C45 70 61 68 73 59 C87 49 85 35 96 25 C108 14 126 13 138 21 C151 29 154 43 146 54 C137 67 121 66 113 57 C105 48 110 36 122 33 C137 29 153 38 165 31",
+    start: [26, 60, 38, 67]
   }
 };
 
@@ -307,7 +326,7 @@ function setupResults() {
 
   document.querySelectorAll(".round-chip").forEach(btn => btn.addEventListener("click", () => choose(Number(btn.dataset.round))));
 
-  const initial = rounds.length ? rounds[rounds.length - 1].round : null;
+  const initial = rounds.length ? rounds[0].round : null;
   if (initial !== null) choose(initial);
 }
 
