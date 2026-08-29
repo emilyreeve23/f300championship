@@ -1,5 +1,5 @@
 window.F300_DATA = {
-  "updated": "29 Aug 2026 01:25",
+  "updated": "29 Aug 2026 01:51",
   "standings": [
     {
       "position": 1,
@@ -140,16 +140,6 @@ window.F300_DATA = {
       "podiums": 0,
       "bestFinal": "N/A",
       "points": 52
-    },
-    {
-      "position": 15,
-      "driver": "test",
-      "number": 200,
-      "rounds": 1,
-      "wins": 0,
-      "podiums": 0,
-      "bestFinal": "N/A",
-      "points": 18
     }
   ],
   "calendar": [
@@ -717,26 +707,6 @@ window.F300_DATA = {
       "h3Lap": "32.532",
       "finalLap": "32.613",
       "weekendBest": "32.532",
-      "notes": ""
-    },
-    {
-      "round": 3,
-      "track": "Wombwell",
-      "driver": "test",
-      "h1Result": "16",
-      "h1Points": 18,
-      "h2Result": "-",
-      "h2Points": 0,
-      "h3Result": "-",
-      "h3Points": 0,
-      "finalResult": "-",
-      "finalPoints": 0,
-      "weekendTotal": 18,
-      "h1Lap": "-",
-      "h2Lap": "-",
-      "h3Lap": "-",
-      "finalLap": "-",
-      "weekendBest": "-",
       "notes": ""
     }
   ]
