@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
 
   schedule:
-    # Runs automatically once per day
-    - cron: "17 6 * * *"
+    # Runs automatically twice per day
+    - cron: "17 6,18 * * *"
 
 permissions:
   contents: write
