@@ -56,10 +56,16 @@ function resetResultsFilter() {
 }
 
 function handleAppResume() {
-  // A visibility change also happens when switching browser tabs.
-  // Requiring a short background period prevents tiny interruptions
-  // (such as system prompts) from replaying the startup screen.
-  if (!splashHiddenAt || Date.now() - splashHiddenAt < 2000) return;
+  // Keep the user's current screen during normal short app-switches.
+  // After roughly five minutes in the background, treat the return as
+  // a fresh session: show the logo, reset the Results filter and
+  // return to Standings.
+  const inactiveFor = splashHiddenAt ? Date.now() - splashHiddenAt : 0;
+
+  if (!splashHiddenAt || inactiveFor < 300000) {
+    splashHiddenAt = null;
+    return;
+  }
 
   splashHiddenAt = null;
   resetResultsFilter();
