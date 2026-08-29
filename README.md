@@ -49,3 +49,12 @@ Included files:
 - `.github/workflows/update-championship-data.yml` — runs the updater once per day and can also be run manually from the GitHub Actions tab.
 
 If `data.js` changes, the workflow commits the new data to `main`. The existing Cloudflare GitHub deployment can then publish the updated app automatically.
+
+
+### Version 4.4 sync schedule
+
+The automatic championship-data workflow checks the Google Apps Script feed twice per day:
+- 06:17 UTC
+- 18:17 UTC
+
+It can still be run manually at any time from GitHub Actions → Update Championship Data → Run workflow.

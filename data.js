@@ -1,5 +1,5 @@
 window.F300_DATA = {
-  "updated": "29 Aug 2026 01:08",
+  "updated": "28 Aug 2026",
   "standings": [
     {
       "position": 1,
@@ -140,82 +140,64 @@ window.F300_DATA = {
       "podiums": 0,
       "bestFinal": "N/A",
       "points": 52
-    },
-    {
-      "position": 15,
-      "driver": "test",
-      "number": 200,
-      "rounds": 1,
-      "wins": 0,
-      "podiums": 0,
-      "bestFinal": "N/A",
-      "points": 18
     }
   ],
   "calendar": [
     {
       "round": 1,
       "track": "Lydd",
-      "date": "9th-10th May",
+      "date": "9th–10th May",
       "status": "Complete",
-      "dateKey": "2026-05-09",
-      "notes": ""
+      "dateKey": "2026-05-09"
     },
     {
       "round": 2,
       "track": "Whilton Mill",
-      "date": "30th-31st May",
+      "date": "30th–31st May",
       "status": "Complete",
-      "dateKey": "2026-05-30",
-      "notes": ""
+      "dateKey": "2026-05-30"
     },
     {
       "round": null,
       "track": "Clay Pigeon",
-      "date": "4th-5th July",
+      "date": "4th–5th July",
       "status": "Cancelled",
-      "dateKey": "2026-07-04",
-      "notes": ""
+      "dateKey": "2026-07-04"
     },
     {
       "round": 3,
       "track": "Wombwell",
-      "date": "8th-9th August",
+      "date": "8th–9th August",
       "status": "Complete",
-      "dateKey": "2026-08-08",
-      "notes": ""
-    },
-    {
-      "round": null,
-      "track": "Llandow",
-      "date": "12th-13th September",
-      "status": "Cancelled",
-      "dateKey": "2026-09-12",
-      "notes": ""
-    },
-    {
-      "round": null,
-      "track": "Fulbeck",
-      "date": "10th-11th October",
-      "status": "Cancelled",
-      "dateKey": "2026-10-10",
-      "notes": ""
+      "dateKey": "2026-08-08"
     },
     {
       "round": 4,
       "track": "Lydd",
       "date": "6th September",
       "status": "Upcoming",
-      "dateKey": "2026-09-06",
-      "notes": ""
+      "dateKey": "2026-09-06"
+    },
+    {
+      "round": null,
+      "track": "Llandow",
+      "date": "12th–13th September",
+      "status": "Cancelled",
+      "dateKey": "2026-09-12"
     },
     {
       "round": 5,
       "track": "Lydd",
       "date": "11th October",
       "status": "Upcoming",
-      "dateKey": "2026-10-11",
-      "notes": ""
+      "dateKey": "2026-10-11"
+    },
+    {
+      "round": null,
+      "track": "Fulbeck",
+      "date": "10th–11th October",
+      "status": "Cancelled",
+      "dateKey": "2026-10-10"
     }
   ],
   "raceResults": [
@@ -717,26 +699,6 @@ window.F300_DATA = {
       "h3Lap": "32.532",
       "finalLap": "32.613",
       "weekendBest": "32.532",
-      "notes": ""
-    },
-    {
-      "round": 3,
-      "track": "Wombwell",
-      "driver": "test",
-      "h1Result": "16",
-      "h1Points": 18,
-      "h2Result": "-",
-      "h2Points": 0,
-      "h3Result": "-",
-      "h3Points": 0,
-      "finalResult": "-",
-      "finalPoints": 0,
-      "weekendTotal": 18,
-      "h1Lap": "-",
-      "h2Lap": "-",
-      "h3Lap": "-",
-      "finalLap": "-",
-      "weekendBest": "-",
       "notes": ""
     }
   ]

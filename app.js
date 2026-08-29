@@ -1,16 +1,40 @@
-function setupStartupSplash() {
+let splashHideTimer = null;
+let splashHiddenAt = null;
+
+function hideStartupSplash() {
   const splash = document.getElementById("startup-splash");
   if (!splash) {
     document.body.classList.remove("splash-active");
     return;
   }
-  const hide = () => {
-    splash.classList.add("is-hiding");
-    document.body.classList.remove("splash-active");
-    window.setTimeout(() => splash.remove(), 380);
-  };
-  const reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  window.setTimeout(hide, reduced ? 450 : 1450);
+
+  splash.classList.add("is-hiding");
+  document.body.classList.remove("splash-active");
+}
+
+function showStartupSplash(duration = 1200) {
+  const splash = document.getElementById("startup-splash");
+  if (!splash) return;
+
+  if (splashHideTimer) {
+    window.clearTimeout(splashHideTimer);
+  }
+
+  splash.classList.remove("is-hiding");
+  document.body.classList.add("splash-active");
+
+  const reduced =
+    window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  splashHideTimer = window.setTimeout(
+    hideStartupSplash,
+    reduced ? 350 : duration
+  );
+}
+
+function setupStartupSplash() {
+  showStartupSplash(1450);
 }
 
 const data = window.F300_DATA;
@@ -22,6 +46,26 @@ let selectedRound = null;
 localStorage.removeItem("f300-driver-filter");
 let selectedDriver = "";
 let calendarShowingAll = false;
+
+function resetResultsFilter() {
+  selectedDriver = "";
+  localStorage.removeItem("f300-driver-filter");
+
+  const select = document.getElementById("driver-filter");
+  if (select) select.value = "";
+}
+
+function handleAppResume() {
+  // A visibility change also happens when switching browser tabs.
+  // Requiring a short background period prevents tiny interruptions
+  // (such as system prompts) from replaying the startup screen.
+  if (!splashHiddenAt || Date.now() - splashHiddenAt < 2000) return;
+
+  splashHiddenAt = null;
+  resetResultsFilter();
+  navigateTo("standings");
+  showStartupSplash(1050);
+}
 
 function suffix(n) {
   if (["N/A", "DNF", "DNS"].includes(String(n))) return String(n);
@@ -421,4 +465,13 @@ renderCalendar();
 setupDriverFilter();
 setupResults();
 setupNavigation();
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    splashHiddenAt = Date.now();
+    return;
+  }
+
+  handleAppResume();
+});
+
 if ("serviceWorker" in navigator) window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {}));
