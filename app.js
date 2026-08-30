@@ -256,11 +256,63 @@ function authTokenFor(driver) {
   return hubAuth.authenticated && hubAuth.driver === driver ? hubAuth.token : "";
 }
 
+function updateHubDriverPicker() {
+  const select = $("#hub-driver-select");
+  if (!select) return;
+
+  let locked = $("#hub-driver-locked");
+  if (!locked) {
+    locked = document.createElement("div");
+    locked.id = "hub-driver-locked";
+    locked.className = "hub-driver-locked";
+    select.insertAdjacentElement("afterend", locked);
+  }
+
+  const stored = storedDriverSession();
+  const checkingStoredSession =
+    !hubAuth.authenticated &&
+    hubAuth.registered === null &&
+    stored.driver &&
+    stored.token &&
+    stored.driver === select.value;
+
+  const lockedDriver =
+    hubAuth.authenticated
+      ? hubAuth.driver
+      : checkingStoredSession
+        ? stored.driver
+        : "";
+
+  if (lockedDriver) {
+    const standing = standings.find(d => d.driver === lockedDriver);
+
+    if (standings.some(d => d.driver === lockedDriver)) {
+      select.value = lockedDriver;
+    }
+
+    select.hidden = true;
+    locked.hidden = false;
+    locked.innerHTML = `
+      <span>
+        <span class="eyebrow">${hubAuth.authenticated ? "SIGNED IN AS" : "CHECKING PROFILE"}</span>
+        <strong>${standing ? `#${standing.number} · ` : ""}${escapeHtml(lockedDriver)}</strong>
+      </span>
+      <span class="hub-driver-lock-mark" aria-hidden="true">🔒</span>`;
+    return;
+  }
+
+  select.hidden = false;
+  locked.hidden = true;
+  locked.innerHTML = "";
+}
+
 function pinIsValid(pin) {
   return /^\d{4}$/.test(String(pin || ""));
 }
 
 function updateHubControls() {
+  updateHubDriverPicker();
+
   const driver = $("#hub-driver-select")?.value || "";
   const unlocked = Boolean(driver && hubAuth.authenticated && hubAuth.driver === driver);
 
@@ -302,6 +354,7 @@ function renderHubAuth() {
     $("#hub-signout")?.addEventListener("click", () => {
       clearDriverSession();
       hubAuth = { driver, authenticated: false, registered: true, resetAllowed: false, token: "" };
+      updateHubDriverPicker();
       renderHubAuth();
     });
     updateHubControls();
@@ -347,6 +400,7 @@ function renderHubAuth() {
         const result = await apiPost({ action: "registerDriver", driver, pin });
         saveDriverSession(driver, result.token);
         hubAuth = { driver, authenticated: true, registered: true, resetAllowed: false, token: result.token };
+        updateHubDriverPicker();
         renderHubAuth();
       } catch (error) {
         status.textContent = error.message || "PIN could not be saved.";
@@ -394,6 +448,7 @@ function renderHubAuth() {
 
 async function refreshDriverAuth(driver) {
   hubAuth = { driver, authenticated: false, registered: null, resetAllowed: false, token: "" };
+  updateHubDriverPicker();
   renderHubAuth();
 
   if (!driver || !apiUrl) return;
@@ -404,11 +459,13 @@ async function refreshDriverAuth(driver) {
       const result = await apiPost({ action: "verifySession", driver, token: stored.token });
       if (result.authenticated) {
         hubAuth = { driver, authenticated: true, registered: true, resetAllowed: false, token: stored.token };
+        updateHubDriverPicker();
         renderHubAuth();
         return;
       }
     } catch {}
     clearDriverSession();
+    updateHubDriverPicker();
   }
 
   try {
@@ -424,6 +481,7 @@ async function refreshDriverAuth(driver) {
     hubAuth = { driver, authenticated: false, registered: false, resetAllowed: false, token: "" };
   }
 
+  updateHubDriverPicker();
   renderHubAuth();
 }
 
@@ -431,7 +489,11 @@ function renderDriverHub() {
   const select = $("#hub-driver-select");
   if (!select) return;
 
-  const savedDriver = localStorage.getItem("f300-hub-driver") || localStorage.getItem("f300-auth-driver") || "";
+  const storedSession = storedDriverSession();
+  const savedDriver =
+    (storedSession.driver && storedSession.token ? storedSession.driver : "") ||
+    localStorage.getItem("f300-hub-driver") ||
+    "";
 
   select.innerHTML = `<option value="">Choose your driver</option>` +
     standings.map(d => `<option value="${escapeHtml(d.driver)}">#${d.number} · ${escapeHtml(d.driver)}</option>`).join("");
@@ -453,6 +515,12 @@ function setupDriverHub() {
   if (!hubSelect) return;
 
   hubSelect.addEventListener("change", () => {
+    if (hubAuth.authenticated && hubAuth.driver) {
+      hubSelect.value = hubAuth.driver;
+      updateHubDriverPicker();
+      return;
+    }
+
     localStorage.setItem("f300-hub-driver", hubSelect.value);
     renderHubProfile(hubSelect.value);
     renderLocalGearing(hubSelect.value);
