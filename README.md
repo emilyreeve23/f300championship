@@ -45,9 +45,7 @@ Once authenticated:
 - The driver list is hidden while signed in
 - Drivers can upload/update their profile photo
 - Authenticated profile photos are applied without manual approval
-- Race-weekend submissions can be sent during the active submission window
-- Drivers can submit Heat/Final positions and fastest laps
-- Front/rear sprocket settings and gearing notes can be recorded
+- Front/rear sprocket settings and gearing notes can be recorded during the active race-weekend window
 - Local gearing history is retained on the driver's device
 
 PIN hashes are kept in the Google Apps Script/Sheet backend and are **not included in the public GitHub `data.js` feed**.
@@ -83,10 +81,10 @@ Google Apps Script provides:
 - Public race calendar
 - Public race results
 - Approved/current driver profile photos
-- Current race submission-window information
+- Current race-weekend gearing-entry window information
 - Driver PIN registration/login
 - Authenticated profile-photo uploads
-- Authenticated weekend submissions
+- Authenticated gearing/setup entries
 - Contact/support submissions
 
 Private authentication/contact/admin data is not intentionally returned in the public championship JSON feed.
@@ -155,8 +153,7 @@ Current v1.1 work includes:
 - My Profile driver PIN access
 - Signed-in driver profile locking
 - Profile-photo uploads
-- Race-weekend driver submissions
-- Gearing/setup notes
+- Private driver gearing/setup notes
 - In-app Contact F300 support form
 - Offline/PWA installation support
 - Automatic Google Sheet → GitHub → Cloudflare championship-data updates

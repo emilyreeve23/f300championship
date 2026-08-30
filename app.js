@@ -154,7 +154,7 @@ function saveLocalGearing(driver, entry) {
 
 async function apiPost(payload) {
   if (!apiUrl) {
-    throw new Error("Driver submissions are not connected yet.");
+    throw new Error("My Profile is not connected yet.");
   }
 
   const response = await fetch(apiUrl, {
@@ -173,19 +173,12 @@ async function apiPost(payload) {
   return result;
 }
 
-function resultOptions() {
-  let html = `<option value="">—</option>`;
-  for (let i = 1; i <= 30; i += 1) html += `<option value="${i}">${i}</option>`;
-  html += `<option value="DNF">DNF</option><option value="DNS">DNS</option>`;
-  return html;
-}
-
 function formatSubmissionWindow() {
   if (!submissionWindow.open) {
-    return `<div class="hub-window closed"><strong>Weekend submissions are closed</strong><span>They open on race day and remain available for 7 days after the race weekend.</span></div>`;
+    return `<div class="hub-window closed"><strong>Gearing entry is closed</strong><span>It opens on race day and remains available for 7 days after the race weekend.</span></div>`;
   }
 
-  return `<div class="hub-window open"><strong>Round ${submissionWindow.round} · ${escapeHtml(submissionWindow.track)}</strong><span>Submissions close ${escapeHtml(submissionWindow.closes || "")}</span></div>`;
+  return `<div class="hub-window open"><strong>Round ${submissionWindow.round} · ${escapeHtml(submissionWindow.track)}</strong><span>Gearing entry closes ${escapeHtml(submissionWindow.closes || "")}</span></div>`;
 }
 
 function renderLocalGearing(driver) {
@@ -341,7 +334,7 @@ function updateHubControls() {
   if (photoInput) photoInput.disabled = !unlocked;
   if (photoButton) photoButton.disabled = !unlocked || !apiUrl;
 
-  const form = $("#weekend-submission-form");
+  const form = $("#gearing-submission-form");
   if (form) {
     const enabled = Boolean(unlocked && submissionWindow.open && apiUrl);
     form.querySelectorAll("input,select,textarea,button").forEach(el => el.disabled = !enabled);
@@ -540,8 +533,6 @@ function setupDriverHub() {
     refreshDriverAuth(hubSelect.value);
   });
 
-  document.querySelectorAll(".hub-result-select").forEach(select => select.innerHTML = resultOptions());
-
   $("#profile-photo-input")?.addEventListener("change", event => {
     const file = event.target.files?.[0];
     const preview = $("#photo-preview");
@@ -597,44 +588,50 @@ function setupDriverHub() {
     }
   });
 
-  $("#weekend-submission-form")?.addEventListener("submit", async event => {
+  $("#gearing-submission-form")?.addEventListener("submit", async event => {
     event.preventDefault();
+
     const form = event.currentTarget;
     const driver = hubSelect.value;
     const token = authTokenFor(driver);
-    const status = $("#weekend-submit-status");
+    const status = $("#gearing-submit-status");
 
     if (!driver || !token || !submissionWindow.open) return;
 
     const values = Object.fromEntries(new FormData(form).entries());
 
+    if (!values.frontSprocket && !values.rearSprocket && !String(values.gearingNotes || "").trim()) {
+      status.textContent = "Add some gearing information before saving.";
+      return;
+    }
+
     try {
-      status.textContent = "Submitting weekend data…";
+      status.textContent = "Saving gearing…";
+
       await apiPost({
-        action: "weekendSubmission",
+        action: "gearingSubmission",
         driver,
         token,
         round: submissionWindow.round,
         track: submissionWindow.track,
-        ...values
+        frontSprocket: values.frontSprocket,
+        rearSprocket: values.rearSprocket,
+        gearingNotes: values.gearingNotes || ""
       });
 
-      if (values.frontSprocket || values.rearSprocket) {
-        saveLocalGearing(driver, {
-          round: Number(submissionWindow.round),
-          track: submissionWindow.track,
-          front: values.frontSprocket,
-          rear: values.rearSprocket,
-          notes: values.gearingNotes || ""
-        });
-      }
+      saveLocalGearing(driver, {
+        round: Number(submissionWindow.round),
+        track: submissionWindow.track,
+        front: values.frontSprocket,
+        rear: values.rearSprocket,
+        notes: values.gearingNotes || ""
+      });
 
-      status.textContent = "Submitted for review. Official results are not changed automatically.";
+      status.textContent = "Gearing saved.";
       form.reset();
-      document.querySelectorAll(".hub-result-select").forEach(select => select.innerHTML = resultOptions());
       renderLocalGearing(driver);
     } catch (error) {
-      status.textContent = error.message || "Submission could not be saved.";
+      status.textContent = error.message || "Gearing could not be saved.";
     }
   });
 

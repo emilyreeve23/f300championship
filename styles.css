@@ -313,3 +313,9 @@ body.splash-active{overflow:hidden}
     font-size:9px;
   }
 }
+
+
+/* v1.1: gearing-only My Profile card */
+#gearing-submission-form .gearing-fields{
+  margin-top:2px;
+}

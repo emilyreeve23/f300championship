@@ -104,33 +104,21 @@
 
         <div class="hub-card">
           <div class="hub-card-heading">
-            <div><span class="eyebrow">RACE WEEKEND</span><h3>Submit my results</h3></div>
+            <div><span class="eyebrow">RACE WEEKEND</span><h3>Save gearing</h3></div>
           </div>
-          <p class="hub-copy">Submissions are checked before anything is added to the official championship results.</p>
+          <p class="hub-copy">Save the gearing you used so you can refer back to it for this circuit in future.</p>
           <div id="submission-window"></div>
 
-          <form id="weekend-submission-form" class="weekend-form">
-            <div class="hub-session-grid">
-              <label><span>Heat 1 place</span><select class="hub-result-select" name="h1Result"></select></label>
-              <label><span>Heat 1 fastest lap</span><input name="h1Lap" inputmode="decimal" placeholder="36.891"></label>
-              <label><span>Heat 2 place</span><select class="hub-result-select" name="h2Result"></select></label>
-              <label><span>Heat 2 fastest lap</span><input name="h2Lap" inputmode="decimal" placeholder="36.891"></label>
-              <label><span>Heat 3 place</span><select class="hub-result-select" name="h3Result"></select></label>
-              <label><span>Heat 3 fastest lap</span><input name="h3Lap" inputmode="decimal" placeholder="36.891"></label>
-              <label><span>Final place</span><select class="hub-result-select" name="finalResult"></select></label>
-              <label><span>Final fastest lap</span><input name="finalLap" inputmode="decimal" placeholder="36.891"></label>
-            </div>
-
+          <form id="gearing-submission-form" class="weekend-form">
             <div class="gearing-fields">
               <label><span>Front sprocket</span><input name="frontSprocket" inputmode="numeric" placeholder="11"></label>
               <label><span>Rear sprocket</span><input name="rearSprocket" inputmode="numeric" placeholder="82"></label>
             </div>
 
             <label class="hub-textarea-label"><span>Gearing / setup notes</span><textarea name="gearingNotes" rows="3" placeholder="Anything useful to remember for this circuit next time"></textarea></label>
-            <label class="hub-textarea-label"><span>Weekend notes</span><textarea name="driverNotes" rows="3" placeholder="Optional notes for the submission"></textarea></label>
 
-            <button class="primary-button" type="submit">Submit weekend</button>
-            <div id="weekend-submit-status" class="hub-status" aria-live="polite"></div>
+            <button class="primary-button" type="submit">Save gearing</button>
+            <div id="gearing-submit-status" class="hub-status" aria-live="polite"></div>
           </form>
         </div>
 
@@ -181,7 +169,7 @@
             <li>Offline caching allows the most recently downloaded championship data to remain available without signal.</li>
             <li>F300 startup screen appears on launch and after returning from around a minute of inactivity.</li>
             <li>In-app Contact F300 form sends questions, bug reports and PIN help requests directly to the championship admin sheet.</li>
-            <li>My Profile includes self-service 4-digit PIN setup, profile photos, weekend submissions and gearing notes.</li>
+            <li>My Profile includes self-service 4-digit PIN access and profile photos.</li>
           </ul>
         </div>
 
