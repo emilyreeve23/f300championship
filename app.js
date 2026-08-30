@@ -292,12 +292,32 @@ function updateHubDriverPicker() {
 
     select.hidden = true;
     locked.hidden = false;
-    locked.innerHTML = `
-      <span>
-        <span class="eyebrow">${hubAuth.authenticated ? "SIGNED IN AS" : "CHECKING PROFILE"}</span>
-        <strong>${standing ? `#${standing.number} · ` : ""}${escapeHtml(lockedDriver)}</strong>
-      </span>
-      <span class="hub-driver-lock-mark" aria-hidden="true">🔒</span>`;
+    locked.innerHTML = hubAuth.authenticated
+      ? `
+        <span>
+          <span class="eyebrow">SIGNED IN AS</span>
+          <strong>${standing ? `#${standing.number} · ` : ""}${escapeHtml(lockedDriver)}</strong>
+        </span>
+        <button id="hub-signout-inline" class="secondary-button compact-button" type="button">Sign out</button>`
+      : `
+        <span>
+          <span class="eyebrow">CHECKING PROFILE</span>
+          <strong>${standing ? `#${standing.number} · ` : ""}${escapeHtml(lockedDriver)}</strong>
+        </span>`;
+
+    $("#hub-signout-inline")?.addEventListener("click", () => {
+      clearDriverSession();
+      hubAuth = {
+        driver: lockedDriver,
+        authenticated: false,
+        registered: true,
+        resetAllowed: false,
+        token: ""
+      };
+      updateHubDriverPicker();
+      renderHubAuth();
+    });
+
     return;
   }
 
@@ -333,6 +353,8 @@ function renderHubAuth() {
   const driver = $("#hub-driver-select")?.value || "";
   if (!target) return;
 
+  target.hidden = false;
+
   if (!driver) {
     target.innerHTML = `<div class="hub-auth-message">Choose your driver above to continue.</div>`;
     updateHubControls();
@@ -346,17 +368,8 @@ function renderHubAuth() {
   }
 
   if (hubAuth.authenticated && hubAuth.driver === driver) {
-    target.innerHTML = `
-      <div class="hub-auth-unlocked">
-        <div><span class="eyebrow">PROFILE UNLOCKED</span><strong>${escapeHtml(driver)}</strong></div>
-        <button id="hub-signout" class="secondary-button compact-button" type="button">Sign out</button>
-      </div>`;
-    $("#hub-signout")?.addEventListener("click", () => {
-      clearDriverSession();
-      hubAuth = { driver, authenticated: false, registered: true, resetAllowed: false, token: "" };
-      updateHubDriverPicker();
-      renderHubAuth();
-    });
+    target.innerHTML = "";
+    target.hidden = true;
     updateHubControls();
     return;
   }
@@ -788,6 +801,14 @@ function getRounds() {
   return [...map.values()].sort((a,b) => a.round-b.round);
 }
 
+function calendarEventForRound(round) {
+  return (data.calendar || []).find(event => Number(event.round) === Number(round)) || null;
+}
+
+function roundWeekendDate(round) {
+  return calendarEventForRound(round)?.date || "";
+}
+
 function fastestLapsForRound(rows) {
   const cols = ["h1Lap","h2Lap","h3Lap","finalLap","weekendBest"];
   return Object.fromEntries(cols.map(col => {
@@ -893,9 +914,10 @@ function renderResults(round) {
 
   const visibleText = selectedDriver ? `${rows.length ? 1 : 0} selected driver` : `${rows.length} drivers`;
   const roundTrack = allRoundRows[0].track;
+  const weekendDate = roundWeekendDate(round);
   $("#round-summary").innerHTML = `
     <div class="round-summary-copy">
-      <strong>${escapeHtml(roundTrack)}</strong>
+      <strong>${escapeHtml(roundTrack)}${weekendDate ? ` <span class="round-weekend-date">· ${escapeHtml(weekendDate)}</span>` : ""}</strong>
       <span>${visibleText} · ordered by Final result</span>
     </div>
     <div class="round-track-art">${trackIllustration(roundTrack)}</div>
@@ -914,7 +936,7 @@ function renderResults(round) {
       <div class="result-head">
         <div class="result-order">${overallOrder}</div>
         ${avatarMarkup(r.driver, "result-avatar")}
-        <div class="result-driver"><h3>${escapeHtml(r.driver)}</h3><div class="result-sub">${escapeHtml(r.track)} · Round ${r.round}</div></div>
+        <div class="result-driver"><h3>${escapeHtml(r.driver)}</h3><div class="result-sub">${escapeHtml(r.track)}${weekendDate ? ` · ${escapeHtml(weekendDate)}` : ""} · Round ${r.round}</div></div>
         <div class="final-badge ${finalWinner ? "winner" : ""}"><strong>${displayResult(r.finalResult)}</strong>FINAL</div>
       </div>
       <div class="session-grid">
@@ -948,7 +970,7 @@ function setupResults() {
   const rounds = getRounds();
   const tabs = $("#round-scroller");
   tabs.style.setProperty("--round-count", Math.max(rounds.length, 1));
-  tabs.innerHTML = rounds.map(r => `<button class="round-chip" data-round="${r.round}" title="Round ${r.round} · ${escapeHtml(r.track)}" aria-label="Round ${r.round}, ${escapeHtml(r.track)}"><span>R${r.round}</span></button>`).join("");
+  tabs.innerHTML = rounds.map(r => `<button class="round-chip" data-round="${r.round}" title="Round ${r.round} · ${escapeHtml(r.track)}" aria-label="Round ${r.round}, ${escapeHtml(r.track)}"><span>Round ${r.round}</span></button>`).join("");
 
   function choose(round) {
     selectedRound = round;

@@ -274,3 +274,42 @@ body.splash-active{overflow:hidden}
   font-size:14px;
   opacity:.8;
 }
+
+
+/* v1.1: simplified signed-in profile header */
+.hub-driver-locked{
+  min-height:58px;
+}
+.hub-driver-locked .compact-button{
+  flex:0 0 auto;
+}
+.hub-auth[hidden]{
+  display:none !important;
+}
+.hub-driver-lock-mark{
+  display:none !important;
+}
+
+
+/* v1.1: full round labels + weekend dates in Results */
+.round-chip{
+  padding-left:5px;
+  padding-right:5px;
+}
+.round-summary-copy strong .round-weekend-date{
+  display:inline;
+  color:#9fb0c0;
+  font-size:10px;
+  font-weight:750;
+  white-space:nowrap;
+}
+@media(max-width:370px){
+  .round-chip{
+    font-size:7.5px;
+    padding-left:3px;
+    padding-right:3px;
+  }
+  .round-summary-copy strong .round-weekend-date{
+    font-size:9px;
+  }
+}
