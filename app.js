@@ -43,6 +43,7 @@ const raceResults = data.raceResults || [];
 const driverProfiles = data.profiles || [];
 const submissionWindow = data.submissionWindow || { open: false };
 const apiUrl = data.apiUrl || "";
+let hubAuth = { driver: "", authenticated: false, registered: null, resetAllowed: false, token: "" };
 const $ = (sel) => document.querySelector(sel);
 
 let selectedRound = null;
@@ -110,7 +111,10 @@ function driverInitials(name) {
 }
 
 function profileForDriver(name) {
-  return driverProfiles.find(p => p.driver === name) || null;
+  const publicProfile = driverProfiles.find(p => p.driver === name) || null;
+  const localPhoto = localStorage.getItem(`f300-profile-photo-${name}`) || "";
+  if (localPhoto) return { ...(publicProfile || {}), driver: name, photoUrl: localPhoto };
+  return publicProfile;
 }
 
 function avatarMarkup(name, extraClass = "") {
@@ -211,7 +215,7 @@ function renderHubProfile(driver) {
   if (!target) return;
 
   if (!driver) {
-    target.innerHTML = `<div class="hub-empty">Choose your name to manage your driver profile.</div>`;
+    target.innerHTML = `<div class="hub-empty">Choose your name to open your profile.</div>`;
     return;
   }
 
@@ -227,15 +231,208 @@ function renderHubProfile(driver) {
         <p>#${standing?.number ?? profile?.number ?? "—"}${standing ? ` · P${standing.position} · ${standing.points} pts` : ""}</p>
       </div>
     </div>
-    <div class="hub-profile-note">${profile?.photoUrl ? "Approved profile photo shown." : "No approved profile photo yet."}</div>`;
+    <div class="hub-profile-note">${profile?.photoUrl ? "Profile photo active." : "No profile photo uploaded yet."}</div>`;
   setupAvatarFallbacks(target);
+}
+
+function storedDriverSession() {
+  return {
+    driver: localStorage.getItem("f300-auth-driver") || "",
+    token: localStorage.getItem("f300-auth-token") || ""
+  };
+}
+
+function saveDriverSession(driver, token) {
+  localStorage.setItem("f300-auth-driver", driver);
+  localStorage.setItem("f300-auth-token", token);
+}
+
+function clearDriverSession() {
+  localStorage.removeItem("f300-auth-driver");
+  localStorage.removeItem("f300-auth-token");
+}
+
+function authTokenFor(driver) {
+  return hubAuth.authenticated && hubAuth.driver === driver ? hubAuth.token : "";
+}
+
+function pinIsValid(pin) {
+  return /^\d{4}$/.test(String(pin || ""));
+}
+
+function updateHubControls() {
+  const driver = $("#hub-driver-select")?.value || "";
+  const unlocked = Boolean(driver && hubAuth.authenticated && hubAuth.driver === driver);
+
+  const photoInput = $("#profile-photo-input");
+  const photoButton = $("#photo-submit-button");
+  if (photoInput) photoInput.disabled = !unlocked;
+  if (photoButton) photoButton.disabled = !unlocked || !apiUrl;
+
+  const form = $("#weekend-submission-form");
+  if (form) {
+    const enabled = Boolean(unlocked && submissionWindow.open && apiUrl);
+    form.querySelectorAll("input,select,textarea,button").forEach(el => el.disabled = !enabled);
+  }
+}
+
+function renderHubAuth() {
+  const target = $("#hub-auth");
+  const driver = $("#hub-driver-select")?.value || "";
+  if (!target) return;
+
+  if (!driver) {
+    target.innerHTML = `<div class="hub-auth-message">Choose your driver above to continue.</div>`;
+    updateHubControls();
+    return;
+  }
+
+  if (!apiUrl) {
+    target.innerHTML = `<div class="hub-auth-message">Profile access is temporarily unavailable.</div>`;
+    updateHubControls();
+    return;
+  }
+
+  if (hubAuth.authenticated && hubAuth.driver === driver) {
+    target.innerHTML = `
+      <div class="hub-auth-unlocked">
+        <div><span class="eyebrow">PROFILE UNLOCKED</span><strong>${escapeHtml(driver)}</strong></div>
+        <button id="hub-signout" class="secondary-button compact-button" type="button">Sign out</button>
+      </div>`;
+    $("#hub-signout")?.addEventListener("click", () => {
+      clearDriverSession();
+      hubAuth = { driver, authenticated: false, registered: true, resetAllowed: false, token: "" };
+      renderHubAuth();
+    });
+    updateHubControls();
+    return;
+  }
+
+  if (hubAuth.registered === null) {
+    target.innerHTML = `<div class="hub-auth-message">Checking profile access…</div>`;
+    updateHubControls();
+    return;
+  }
+
+  if (!hubAuth.registered || hubAuth.resetAllowed) {
+    target.innerHTML = `
+      <div class="hub-auth-box">
+        <span class="eyebrow">${hubAuth.resetAllowed ? "RESET PIN" : "FIRST TIME SETUP"}</span>
+        <h3>${hubAuth.resetAllowed ? "Choose a new PIN" : "Create your 4-digit PIN"}</h3>
+        <p>${hubAuth.resetAllowed ? "F300 has enabled a one-time PIN reset for this profile." : "This driver has not set up a PIN yet. Create one now to claim your profile."}</p>
+        <div class="pin-grid">
+          <input id="hub-new-pin" type="password" inputmode="numeric" maxlength="4" placeholder="4-digit PIN">
+          <input id="hub-confirm-pin" type="password" inputmode="numeric" maxlength="4" placeholder="Confirm PIN">
+        </div>
+        <button id="hub-register-button" class="primary-button" type="button">${hubAuth.resetAllowed ? "Reset PIN" : "Set up my profile"}</button>
+        <div id="hub-auth-status" class="hub-status" aria-live="polite"></div>
+      </div>`;
+
+    $("#hub-register-button")?.addEventListener("click", async () => {
+      const pin = $("#hub-new-pin")?.value || "";
+      const confirm = $("#hub-confirm-pin")?.value || "";
+      const status = $("#hub-auth-status");
+
+      if (!pinIsValid(pin)) {
+        status.textContent = "Please use exactly 4 numbers.";
+        return;
+      }
+      if (pin !== confirm) {
+        status.textContent = "The two PINs do not match.";
+        return;
+      }
+
+      try {
+        status.textContent = "Saving PIN…";
+        const result = await apiPost({ action: "registerDriver", driver, pin });
+        saveDriverSession(driver, result.token);
+        hubAuth = { driver, authenticated: true, registered: true, resetAllowed: false, token: result.token };
+        renderHubAuth();
+      } catch (error) {
+        status.textContent = error.message || "PIN could not be saved.";
+      }
+    });
+
+    updateHubControls();
+    return;
+  }
+
+  target.innerHTML = `
+    <div class="hub-auth-box">
+      <span class="eyebrow">PROFILE LOCKED</span>
+      <h3>Enter your PIN</h3>
+      <p>Your driver profile has already been set up.</p>
+      <input id="hub-login-pin" type="password" inputmode="numeric" maxlength="4" placeholder="4-digit PIN">
+      <button id="hub-login-button" class="primary-button" type="button">Unlock my profile</button>
+      <button id="hub-pin-help" class="text-button" type="button">Forgot PIN? Contact F300</button>
+      <div id="hub-auth-status" class="hub-status" aria-live="polite"></div>
+    </div>`;
+
+  $("#hub-login-button")?.addEventListener("click", async () => {
+    const pin = $("#hub-login-pin")?.value || "";
+    const status = $("#hub-auth-status");
+
+    if (!pinIsValid(pin)) {
+      status.textContent = "Please enter your 4-digit PIN.";
+      return;
+    }
+
+    try {
+      status.textContent = "Checking PIN…";
+      const result = await apiPost({ action: "loginDriver", driver, pin });
+      saveDriverSession(driver, result.token);
+      hubAuth = { driver, authenticated: true, registered: true, resetAllowed: false, token: result.token };
+      renderHubAuth();
+    } catch (error) {
+      status.textContent = error.message || "PIN could not be verified.";
+    }
+  });
+
+  $("#hub-pin-help")?.addEventListener("click", () => openContactDialog({ driver, topic: "PIN help" }));
+  updateHubControls();
+}
+
+async function refreshDriverAuth(driver) {
+  hubAuth = { driver, authenticated: false, registered: null, resetAllowed: false, token: "" };
+  renderHubAuth();
+
+  if (!driver || !apiUrl) return;
+
+  const stored = storedDriverSession();
+  if (stored.driver === driver && stored.token) {
+    try {
+      const result = await apiPost({ action: "verifySession", driver, token: stored.token });
+      if (result.authenticated) {
+        hubAuth = { driver, authenticated: true, registered: true, resetAllowed: false, token: stored.token };
+        renderHubAuth();
+        return;
+      }
+    } catch {}
+    clearDriverSession();
+  }
+
+  try {
+    const result = await apiPost({ action: "driverStatus", driver });
+    hubAuth = {
+      driver,
+      authenticated: false,
+      registered: Boolean(result.registered),
+      resetAllowed: Boolean(result.resetAllowed),
+      token: ""
+    };
+  } catch {
+    hubAuth = { driver, authenticated: false, registered: false, resetAllowed: false, token: "" };
+  }
+
+  renderHubAuth();
 }
 
 function renderDriverHub() {
   const select = $("#hub-driver-select");
   if (!select) return;
 
-  const savedDriver = localStorage.getItem("f300-hub-driver") || "";
+  const savedDriver = localStorage.getItem("f300-hub-driver") || localStorage.getItem("f300-auth-driver") || "";
+
   select.innerHTML = `<option value="">Choose your driver</option>` +
     standings.map(d => `<option value="${escapeHtml(d.driver)}">#${d.number} · ${escapeHtml(d.driver)}</option>`).join("");
 
@@ -248,24 +445,7 @@ function renderDriverHub() {
   const windowTarget = $("#submission-window");
   if (windowTarget) windowTarget.innerHTML = formatSubmissionWindow();
 
-  const form = $("#weekend-submission-form");
-  if (form) {
-    const enabled = Boolean(driver && submissionWindow.open && apiUrl);
-    form.querySelectorAll("input,select,textarea,button").forEach(el => {
-      if (el.id !== "hub-driver-select") el.disabled = !enabled;
-    });
-    form.dataset.driver = driver;
-    form.dataset.round = submissionWindow.round || "";
-  }
-
-  const photoButton = $("#photo-submit-button");
-  if (photoButton) photoButton.disabled = !driver || !apiUrl;
-
-  const photoStatus = $("#photo-status");
-  if (photoStatus && !apiUrl) photoStatus.textContent = "Profile uploads will activate after the Apps Script update is deployed.";
-
-  const submitStatus = $("#weekend-submit-status");
-  if (submitStatus && !apiUrl) submitStatus.textContent = "Weekend submissions will activate after the Apps Script update is deployed.";
+  refreshDriverAuth(driver);
 }
 
 function setupDriverHub() {
@@ -274,13 +454,14 @@ function setupDriverHub() {
 
   hubSelect.addEventListener("change", () => {
     localStorage.setItem("f300-hub-driver", hubSelect.value);
-    renderDriverHub();
+    renderHubProfile(hubSelect.value);
+    renderLocalGearing(hubSelect.value);
+    refreshDriverAuth(hubSelect.value);
   });
 
-  const resultSelects = document.querySelectorAll(".hub-result-select");
-  resultSelects.forEach(select => select.innerHTML = resultOptions());
+  document.querySelectorAll(".hub-result-select").forEach(select => select.innerHTML = resultOptions());
 
-  $("#profile-photo-input")?.addEventListener("change", async event => {
+  $("#profile-photo-input")?.addEventListener("change", event => {
     const file = event.target.files?.[0];
     const preview = $("#photo-preview");
     if (!file || !preview) return;
@@ -296,10 +477,14 @@ function setupDriverHub() {
 
   $("#photo-submit-button")?.addEventListener("click", async () => {
     const driver = hubSelect.value;
+    const token = authTokenFor(driver);
     const file = $("#profile-photo-input")?.files?.[0];
     const status = $("#photo-status");
 
-    if (!driver) return;
+    if (!driver || !token) {
+      status.textContent = "Unlock your profile first.";
+      return;
+    }
     if (!file) {
       status.textContent = "Choose a photo first.";
       return;
@@ -308,18 +493,24 @@ function setupDriverHub() {
     try {
       status.textContent = "Preparing photo…";
       const imageData = await compressProfilePhoto(file);
-      status.textContent = "Sending for approval…";
+      status.textContent = "Updating profile photo…";
 
-      await apiPost({
+      const result = await apiPost({
         action: "profilePhoto",
         driver,
+        token,
         imageData: imageData.data,
         mimeType: imageData.mimeType
       });
 
-      status.textContent = "Photo submitted. It will appear after it has been approved.";
+      if (result.photoUrl) localStorage.setItem(`f300-profile-photo-${driver}`, result.photoUrl);
+
+      status.textContent = "Profile photo updated.";
       $("#profile-photo-input").value = "";
       $("#photo-preview").innerHTML = "";
+      renderHubProfile(driver);
+      renderStandings();
+      renderResults(selectedRound);
     } catch (error) {
       status.textContent = error.message || "Photo could not be submitted.";
     }
@@ -329,23 +520,23 @@ function setupDriverHub() {
     event.preventDefault();
     const form = event.currentTarget;
     const driver = hubSelect.value;
+    const token = authTokenFor(driver);
     const status = $("#weekend-submit-status");
 
-    if (!driver || !submissionWindow.open) return;
+    if (!driver || !token || !submissionWindow.open) return;
 
     const values = Object.fromEntries(new FormData(form).entries());
 
-    const payload = {
-      action: "weekendSubmission",
-      driver,
-      round: submissionWindow.round,
-      track: submissionWindow.track,
-      ...values
-    };
-
     try {
       status.textContent = "Submitting weekend data…";
-      await apiPost(payload);
+      await apiPost({
+        action: "weekendSubmission",
+        driver,
+        token,
+        round: submissionWindow.round,
+        track: submissionWindow.track,
+        ...values
+      });
 
       if (values.frontSprocket || values.rearSprocket) {
         saveLocalGearing(driver, {
@@ -367,6 +558,56 @@ function setupDriverHub() {
   });
 
   renderDriverHub();
+}
+
+function openContactDialog(options = {}) {
+  const dialog = $("#contact-dialog");
+  if (!dialog) return;
+
+  const select = $("#contact-driver");
+  select.innerHTML = `<option value="">Not driver-specific</option>` +
+    standings.map(d => `<option value="${escapeHtml(d.driver)}">#${d.number} · ${escapeHtml(d.driver)}</option>`).join("");
+
+  const preferred = options.driver || (hubAuth.authenticated ? hubAuth.driver : "") || $("#hub-driver-select")?.value || "";
+  if (standings.some(d => d.driver === preferred)) select.value = preferred;
+
+  if (options.topic) $("#contact-topic").value = options.topic;
+  $("#contact-status").textContent = "";
+  dialog.showModal();
+}
+
+function setupContactSupport() {
+  $("#contact-open-button")?.addEventListener("click", () => openContactDialog());
+  $("#contact-dialog-close")?.addEventListener("click", () => $("#contact-dialog")?.close());
+
+  $("#contact-form")?.addEventListener("submit", async event => {
+    event.preventDefault();
+    const status = $("#contact-status");
+    const values = Object.fromEntries(new FormData(event.currentTarget).entries());
+
+    if (!String(values.message || "").trim()) {
+      status.textContent = "Please enter a message.";
+      return;
+    }
+
+    try {
+      status.textContent = "Sending…";
+      const driver = values.driver || "";
+      await apiPost({
+        action: "contactSupport",
+        driver,
+        token: authTokenFor(driver),
+        topic: values.topic,
+        contact: values.contact,
+        message: values.message
+      });
+      status.textContent = "Sent to F300.";
+      event.currentTarget.reset();
+      setTimeout(() => $("#contact-dialog")?.close(), 850);
+    } catch (error) {
+      status.textContent = error.message || "Message could not be sent.";
+    }
+  });
 }
 
 function compressProfilePhoto(file) {
@@ -677,7 +918,7 @@ function openDriver(d) {
   const history = raceResults.filter(r => r.driver === d.driver).sort((a,b) => b.round-a.round);
   const historyHtml = history.length ? `<h4 class="driver-history-title">Race history</h4><div class="driver-history">${history.map(r => `<div class="driver-history-row"><div><strong>Round ${r.round} · ${escapeHtml(r.track)}</strong><span>Final ${displayResult(r.finalResult)} · Best lap ${validLap(r.weekendBest) !== null ? Number(r.weekendBest).toFixed(3) : escapeHtml(r.weekendBest || "—")}</span></div><div class="driver-history-total"><b>${r.weekendTotal}</b><span>pts</span></div></div>`).join("")}</div>` : "";
   $("#driver-dialog-content").innerHTML = `<div class="driver-detail">
-    <div class="driver-profile-head">${avatarMarkup(d.driver, "dialog-avatar")}<div><div class="number">DRIVER #${d.number} · P${d.position}</div><h3>${escapeHtml(d.driver)}</h3></div></div>
+    <div class="driver-profile-head driver-profile-head-large">${avatarMarkup(d.driver, "dialog-avatar dialog-avatar-large")}<div><div class="number">DRIVER #${d.number} · P${d.position}</div><h3>${escapeHtml(d.driver)}</h3></div></div>
     <div class="big-points">${d.points}<span>POINTS</span></div>
     <div class="detail-grid">
       <div><strong>${d.rounds}</strong><span>Rounds</span></div><div><strong>${d.wins}</strong><span>Final wins</span></div>
@@ -860,6 +1101,7 @@ renderCalendar();
 setupDriverFilter();
 setupResults();
 setupDriverHub();
+setupContactSupport();
 setupNavigation();
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) {

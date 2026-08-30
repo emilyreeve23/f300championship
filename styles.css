@@ -221,3 +221,31 @@ body.splash-active{overflow:hidden}
   .hub-session-grid{grid-template-columns:1fr}
   .nav-button{font-size:8px}
 }
+
+
+/* v1.1 PIN access, larger profile image and in-app contact */
+.hub-auth{margin-top:10px}
+.hub-auth-message,.hub-auth-box,.hub-auth-unlocked{border:1px solid var(--line);border-radius:14px;background:#091421;padding:11px}
+.hub-auth-message{color:var(--muted);font-size:9px;text-align:center}
+.hub-auth-box h3{margin:3px 0 4px;font-size:14px}
+.hub-auth-box p{margin:0 0 9px;color:var(--muted);font-size:9px;line-height:1.45}
+.hub-auth-box input{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:11px;background:#06111e;color:#f1f7fa;padding:10px;font-size:13px;text-align:center;letter-spacing:4px}
+.pin-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-bottom:8px}
+.hub-auth-unlocked{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.hub-auth-unlocked strong{display:block;margin-top:3px;font-size:11px}
+.compact-button{padding:7px 10px;font-size:8px}
+.text-button{width:100%;margin-top:7px;border:0;background:transparent;color:#87ddd5;font-size:9px;cursor:pointer}
+.contact-mini-button{width:100%;margin:10px 0;padding:11px 13px;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:rgba(14,27,44,.78);color:#eaf2f6;display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;cursor:pointer}
+.contact-mini-button strong{display:block;font-size:11px}
+.contact-mini-button small{display:block;margin-top:2px;color:var(--muted);font-size:8px}
+.contact-mini-button>span:last-child{font-size:22px;color:var(--teal)}
+.contact-form{display:grid;gap:10px;padding:22px 18px 18px}
+.contact-form h3{margin:0 0 3px;font-size:19px}
+.contact-form label{display:grid;gap:5px;color:#9aabba;font-size:8px;font-weight:850;text-transform:uppercase;letter-spacing:.6px}
+.contact-form input,.contact-form select,.contact-form textarea{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:11px;background:#091421;color:#eef5f8;padding:10px;font:inherit;font-size:10px;text-transform:none;letter-spacing:normal}
+.contact-form textarea{resize:vertical;line-height:1.4}
+.driver-profile-head-large{flex-direction:column;align-items:center;text-align:center;padding-top:7px}
+.dialog-avatar-large{width:118px;height:118px;border-width:2px}
+.driver-profile-head-large h3{padding-right:0;margin-top:5px}
+.driver-profile-head-large .number{text-align:center}
+@media(max-width:380px){.pin-grid{grid-template-columns:1fr}.dialog-avatar-large{width:104px;height:104px}}

@@ -87,6 +87,7 @@
         <div class="hub-card">
           <label class="hub-label" for="hub-driver-select">Driver</label>
           <select id="hub-driver-select" class="mobile-select"><option value="">Choose your driver</option></select>
+          <div id="hub-auth" class="hub-auth"></div>
           <div id="hub-profile-preview" class="hub-profile-preview"></div>
         </div>
 
@@ -94,7 +95,7 @@
           <div class="hub-card-heading">
             <div><span class="eyebrow">PROFILE</span><h3>Profile photo</h3></div>
           </div>
-          <p class="hub-copy">Choose a photo for your driver profile. New photos are reviewed before they appear publicly.</p>
+          <p class="hub-copy">Choose a photo for your profile. Once your profile is unlocked, your new photo is applied immediately.</p>
           <div id="photo-preview" class="photo-preview"></div>
           <input id="profile-photo-input" class="hub-file-input" type="file" accept="image/jpeg,image/png,image/webp">
           <button id="photo-submit-button" class="primary-button" type="button">Submit profile photo</button>
@@ -137,7 +138,7 @@
           <div class="hub-card-heading">
             <div><span class="eyebrow">SETUP NOTES</span><h3>Gearing history</h3></div>
           </div>
-          <p class="hub-copy">For now this history is saved on this device. It can move to your private driver account when PIN access is added.</p>
+          <p class="hub-copy">Gearing history is currently saved on this device so you can quickly refer back to previous setups.</p>
           <div id="gearing-history" class="gearing-history"></div>
         </div>
       </section>
@@ -179,21 +180,15 @@
             <li>Home Screen installation support for iPhone, iPad and Android.</li>
             <li>Offline caching allows the most recently downloaded championship data to remain available without signal.</li>
             <li>F300 startup screen appears on launch and after returning from around a minute of inactivity.</li>
-            <li>Contact link is available for championship questions or data corrections.</li>
-            <li>Driver Hub testing includes profile-photo submissions, weekend results and gearing notes.</li>
+            <li>In-app Contact F300 form sends questions, bug reports and PIN help requests directly to the championship admin sheet.</li>
+            <li>My Profile includes self-service 4-digit PIN setup, profile photos, weekend submissions and gearing notes.</li>
           </ul>
         </div>
 
-        <div class="contact-card">
-                  <div class="contact-card-icon" aria-hidden="true">✉️</div>
-                  <div class="contact-card-copy">
-                    <span class="eyebrow">CONTACT</span>
-                    <h3>Need some information?</h3>
-                    <p>If you have a question about the championship, spot incorrect information or find a bug, send us an email.</p>
-                  </div>
-                  <a class="primary-button contact-mail-button" href="mailto:contact@f300championship.co.uk?subject=F300%20Championship%20Enquiry">Email F300</a>
-                  <a class="contact-address" href="mailto:contact@f300championship.co.uk">contact@f300championship.co.uk</a>
-                </div>
+        <button id="contact-open-button" class="contact-mini-button" type="button">
+          <span><strong>Contact F300</strong><small>Questions, bugs or PIN help</small></span>
+          <span aria-hidden="true">›</span>
+        </button>
 
         <div class="testing-card" role="status">
           <div class="testing-card-copy">
@@ -233,6 +228,28 @@
       <div id="install-dialog-body"></div>
       <button class="primary-button" id="install-dialog-done" type="button">Got it</button>
     </div>
+  </dialog>
+
+
+  <dialog id="contact-dialog" class="install-dialog contact-dialog">
+    <button class="dialog-close" id="contact-dialog-close" aria-label="Close">×</button>
+    <form id="contact-form" class="contact-form">
+      <span class="eyebrow">CONTACT F300</span>
+      <h3>How can we help?</h3>
+      <label><span>Driver</span><select id="contact-driver" name="driver"></select></label>
+      <label><span>Topic</span>
+        <select id="contact-topic" name="topic">
+          <option value="General question">General question</option>
+          <option value="Report a bug">Report a bug</option>
+          <option value="Incorrect information">Incorrect information</option>
+          <option value="PIN help">PIN help</option>
+        </select>
+      </label>
+      <label><span>Contact detail (optional)</span><input name="contact" placeholder="Email / phone / how to reply"></label>
+      <label><span>Message</span><textarea name="message" rows="5" maxlength="1200" placeholder="Tell us what you need help with"></textarea></label>
+      <button class="primary-button" type="submit">Send to F300</button>
+      <div id="contact-status" class="hub-status" aria-live="polite"></div>
+    </form>
   </dialog>
 
   <dialog id="driver-dialog" class="driver-dialog">
