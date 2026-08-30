@@ -1,5 +1,5 @@
 window.F300_DATA = {
-  "updated": "30 Aug 2026 21:57",
+  "updated": "30 Aug 2026 22:01",
   "apiUrl": "https://script.google.com/macros/s/AKfycby4RgoqZdYFLcWkstoz9y5ZjsMoGt-u3T-IgBJ36AfIUFXp55fhA82TRKsa-_c3B-0o/exec",
   "standings": [
     {
@@ -144,6 +144,26 @@ window.F300_DATA = {
     },
     {
       "position": 15,
+      "driver": "emily",
+      "number": 0,
+      "rounds": 0,
+      "wins": 0,
+      "podiums": 0,
+      "bestFinal": "N/A",
+      "points": 0
+    },
+    {
+      "position": 16,
+      "driver": "keyne",
+      "number": 0,
+      "rounds": 0,
+      "wins": 0,
+      "podiums": 0,
+      "bestFinal": "N/A",
+      "points": 0
+    },
+    {
+      "position": 17,
       "driver": "test",
       "number": 0,
       "rounds": 0,
