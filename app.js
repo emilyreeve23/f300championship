@@ -40,6 +40,9 @@ function setupStartupSplash() {
 const data = window.F300_DATA;
 const standings = data.standings || [];
 const raceResults = data.raceResults || [];
+const driverProfiles = data.profiles || [];
+const submissionWindow = data.submissionWindow || { open: false };
+const apiUrl = data.apiUrl || "";
 const $ = (sel) => document.querySelector(sel);
 
 let selectedRound = null;
@@ -96,11 +99,320 @@ function escapeHtml(value) {
   return String(value ?? "").replace(/[&<>'"]/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[ch]));
 }
 
+
+function driverInitials(name) {
+  return String(name || "")
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map(part => part.charAt(0).toUpperCase())
+    .join("") || "F3";
+}
+
+function profileForDriver(name) {
+  return driverProfiles.find(p => p.driver === name) || null;
+}
+
+function avatarMarkup(name, extraClass = "") {
+  const profile = profileForDriver(name);
+  const photo = profile?.photoUrl;
+  return `<span class="driver-avatar ${extraClass}">
+    <span class="driver-avatar-fallback">${escapeHtml(driverInitials(name))}</span>
+    ${photo ? `<img class="driver-avatar-img" src="${escapeHtml(photo)}" alt="${escapeHtml(name)} profile photo" loading="lazy">` : ""}
+  </span>`;
+}
+
+function setupAvatarFallbacks(root = document) {
+  root.querySelectorAll(".driver-avatar-img").forEach(img => {
+    if (img.dataset.fallbackReady) return;
+    img.dataset.fallbackReady = "1";
+    img.addEventListener("error", () => img.remove());
+  });
+}
+
+function hubStorageKey(driver) {
+  return `f300-gearing-${String(driver || "").toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+}
+
+function getLocalGearing(driver) {
+  try {
+    return JSON.parse(localStorage.getItem(hubStorageKey(driver)) || "[]");
+  } catch {
+    return [];
+  }
+}
+
+function saveLocalGearing(driver, entry) {
+  const history = getLocalGearing(driver).filter(item => item.round !== entry.round);
+  history.unshift(entry);
+  localStorage.setItem(hubStorageKey(driver), JSON.stringify(history.slice(0, 20)));
+}
+
+async function apiPost(payload) {
+  if (!apiUrl) {
+    throw new Error("Driver submissions are not connected yet.");
+  }
+
+  const response = await fetch(apiUrl, {
+    method: "POST",
+    redirect: "follow",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(payload)
+  });
+
+  if (!response.ok) {
+    throw new Error(`Submission failed (${response.status}).`);
+  }
+
+  const result = await response.json();
+  if (!result.ok) throw new Error(result.error || "Submission could not be saved.");
+  return result;
+}
+
+function resultOptions() {
+  let html = `<option value="">—</option>`;
+  for (let i = 1; i <= 30; i += 1) html += `<option value="${i}">${i}</option>`;
+  html += `<option value="DNF">DNF</option><option value="DNS">DNS</option>`;
+  return html;
+}
+
+function formatSubmissionWindow() {
+  if (!submissionWindow.open) {
+    return `<div class="hub-window closed"><strong>Weekend submissions are closed</strong><span>They open on race day and remain available for 7 days after the race weekend.</span></div>`;
+  }
+
+  return `<div class="hub-window open"><strong>Round ${submissionWindow.round} · ${escapeHtml(submissionWindow.track)}</strong><span>Submissions close ${escapeHtml(submissionWindow.closes || "")}</span></div>`;
+}
+
+function renderLocalGearing(driver) {
+  const target = $("#gearing-history");
+  if (!target) return;
+
+  if (!driver) {
+    target.innerHTML = `<div class="hub-empty">Choose your driver above to see saved gearing.</div>`;
+    return;
+  }
+
+  const history = getLocalGearing(driver);
+  if (!history.length) {
+    target.innerHTML = `<div class="hub-empty">No gearing saved on this device yet.</div>`;
+    return;
+  }
+
+  target.innerHTML = history.map(item => `
+    <div class="gearing-row">
+      <div><strong>${escapeHtml(item.track || `Round ${item.round}`)}</strong><span>Round ${item.round}${item.notes ? ` · ${escapeHtml(item.notes)}` : ""}</span></div>
+      <div class="gearing-value">${escapeHtml(item.front || "—")} / ${escapeHtml(item.rear || "—")}</div>
+    </div>`).join("");
+}
+
+function renderHubProfile(driver) {
+  const target = $("#hub-profile-preview");
+  if (!target) return;
+
+  if (!driver) {
+    target.innerHTML = `<div class="hub-empty">Choose your name to manage your driver profile.</div>`;
+    return;
+  }
+
+  const standing = standings.find(d => d.driver === driver);
+  const profile = profileForDriver(driver);
+
+  target.innerHTML = `
+    <div class="hub-profile-main">
+      ${avatarMarkup(driver, "hub-avatar")}
+      <div>
+        <span class="eyebrow">DRIVER PROFILE</span>
+        <h3>${escapeHtml(driver)}</h3>
+        <p>#${standing?.number ?? profile?.number ?? "—"}${standing ? ` · P${standing.position} · ${standing.points} pts` : ""}</p>
+      </div>
+    </div>
+    <div class="hub-profile-note">${profile?.photoUrl ? "Approved profile photo shown." : "No approved profile photo yet."}</div>`;
+  setupAvatarFallbacks(target);
+}
+
+function renderDriverHub() {
+  const select = $("#hub-driver-select");
+  if (!select) return;
+
+  const savedDriver = localStorage.getItem("f300-hub-driver") || "";
+  select.innerHTML = `<option value="">Choose your driver</option>` +
+    standings.map(d => `<option value="${escapeHtml(d.driver)}">#${d.number} · ${escapeHtml(d.driver)}</option>`).join("");
+
+  if (standings.some(d => d.driver === savedDriver)) select.value = savedDriver;
+
+  const driver = select.value;
+  renderHubProfile(driver);
+  renderLocalGearing(driver);
+
+  const windowTarget = $("#submission-window");
+  if (windowTarget) windowTarget.innerHTML = formatSubmissionWindow();
+
+  const form = $("#weekend-submission-form");
+  if (form) {
+    const enabled = Boolean(driver && submissionWindow.open && apiUrl);
+    form.querySelectorAll("input,select,textarea,button").forEach(el => {
+      if (el.id !== "hub-driver-select") el.disabled = !enabled;
+    });
+    form.dataset.driver = driver;
+    form.dataset.round = submissionWindow.round || "";
+  }
+
+  const photoButton = $("#photo-submit-button");
+  if (photoButton) photoButton.disabled = !driver || !apiUrl;
+
+  const photoStatus = $("#photo-status");
+  if (photoStatus && !apiUrl) photoStatus.textContent = "Profile uploads will activate after the Apps Script update is deployed.";
+
+  const submitStatus = $("#weekend-submit-status");
+  if (submitStatus && !apiUrl) submitStatus.textContent = "Weekend submissions will activate after the Apps Script update is deployed.";
+}
+
+function setupDriverHub() {
+  const hubSelect = $("#hub-driver-select");
+  if (!hubSelect) return;
+
+  hubSelect.addEventListener("change", () => {
+    localStorage.setItem("f300-hub-driver", hubSelect.value);
+    renderDriverHub();
+  });
+
+  const resultSelects = document.querySelectorAll(".hub-result-select");
+  resultSelects.forEach(select => select.innerHTML = resultOptions());
+
+  $("#profile-photo-input")?.addEventListener("change", async event => {
+    const file = event.target.files?.[0];
+    const preview = $("#photo-preview");
+    if (!file || !preview) return;
+
+    if (!/^image\/(jpeg|png|webp)$/i.test(file.type)) {
+      preview.innerHTML = `<span>Please choose a JPG, PNG or WebP image.</span>`;
+      event.target.value = "";
+      return;
+    }
+
+    preview.innerHTML = `<img src="${URL.createObjectURL(file)}" alt="Profile photo preview">`;
+  });
+
+  $("#photo-submit-button")?.addEventListener("click", async () => {
+    const driver = hubSelect.value;
+    const file = $("#profile-photo-input")?.files?.[0];
+    const status = $("#photo-status");
+
+    if (!driver) return;
+    if (!file) {
+      status.textContent = "Choose a photo first.";
+      return;
+    }
+
+    try {
+      status.textContent = "Preparing photo…";
+      const imageData = await compressProfilePhoto(file);
+      status.textContent = "Sending for approval…";
+
+      await apiPost({
+        action: "profilePhoto",
+        driver,
+        imageData: imageData.data,
+        mimeType: imageData.mimeType
+      });
+
+      status.textContent = "Photo submitted. It will appear after it has been approved.";
+      $("#profile-photo-input").value = "";
+      $("#photo-preview").innerHTML = "";
+    } catch (error) {
+      status.textContent = error.message || "Photo could not be submitted.";
+    }
+  });
+
+  $("#weekend-submission-form")?.addEventListener("submit", async event => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const driver = hubSelect.value;
+    const status = $("#weekend-submit-status");
+
+    if (!driver || !submissionWindow.open) return;
+
+    const values = Object.fromEntries(new FormData(form).entries());
+
+    const payload = {
+      action: "weekendSubmission",
+      driver,
+      round: submissionWindow.round,
+      track: submissionWindow.track,
+      ...values
+    };
+
+    try {
+      status.textContent = "Submitting weekend data…";
+      await apiPost(payload);
+
+      if (values.frontSprocket || values.rearSprocket) {
+        saveLocalGearing(driver, {
+          round: Number(submissionWindow.round),
+          track: submissionWindow.track,
+          front: values.frontSprocket,
+          rear: values.rearSprocket,
+          notes: values.gearingNotes || ""
+        });
+      }
+
+      status.textContent = "Submitted for review. Official results are not changed automatically.";
+      form.reset();
+      document.querySelectorAll(".hub-result-select").forEach(select => select.innerHTML = resultOptions());
+      renderLocalGearing(driver);
+    } catch (error) {
+      status.textContent = error.message || "Submission could not be saved.";
+    }
+  });
+
+  renderDriverHub();
+}
+
+function compressProfilePhoto(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onerror = () => reject(new Error("The photo could not be read."));
+    reader.onload = () => {
+      const img = new Image();
+
+      img.onerror = () => reject(new Error("The photo could not be processed."));
+      img.onload = () => {
+        const size = 512;
+        const canvas = document.createElement("canvas");
+        canvas.width = size;
+        canvas.height = size;
+
+        const ctx = canvas.getContext("2d");
+        const scale = Math.max(size / img.width, size / img.height);
+        const width = img.width * scale;
+        const height = img.height * scale;
+        const x = (size - width) / 2;
+        const y = (size - height) / 2;
+
+        ctx.fillStyle = "#07111f";
+        ctx.fillRect(0, 0, size, size);
+        ctx.drawImage(img, x, y, width, height);
+
+        const dataUrl = canvas.toDataURL("image/jpeg", 0.82);
+        resolve({
+          mimeType: "image/jpeg",
+          data: dataUrl.split(",")[1]
+        });
+      };
+      img.src = reader.result;
+    };
+
+    reader.readAsDataURL(file);
+  });
+}
+
 function renderLeader(driver) {
   $("#leader-card").innerHTML = `
     <div class="leader-kicker">CHAMPIONSHIP LEADER</div>
     <div class="leader-main">
-      <div><div class="leader-name">${escapeHtml(driver.driver)}</div><span class="leader-number">#${driver.number}</span></div>
+      <div class="leader-identity">${avatarMarkup(driver.driver, "leader-avatar")}<div><div class="leader-name">${escapeHtml(driver.driver)}</div><span class="leader-number">#${driver.number}</span></div></div>
       <div class="leader-points"><strong>${driver.points}</strong><span>POINTS</span></div>
     </div>
     <div class="leader-stats">
@@ -109,6 +421,7 @@ function renderLeader(driver) {
       <div><strong>${suffix(driver.bestFinal)}</strong><span>Best final</span></div>
     </div>`;
   $("#leader-card").onclick = () => openDriver(driver);
+  setupAvatarFallbacks($("#leader-card"));
 }
 
 function renderStandings() {
@@ -118,10 +431,12 @@ function renderStandings() {
   $("#standings-list").innerHTML = standings.slice(1).map(d => `
     <button class="driver-card ${d.position === 2 ? "p2" : d.position === 3 ? "p3" : ""}" data-pos="${d.position}">
       <span class="pos">${d.position}</span>
+      ${avatarMarkup(d.driver, "list-avatar")}
       <span class="driver-copy"><span class="driver-name">${escapeHtml(d.driver)}</span><span class="driver-meta">#${d.number} · ${d.rounds} round${d.rounds === 1 ? "" : "s"} · ${d.podiums} podium${d.podiums === 1 ? "" : "s"}</span></span>
       <span class="pts">${d.points}<small>PTS</small></span>
     </button>`).join("");
   document.querySelectorAll(".driver-card").forEach(card => card.addEventListener("click", () => openDriver(standings.find(d => d.position === Number(card.dataset.pos)))));
+  setupAvatarFallbacks($("#standings-list"));
 }
 
 function calendarSort(events) {
@@ -289,6 +604,7 @@ function renderResults(round) {
     return `<article class="result-card ${finalWinner ? "winner-card" : ""}">
       <div class="result-head">
         <div class="result-order">${overallOrder}</div>
+        ${avatarMarkup(r.driver, "result-avatar")}
         <div class="result-driver"><h3>${escapeHtml(r.driver)}</h3><div class="result-sub">${escapeHtml(r.track)} · Round ${r.round}</div></div>
         <div class="final-badge ${finalWinner ? "winner" : ""}"><strong>${displayResult(r.finalResult)}</strong>FINAL</div>
       </div>
@@ -305,6 +621,7 @@ function renderResults(round) {
       ${r.notes ? `<div class="result-notes">${escapeHtml(r.notes)}</div>` : ""}
     </article>`;
   }).join("");
+  setupAvatarFallbacks($("#results-list"));
 }
 
 function setupDriverFilter() {
@@ -360,7 +677,7 @@ function openDriver(d) {
   const history = raceResults.filter(r => r.driver === d.driver).sort((a,b) => b.round-a.round);
   const historyHtml = history.length ? `<h4 class="driver-history-title">Race history</h4><div class="driver-history">${history.map(r => `<div class="driver-history-row"><div><strong>Round ${r.round} · ${escapeHtml(r.track)}</strong><span>Final ${displayResult(r.finalResult)} · Best lap ${validLap(r.weekendBest) !== null ? Number(r.weekendBest).toFixed(3) : escapeHtml(r.weekendBest || "—")}</span></div><div class="driver-history-total"><b>${r.weekendTotal}</b><span>pts</span></div></div>`).join("")}</div>` : "";
   $("#driver-dialog-content").innerHTML = `<div class="driver-detail">
-    <div class="number">DRIVER #${d.number} · P${d.position}</div><h3>${escapeHtml(d.driver)}</h3>
+    <div class="driver-profile-head">${avatarMarkup(d.driver, "dialog-avatar")}<div><div class="number">DRIVER #${d.number} · P${d.position}</div><h3>${escapeHtml(d.driver)}</h3></div></div>
     <div class="big-points">${d.points}<span>POINTS</span></div>
     <div class="detail-grid">
       <div><strong>${d.rounds}</strong><span>Rounds</span></div><div><strong>${d.wins}</strong><span>Final wins</span></div>
@@ -369,6 +686,7 @@ function openDriver(d) {
     ${history.length ? `<button class="primary-button driver-results-button" id="driver-results-button">View ${escapeHtml(d.driver.split(" ")[0])}'s race results</button>` : ""}
     ${historyHtml}</div>`;
   $("#driver-dialog").showModal();
+  setupAvatarFallbacks($("#driver-dialog-content"));
   const button = $("#driver-results-button");
   if (button) button.addEventListener("click", () => showDriverResults(d.driver));
 }
@@ -541,6 +859,7 @@ renderStandings();
 renderCalendar();
 setupDriverFilter();
 setupResults();
+setupDriverHub();
 setupNavigation();
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) {

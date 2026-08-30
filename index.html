@@ -78,6 +78,70 @@
         <div class="calendar-list" id="calendar-list"></div>
       </section>
 
+
+      <section class="view" id="driver-view" data-view="driver">
+        <div class="section-heading">
+          <div><span class="eyebrow">YOUR WEEKEND</span><h2>Driver Hub</h2></div>
+        </div>
+
+        <div class="hub-card">
+          <label class="hub-label" for="hub-driver-select">Driver</label>
+          <select id="hub-driver-select" class="mobile-select"><option value="">Choose your driver</option></select>
+          <div id="hub-profile-preview" class="hub-profile-preview"></div>
+        </div>
+
+        <div class="hub-card">
+          <div class="hub-card-heading">
+            <div><span class="eyebrow">PROFILE</span><h3>Profile photo</h3></div>
+          </div>
+          <p class="hub-copy">Choose a photo for your driver profile. New photos are reviewed before they appear publicly.</p>
+          <div id="photo-preview" class="photo-preview"></div>
+          <input id="profile-photo-input" class="hub-file-input" type="file" accept="image/jpeg,image/png,image/webp">
+          <button id="photo-submit-button" class="primary-button" type="button">Submit profile photo</button>
+          <div id="photo-status" class="hub-status" aria-live="polite"></div>
+        </div>
+
+        <div class="hub-card">
+          <div class="hub-card-heading">
+            <div><span class="eyebrow">RACE WEEKEND</span><h3>Submit my results</h3></div>
+          </div>
+          <p class="hub-copy">Submissions are checked before anything is added to the official championship results.</p>
+          <div id="submission-window"></div>
+
+          <form id="weekend-submission-form" class="weekend-form">
+            <div class="hub-session-grid">
+              <label><span>Heat 1 place</span><select class="hub-result-select" name="h1Result"></select></label>
+              <label><span>Heat 1 fastest lap</span><input name="h1Lap" inputmode="decimal" placeholder="36.891"></label>
+              <label><span>Heat 2 place</span><select class="hub-result-select" name="h2Result"></select></label>
+              <label><span>Heat 2 fastest lap</span><input name="h2Lap" inputmode="decimal" placeholder="36.891"></label>
+              <label><span>Heat 3 place</span><select class="hub-result-select" name="h3Result"></select></label>
+              <label><span>Heat 3 fastest lap</span><input name="h3Lap" inputmode="decimal" placeholder="36.891"></label>
+              <label><span>Final place</span><select class="hub-result-select" name="finalResult"></select></label>
+              <label><span>Final fastest lap</span><input name="finalLap" inputmode="decimal" placeholder="36.891"></label>
+            </div>
+
+            <div class="gearing-fields">
+              <label><span>Front sprocket</span><input name="frontSprocket" inputmode="numeric" placeholder="11"></label>
+              <label><span>Rear sprocket</span><input name="rearSprocket" inputmode="numeric" placeholder="82"></label>
+            </div>
+
+            <label class="hub-textarea-label"><span>Gearing / setup notes</span><textarea name="gearingNotes" rows="3" placeholder="Anything useful to remember for this circuit next time"></textarea></label>
+            <label class="hub-textarea-label"><span>Weekend notes</span><textarea name="driverNotes" rows="3" placeholder="Optional notes for the submission"></textarea></label>
+
+            <button class="primary-button" type="submit">Submit weekend</button>
+            <div id="weekend-submit-status" class="hub-status" aria-live="polite"></div>
+          </form>
+        </div>
+
+        <div class="hub-card">
+          <div class="hub-card-heading">
+            <div><span class="eyebrow">SETUP NOTES</span><h3>Gearing history</h3></div>
+          </div>
+          <p class="hub-copy">For now this history is saved on this device. It can move to your private driver account when PIN access is added.</p>
+          <div id="gearing-history" class="gearing-history"></div>
+        </div>
+      </section>
+
       <section class="view" id="info-view" data-view="info">
         <div class="section-heading"><div><span class="eyebrow">F300</span><h2>Championship App</h2></div></div>
         <div class="info-card">
@@ -116,6 +180,7 @@
             <li>Offline caching allows the most recently downloaded championship data to remain available without signal.</li>
             <li>F300 startup screen appears on launch and after returning from around a minute of inactivity.</li>
             <li>Contact link is available for championship questions or data corrections.</li>
+            <li>Driver Hub testing includes profile-photo submissions, weekend results and gearing notes.</li>
           </ul>
         </div>
 
@@ -147,6 +212,7 @@
       <button class="nav-button active" data-target="standings" aria-label="Standings"><span class="nav-icon">🏆</span><span>Standings</span></button>
       <button class="nav-button" data-target="results" aria-label="Race Results"><span class="nav-icon">🏎️</span><span>Results</span></button>
       <button class="nav-button" data-target="calendar" aria-label="Calendar"><span class="nav-icon">🏁</span><span>Calendar</span></button>
+      <button class="nav-button" data-target="driver" aria-label="Driver Hub"><span class="nav-icon">👤</span><span>Driver</span></button>
       <button class="nav-button" data-target="info" aria-label="Info"><span class="nav-icon">ℹ️</span><span>Info</span></button>
     </nav>
   </div>
