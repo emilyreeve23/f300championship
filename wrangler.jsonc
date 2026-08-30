@@ -1,0 +1,8 @@
+{
+  "name": "f300championship",
+  "compatibility_date": "2026-08-30",
+  "assets": {
+    "directory": ".",
+    "not_found_handling": "single-page-application"
+  }
+}
