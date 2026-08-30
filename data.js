@@ -1,5 +1,5 @@
 window.F300_DATA = {
-  "updated": "30 Aug 2026 12:59",
+  "updated": "30 Aug 2026 20:18",
   "standings": [
     {
       "position": 1,
