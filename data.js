@@ -1,5 +1,5 @@
 window.F300_DATA = {
-  "updated": "30 Aug 2026 22:11",
+  "updated": "31 Aug 2026 05:29",
   "apiUrl": "https://script.google.com/macros/s/AKfycby4RgoqZdYFLcWkstoz9y5ZjsMoGt-u3T-IgBJ36AfIUFXp55fhA82TRKsa-_c3B-0o/exec",
   "standings": [
     {
@@ -711,13 +711,7 @@ window.F300_DATA = {
       "notes": ""
     }
   ],
-  "profiles": [
-    {
-      "driver": "Jack Reeve",
-      "number": 4,
-      "photoUrl": "https://drive.google.com/thumbnail?id=10aDLZZp1kbHG-ZPPQY-oFWXF9fxgl_Tv&sz=w512"
-    }
-  ],
+  "profiles": [],
   "submissionWindow": {
     "open": false,
     "nextRound": 4,
