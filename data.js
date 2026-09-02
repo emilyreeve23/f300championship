@@ -1,5 +1,5 @@
 window.F300_DATA = {
-  "updated": "1 Sep 2026 22:06",
+  "updated": "2 Sep 2026 10:56",
   "apiUrl": "https://script.google.com/macros/s/AKfycby4RgoqZdYFLcWkstoz9y5ZjsMoGt-u3T-IgBJ36AfIUFXp55fhA82TRKsa-_c3B-0o/exec",
   "standings": [
     {
@@ -711,7 +711,13 @@ window.F300_DATA = {
       "notes": ""
     }
   ],
-  "profiles": [],
+  "profiles": [
+    {
+      "driver": "Nye Cortizo-White",
+      "number": 16,
+      "photoUrl": "https://drive.google.com/thumbnail?id=1MRFqlrjgBORGtF8ZFz-YCzMozRGHArLc&sz=w512"
+    }
+  ],
   "submissionWindow": {
     "open": false,
     "nextRound": 4,
