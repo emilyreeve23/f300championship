@@ -46,7 +46,7 @@ jobs:
           echo "Importer file details:"
           ls -lh scripts/import-speedhive-results.py
           echo "Expected bot version line:"
-          grep -n 'BOT_VERSION = "search-discovery-v4"' scripts/import-speedhive-results.py
+          grep -n 'BOT_VERSION = "lap-times-trial-v1"' scripts/import-speedhive-results.py
           echo "Main entry point:"
           grep -n 'if __name__ == "__main__":' scripts/import-speedhive-results.py
 
