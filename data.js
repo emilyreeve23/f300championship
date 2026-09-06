@@ -1,5 +1,5 @@
 window.F300_DATA = {
-  "updated": "6 Sep 2026 18:53",
+  "updated": "6 Sep 2026 19:14",
   "apiUrl": "https://script.google.com/macros/s/AKfycbwqNnwg6FTL6GKOw0774fQXbr4ASWXsEwhZkW8eCUmECfxS72pnhf5Tq9SwXCiFuHv2/exec",
   "standings": [
     {
@@ -70,7 +70,7 @@ window.F300_DATA = {
       "wins": 0,
       "podiums": 0,
       "bestFinal": 7,
-      "points": 189
+      "points": 285
     },
     {
       "position": 8,
@@ -114,6 +114,26 @@ window.F300_DATA = {
     },
     {
       "position": 12,
+      "driver": "Lilly Brame",
+      "number": 43,
+      "rounds": 1,
+      "wins": 0,
+      "podiums": 0,
+      "bestFinal": 8,
+      "points": 123
+    },
+    {
+      "position": 13,
+      "driver": "Brett Knapp",
+      "number": 12,
+      "rounds": 1,
+      "wins": 0,
+      "podiums": 0,
+      "bestFinal": 11,
+      "points": 119
+    },
+    {
+      "position": 14,
       "driver": "Matt Cater",
       "number": 64,
       "rounds": 1,
@@ -121,26 +141,6 @@ window.F300_DATA = {
       "podiums": 0,
       "bestFinal": 5,
       "points": 118
-    },
-    {
-      "position": 13,
-      "driver": "Lilly Brame",
-      "number": 43,
-      "rounds": 1,
-      "wins": 0,
-      "podiums": 0,
-      "bestFinal": 8,
-      "points": 100
-    },
-    {
-      "position": 14,
-      "driver": "Brett Knapp",
-      "number": 12,
-      "rounds": 1,
-      "wins": 0,
-      "podiums": 0,
-      "bestFinal": "N/A",
-      "points": 52
     }
   ],
   "calendar": [
@@ -378,11 +378,11 @@ window.F300_DATA = {
       "h1Points": 25,
       "h2Result": "9",
       "h2Points": 25,
-      "h3Result": "DNF",
-      "h3Points": 2,
-      "finalResult": "DNS",
-      "finalPoints": 0,
-      "weekendTotal": 52,
+      "h3Result": "11",
+      "h3Points": 23,
+      "finalResult": "11",
+      "finalPoints": 46,
+      "weekendTotal": 119,
       "h1Lap": "39.425",
       "h2Lap": "39.773",
       "h3Lap": "-",
@@ -396,13 +396,13 @@ window.F300_DATA = {
       "driver": "Jason Merritt",
       "h1Result": "10",
       "h1Points": 24,
-      "h2Result": "DNS",
-      "h2Points": 0,
-      "h3Result": "DNS",
-      "h3Points": 0,
-      "finalResult": "DNS",
-      "finalPoints": 0,
-      "weekendTotal": 24,
+      "h2Result": "10",
+      "h2Points": 24,
+      "h3Result": "10",
+      "h3Points": 24,
+      "finalResult": "10",
+      "finalPoints": 48,
+      "weekendTotal": 120,
       "h1Lap": "38.920",
       "h2Lap": "-",
       "h3Lap": "-",
@@ -416,13 +416,13 @@ window.F300_DATA = {
       "driver": "Lilly Brame",
       "h1Result": "11",
       "h1Points": 23,
-      "h2Result": "DNS",
-      "h2Points": 0,
+      "h2Result": "11",
+      "h2Points": 23,
       "h3Result": "9",
       "h3Points": 25,
       "finalResult": "8",
       "finalPoints": 52,
-      "weekendTotal": 100,
+      "weekendTotal": 123,
       "h1Lap": "42.381",
       "h2Lap": "-",
       "h3Lap": "41.408",
@@ -792,6 +792,3478 @@ window.F300_DATA = {
     }
   ],
   "lapTimes": [
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "h1",
+      "sessionName": "F300 Heat 1",
+      "driver": "Brett Knapp",
+      "number": "12",
+      "best": 39.425,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 42.995,
+          "speed": 87.08,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 39.508,
+          "speed": 94.766,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 39.425,
+          "speed": 94.965,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 39.737,
+          "speed": 94.219,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 40.237,
+          "speed": 93.049,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 40.243,
+          "speed": 93.035,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 40.652,
+          "speed": 92.099,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 40.511,
+          "speed": 92.419,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 40.725,
+          "speed": 91.934,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 40.767,
+          "speed": 91.839,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 41.163,
+          "speed": 90.955,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 42.583,
+          "speed": 87.922,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 44.136,
+          "speed": 84.829,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "h1",
+      "sessionName": "F300 Heat 1",
+      "driver": "Gary Woodward",
+      "number": "55",
+      "best": 37.73,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 39.094,
+          "speed": 95.769,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 37.73,
+          "speed": 99.231,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 38.266,
+          "speed": 97.841,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 38.33,
+          "speed": 97.678,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 38.197,
+          "speed": 98.018,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 37.916,
+          "speed": 98.745,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 38.433,
+          "speed": 97.416,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 39.298,
+          "speed": 95.272,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 37.9,
+          "speed": 98.786,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 38.142,
+          "speed": 98.16,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 38.341,
+          "speed": 97.65,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 38.678,
+          "speed": 96.799,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 38.561,
+          "speed": 97.093,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 38.241,
+          "speed": 97.905,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "h1",
+      "sessionName": "F300 Heat 1",
+      "driver": "Guy Hefford",
+      "number": "50",
+      "best": 37.577,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 39.835,
+          "speed": 93.988,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 37.739,
+          "speed": 99.208,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 38.129,
+          "speed": 98.193,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 38.151,
+          "speed": 98.136,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 37.761,
+          "speed": 99.15,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 38.392,
+          "speed": 97.52,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 38.163,
+          "speed": 98.105,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 38.385,
+          "speed": 97.538,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 37.639,
+          "speed": 99.471,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 37.577,
+          "speed": 99.635,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 37.969,
+          "speed": 98.607,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 37.8,
+          "speed": 99.048,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 37.758,
+          "speed": 99.158,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 37.848,
+          "speed": 98.922,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "h1",
+      "sessionName": "F300 Heat 1",
+      "driver": "Jack Reeve",
+      "number": "4",
+      "best": 36.823,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 38.235,
+          "speed": 97.921,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 36.823,
+          "speed": 101.676,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 37.144,
+          "speed": 100.797,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 37.787,
+          "speed": 99.082,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 37.081,
+          "speed": 100.968,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 37.204,
+          "speed": 100.634,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 37.646,
+          "speed": 99.453,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 37.854,
+          "speed": 98.906,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 37.635,
+          "speed": 99.482,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 37.396,
+          "speed": 100.118,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 37.38,
+          "speed": 100.161,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 37.393,
+          "speed": 100.126,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 37.787,
+          "speed": 99.082,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 37.592,
+          "speed": 99.596,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "h1",
+      "sessionName": "F300 Heat 1",
+      "driver": "James Price",
+      "number": "8",
+      "best": 36.863,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 39.837,
+          "speed": 93.983,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 37.578,
+          "speed": 99.633,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 37.069,
+          "speed": 101.001,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 37.983,
+          "speed": 98.57,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 36.867,
+          "speed": 101.554,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 37.336,
+          "speed": 100.279,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 37.09,
+          "speed": 100.944,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 37.098,
+          "speed": 100.922,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 37.082,
+          "speed": 100.965,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 36.863,
+          "speed": 101.565,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 37.111,
+          "speed": 100.887,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 37.38,
+          "speed": 100.161,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 37.787,
+          "speed": 99.082,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 37.617,
+          "speed": 99.529,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "h1",
+      "sessionName": "F300 Heat 1",
+      "driver": "Jason Cooper",
+      "number": "69",
+      "best": 37.65,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 40.222,
+          "speed": 93.083,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 37.944,
+          "speed": 98.672,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 37.712,
+          "speed": 99.279,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 38.119,
+          "speed": 98.219,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 37.797,
+          "speed": 99.055,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 38.353,
+          "speed": 97.619,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 38.181,
+          "speed": 98.059,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 38.463,
+          "speed": 97.34,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 37.65,
+          "speed": 99.442,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 38.107,
+          "speed": 98.25,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 38.223,
+          "speed": 97.951,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 38.003,
+          "speed": 98.519,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 38.428,
+          "speed": 97.429,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 39.631,
+          "speed": 94.471,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "h1",
+      "sessionName": "F300 Heat 1",
+      "driver": "Jason Merritt",
+      "number": "11",
+      "best": 38.92,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 42.978,
+          "speed": 87.114,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 39.438,
+          "speed": 94.934,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 39.223,
+          "speed": 95.454,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 39.22,
+          "speed": 95.461,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 38.92,
+          "speed": 96.197,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 39.191,
+          "speed": 95.532,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "h1",
+      "sessionName": "F300 Heat 1",
+      "driver": "Lilly Brame",
+      "number": "43",
+      "best": 42.381,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 44.755,
+          "speed": 83.655,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 42.381,
+          "speed": 88.341,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "h1",
+      "sessionName": "F300 Heat 1",
+      "driver": "Nicholas Cleere",
+      "number": "44",
+      "best": 39.722,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 43.433,
+          "speed": 86.202,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 40.507,
+          "speed": 92.428,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 39.722,
+          "speed": 94.255,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 39.986,
+          "speed": 93.633,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 40.343,
+          "speed": 92.804,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 40.548,
+          "speed": 92.335,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 40.383,
+          "speed": 92.712,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 40.236,
+          "speed": 93.051,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 40.143,
+          "speed": 93.267,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 39.863,
+          "speed": 93.922,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 40.912,
+          "speed": 91.513,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 41.811,
+          "speed": 89.546,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 41.531,
+          "speed": 90.15,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "h1",
+      "sessionName": "F300 Heat 1",
+      "driver": "Nye Cortizo-White",
+      "number": "16",
+      "best": 38.311,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 42.38,
+          "speed": 88.344,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 38.311,
+          "speed": 97.727,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 38.755,
+          "speed": 96.607,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 38.427,
+          "speed": 97.431,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 38.548,
+          "speed": 97.126,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 38.464,
+          "speed": 97.338,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 38.574,
+          "speed": 97.06,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 38.728,
+          "speed": 96.674,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 38.444,
+          "speed": 97.388,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 38.513,
+          "speed": 97.214,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 38.492,
+          "speed": 97.267,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 38.865,
+          "speed": 96.333,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 38.897,
+          "speed": 96.254,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 39.075,
+          "speed": 95.816,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "h1",
+      "sessionName": "F300 Heat 1",
+      "driver": "Ryan Martin",
+      "number": "17",
+      "best": 36.909,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 40.528,
+          "speed": 92.381,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 37.502,
+          "speed": 99.835,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 37.622,
+          "speed": 99.516,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 38.099,
+          "speed": 98.27,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 37.742,
+          "speed": 99.2,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 37.82,
+          "speed": 98.995,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 37.385,
+          "speed": 100.147,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 37.249,
+          "speed": 100.513,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 37.1,
+          "speed": 100.916,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 37.28,
+          "speed": 100.429,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 37.01,
+          "speed": 101.162,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 36.909,
+          "speed": 101.439,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 37,
+          "speed": 101.189,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 37.135,
+          "speed": 100.821,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "h2",
+      "sessionName": "F300 Heat 2",
+      "driver": "Brett Knapp",
+      "number": "12",
+      "best": 39.773,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 41.905,
+          "speed": 89.345,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 39.773,
+          "speed": 94.134,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "h2",
+      "sessionName": "F300 Heat 2",
+      "driver": "Gary Woodward",
+      "number": "55",
+      "best": 38.046,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 42.711,
+          "speed": 87.659,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 38.379,
+          "speed": 97.553,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 38.218,
+          "speed": 97.964,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 38.062,
+          "speed": 98.366,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 38.524,
+          "speed": 97.186,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 38.588,
+          "speed": 97.025,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 38.267,
+          "speed": 97.839,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 38.084,
+          "speed": 98.309,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 38.608,
+          "speed": 96.975,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 38.404,
+          "speed": 97.49,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 38.52,
+          "speed": 97.196,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 38.046,
+          "speed": 98.407,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 38.195,
+          "speed": 98.023,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 38.372,
+          "speed": 97.571,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "h2",
+      "sessionName": "F300 Heat 2",
+      "driver": "Guy Hefford",
+      "number": "50",
+      "best": 37.175,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 40.152,
+          "speed": 93.246,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 37.736,
+          "speed": 99.216,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 37.431,
+          "speed": 100.024,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 37.553,
+          "speed": 99.699,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 37.505,
+          "speed": 99.827,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 37.23,
+          "speed": 100.564,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 37.181,
+          "speed": 100.697,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 37.175,
+          "speed": 100.713,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 37.889,
+          "speed": 98.815,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 38.375,
+          "speed": 97.564,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 38.103,
+          "speed": 98.26,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 37.772,
+          "speed": 99.121,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 38.281,
+          "speed": 97.803,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 38.144,
+          "speed": 98.154,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "h2",
+      "sessionName": "F300 Heat 2",
+      "driver": "Jack Reeve",
+      "number": "4",
+      "best": 37.239,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 40.832,
+          "speed": 91.693,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 37.986,
+          "speed": 98.563,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 37.239,
+          "speed": 100.54,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 37.344,
+          "speed": 100.257,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 37.693,
+          "speed": 99.329,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 37.817,
+          "speed": 99.003,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 37.776,
+          "speed": 99.111,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 38.248,
+          "speed": 97.887,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 37.829,
+          "speed": 98.972,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 37.646,
+          "speed": 99.453,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 38.104,
+          "speed": 98.257,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 38.172,
+          "speed": 98.082,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 38.019,
+          "speed": 98.477,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 38.059,
+          "speed": 98.374,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "h2",
+      "sessionName": "F300 Heat 2",
+      "driver": "James Price",
+      "number": "8",
+      "best": 36.712,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 42.92,
+          "speed": 87.232,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 36.857,
+          "speed": 101.582,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 37.622,
+          "speed": 99.516,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 36.712,
+          "speed": 101.983,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 36.997,
+          "speed": 101.197,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 37.065,
+          "speed": 101.012,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 36.782,
+          "speed": 101.789,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 37.101,
+          "speed": 100.914,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 37.323,
+          "speed": 100.313,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 37.047,
+          "speed": 101.061,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 37.117,
+          "speed": 100.87,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 37.22,
+          "speed": 100.591,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 37.261,
+          "speed": 100.48,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 37.104,
+          "speed": 100.906,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "h2",
+      "sessionName": "F300 Heat 2",
+      "driver": "Jason Cooper",
+      "number": "69",
+      "best": 37.315,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 40.681,
+          "speed": 92.033,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 38.872,
+          "speed": 96.316,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 39.099,
+          "speed": 95.757,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 38.495,
+          "speed": 97.259,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 37.762,
+          "speed": 99.147,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 37.966,
+          "speed": 98.615,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 37.569,
+          "speed": 99.657,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 37.315,
+          "speed": 100.335,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 37.829,
+          "speed": 98.972,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 37.692,
+          "speed": 99.331,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 37.746,
+          "speed": 99.189,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 37.961,
+          "speed": 98.628,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 37.808,
+          "speed": 99.027,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 38.118,
+          "speed": 98.221,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "h2",
+      "sessionName": "F300 Heat 2",
+      "driver": "Nicholas Cleere",
+      "number": "44",
+      "best": 39.974,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 44.28,
+          "speed": 84.553,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 40.635,
+          "speed": 92.137,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 41.214,
+          "speed": 90.843,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 40.462,
+          "speed": 92.531,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 40.265,
+          "speed": 92.984,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 40.139,
+          "speed": 93.276,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 39.974,
+          "speed": 93.661,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 39.983,
+          "speed": 93.64,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 40.208,
+          "speed": 93.116,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 40.642,
+          "speed": 92.121,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 42.362,
+          "speed": 88.381,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 43.763,
+          "speed": 85.552,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 42.502,
+          "speed": 88.09,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "h2",
+      "sessionName": "F300 Heat 2",
+      "driver": "Nye Cortizo-White",
+      "number": "16",
+      "best": 38.125,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 40.509,
+          "speed": 92.424,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 39.238,
+          "speed": 95.418,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 39.142,
+          "speed": 95.652,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 38.977,
+          "speed": 96.057,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 38.53,
+          "speed": 97.171,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 38.547,
+          "speed": 97.128,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 38.319,
+          "speed": 97.706,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 38.125,
+          "speed": 98.203,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 38.59,
+          "speed": 97.02,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 38.478,
+          "speed": 97.302,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 38.886,
+          "speed": 96.281,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 38.902,
+          "speed": 96.242,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 38.858,
+          "speed": 96.351,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 39.102,
+          "speed": 95.75,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "h2",
+      "sessionName": "F300 Heat 2",
+      "driver": "Ryan Martin",
+      "number": "17",
+      "best": 36.961,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 40.261,
+          "speed": 92.993,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 37.715,
+          "speed": 99.271,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 37.414,
+          "speed": 100.069,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 37.368,
+          "speed": 100.193,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 37.291,
+          "speed": 100.4,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 36.993,
+          "speed": 101.208,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 36.961,
+          "speed": 101.296,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 37.141,
+          "speed": 100.805,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 37.199,
+          "speed": 100.648,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 37.035,
+          "speed": 101.094,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 37.106,
+          "speed": 100.9,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 37.123,
+          "speed": 100.854,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 37.231,
+          "speed": 100.561,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 37.443,
+          "speed": 99.992,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "h3",
+      "sessionName": "F300 Heat 3",
+      "driver": "Gary Woodward",
+      "number": "55",
+      "best": 37.688,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 39.961,
+          "speed": 93.691,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 37.688,
+          "speed": 99.342,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 37.749,
+          "speed": 99.181,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 38.177,
+          "speed": 98.07,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 37.709,
+          "speed": 99.287,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 37.723,
+          "speed": 99.25,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 38.375,
+          "speed": 97.564,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 38.345,
+          "speed": 97.64,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 38.496,
+          "speed": 97.257,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 38.438,
+          "speed": 97.404,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 38.29,
+          "speed": 97.78,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 38.323,
+          "speed": 97.696,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 38.096,
+          "speed": 98.278,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 38.183,
+          "speed": 98.054,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "h3",
+      "sessionName": "F300 Heat 3",
+      "driver": "Guy Hefford",
+      "number": "50",
+      "best": 37.098,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 40.715,
+          "speed": 91.956,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 37.479,
+          "speed": 99.896,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 37.406,
+          "speed": 100.091,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 37.447,
+          "speed": 99.981,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 37.356,
+          "speed": 100.225,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 37.098,
+          "speed": 100.922,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 37.564,
+          "speed": 99.67,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 37.638,
+          "speed": 99.474,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 37.578,
+          "speed": 99.633,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 37.205,
+          "speed": 100.632,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 37.122,
+          "speed": 100.857,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 37.242,
+          "speed": 100.532,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 37.451,
+          "speed": 99.971,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 37.757,
+          "speed": 99.16,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "h3",
+      "sessionName": "F300 Heat 3",
+      "driver": "Jack Reeve",
+      "number": "4",
+      "best": 37.326,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 43.054,
+          "speed": 86.961,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 38.329,
+          "speed": 97.681,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 38.206,
+          "speed": 97.995,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 37.326,
+          "speed": 100.305,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 37.437,
+          "speed": 100.008,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 37.796,
+          "speed": 99.058,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 37.887,
+          "speed": 98.82,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 37.995,
+          "speed": 98.539,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 37.885,
+          "speed": 98.825,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 38.278,
+          "speed": 97.811,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 37.764,
+          "speed": 99.142,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 37.939,
+          "speed": 98.685,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 38.264,
+          "speed": 97.847,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 39.969,
+          "speed": 93.673,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "h3",
+      "sessionName": "F300 Heat 3",
+      "driver": "James Price",
+      "number": "8",
+      "best": 36.971,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 42.056,
+          "speed": 89.024,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 37.74,
+          "speed": 99.205,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 37.168,
+          "speed": 100.732,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 36.971,
+          "speed": 101.269,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 37.209,
+          "speed": 100.621,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 37.65,
+          "speed": 99.442,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 38.365,
+          "speed": 97.589,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 38.59,
+          "speed": 97.02,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 38.191,
+          "speed": 98.034,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 37.673,
+          "speed": 99.382,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 37.306,
+          "speed": 100.359,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 37.517,
+          "speed": 99.795,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 37.594,
+          "speed": 99.59,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 37.659,
+          "speed": 99.418,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "h3",
+      "sessionName": "F300 Heat 3",
+      "driver": "Jason Cooper",
+      "number": "69",
+      "best": 37.262,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 39.237,
+          "speed": 95.42,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 37.767,
+          "speed": 99.134,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 37.615,
+          "speed": 99.535,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 37.387,
+          "speed": 100.142,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 37.338,
+          "speed": 100.273,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 37.59,
+          "speed": 99.601,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 37.927,
+          "speed": 98.716,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 37.604,
+          "speed": 99.564,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 38.179,
+          "speed": 98.064,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 37.799,
+          "speed": 99.05,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 37.262,
+          "speed": 100.478,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 37.474,
+          "speed": 99.909,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 37.67,
+          "speed": 99.389,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 38.677,
+          "speed": 96.802,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "h3",
+      "sessionName": "F300 Heat 3",
+      "driver": "Lilly Brame",
+      "number": "43",
+      "best": 41.408,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 46.46,
+          "speed": 80.585,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 44.173,
+          "speed": 84.758,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 43.908,
+          "speed": 85.269,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 43.641,
+          "speed": 85.791,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 43.681,
+          "speed": 85.712,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 43.787,
+          "speed": 85.505,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 43.464,
+          "speed": 86.14,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 41.888,
+          "speed": 89.381,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 42.385,
+          "speed": 88.333,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 42.158,
+          "speed": 88.809,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 41.408,
+          "speed": 90.417,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 42.202,
+          "speed": 88.716,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 42.148,
+          "speed": 88.83,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "h3",
+      "sessionName": "F300 Heat 3",
+      "driver": "Nicholas Cleere",
+      "number": "44",
+      "best": 39.752,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 43.652,
+          "speed": 85.769,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 40.411,
+          "speed": 92.648,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 40.088,
+          "speed": 93.395,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 39.989,
+          "speed": 93.626,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 40.012,
+          "speed": 93.572,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 40.367,
+          "speed": 92.749,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 40.132,
+          "speed": 93.292,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 40.216,
+          "speed": 93.097,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 40.097,
+          "speed": 93.374,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 39.752,
+          "speed": 94.184,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 40.164,
+          "speed": 93.218,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 45.422,
+          "speed": 82.427,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 42.219,
+          "speed": 88.68,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "h3",
+      "sessionName": "F300 Heat 3",
+      "driver": "Nye Cortizo-White",
+      "number": "16",
+      "best": 38.33,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 43.109,
+          "speed": 86.85,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 38.614,
+          "speed": 96.96,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 38.625,
+          "speed": 96.932,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 38.33,
+          "speed": 97.678,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 38.438,
+          "speed": 97.404,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 38.536,
+          "speed": 97.156,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 38.564,
+          "speed": 97.085,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 39.019,
+          "speed": 95.953,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 39.167,
+          "speed": 95.591,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 40.594,
+          "speed": 92.23,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 38.682,
+          "speed": 96.789,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 38.793,
+          "speed": 96.512,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 38.792,
+          "speed": 96.515,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 39.321,
+          "speed": 95.216,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "h3",
+      "sessionName": "F300 Heat 3",
+      "driver": "Ryan Martin",
+      "number": "17",
+      "best": 37.125,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 39.065,
+          "speed": 95.84,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 37.371,
+          "speed": 100.185,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 37.357,
+          "speed": 100.222,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 37.291,
+          "speed": 100.4,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 37.276,
+          "speed": 100.44,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 37.356,
+          "speed": 100.225,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 37.125,
+          "speed": 100.848,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 37.375,
+          "speed": 100.174,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 37.516,
+          "speed": 99.797,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 37.458,
+          "speed": 99.952,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 37.132,
+          "speed": 100.829,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 37.297,
+          "speed": 100.383,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 37.391,
+          "speed": 100.131,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 37.52,
+          "speed": 99.787,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "final",
+      "sessionName": "F300 Final",
+      "driver": "Gary Woodward",
+      "number": "55",
+      "best": 37.791,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 41.018,
+          "speed": 91.277,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 38.796,
+          "speed": 96.505,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 38.576,
+          "speed": 97.055,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 37.936,
+          "speed": 98.693,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 37.791,
+          "speed": 99.071,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 38.128,
+          "speed": 98.196,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 38.176,
+          "speed": 98.072,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 38.527,
+          "speed": 97.179,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 38.278,
+          "speed": 97.811,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 38.351,
+          "speed": 97.625,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 38.181,
+          "speed": 98.059,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 38.384,
+          "speed": 97.541,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 38.635,
+          "speed": 96.907,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 38.545,
+          "speed": 97.133,
+          "inPit": false
+        },
+        {
+          "lap": 15,
+          "time": 38.862,
+          "speed": 96.341,
+          "inPit": false
+        },
+        {
+          "lap": 16,
+          "time": 38.685,
+          "speed": 96.782,
+          "inPit": false
+        },
+        {
+          "lap": 17,
+          "time": 38.767,
+          "speed": 96.577,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "final",
+      "sessionName": "F300 Final",
+      "driver": "Guy Hefford",
+      "number": "50",
+      "best": 37.103,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 39.86,
+          "speed": 93.929,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 37.71,
+          "speed": 99.284,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 37.103,
+          "speed": 100.908,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 37.204,
+          "speed": 100.634,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 37.133,
+          "speed": 100.827,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 37.139,
+          "speed": 100.81,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 37.418,
+          "speed": 100.059,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 37.389,
+          "speed": 100.136,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 37.309,
+          "speed": 100.351,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 37.355,
+          "speed": 100.228,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 37.592,
+          "speed": 99.596,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 37.805,
+          "speed": 99.035,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 37.781,
+          "speed": 99.097,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 38.72,
+          "speed": 96.694,
+          "inPit": false
+        },
+        {
+          "lap": 15,
+          "time": 38.684,
+          "speed": 96.784,
+          "inPit": false
+        },
+        {
+          "lap": 16,
+          "time": 38.637,
+          "speed": 96.902,
+          "inPit": false
+        },
+        {
+          "lap": 17,
+          "time": 38.655,
+          "speed": 96.857,
+          "inPit": false
+        },
+        {
+          "lap": 18,
+          "time": 39.002,
+          "speed": 95.995,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "final",
+      "sessionName": "F300 Final",
+      "driver": "Jack Reeve",
+      "number": "4",
+      "best": 37.134,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 40.152,
+          "speed": 93.246,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 37.534,
+          "speed": 99.75,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 37.134,
+          "speed": 100.824,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 37.223,
+          "speed": 100.583,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 37.334,
+          "speed": 100.284,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 37.423,
+          "speed": 100.045,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 37.878,
+          "speed": 98.844,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 39.292,
+          "speed": 95.287,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 37.987,
+          "speed": 98.56,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 37.825,
+          "speed": 98.982,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 37.969,
+          "speed": 98.607,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 37.986,
+          "speed": 98.563,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 38.217,
+          "speed": 97.967,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 38.213,
+          "speed": 97.977,
+          "inPit": false
+        },
+        {
+          "lap": 15,
+          "time": 38.652,
+          "speed": 96.864,
+          "inPit": false
+        },
+        {
+          "lap": 16,
+          "time": 39.014,
+          "speed": 95.966,
+          "inPit": false
+        },
+        {
+          "lap": 17,
+          "time": 38.587,
+          "speed": 97.027,
+          "inPit": false
+        },
+        {
+          "lap": 18,
+          "time": 40.059,
+          "speed": 93.462,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "final",
+      "sessionName": "F300 Final",
+      "driver": "James Price",
+      "number": "8",
+      "best": 36.985,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 39.147,
+          "speed": 95.64,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 37.38,
+          "speed": 100.161,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 37.073,
+          "speed": 100.99,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 37.309,
+          "speed": 100.351,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 36.985,
+          "speed": 101.23,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 37.105,
+          "speed": 100.903,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 37.261,
+          "speed": 100.48,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 37.301,
+          "speed": 100.373,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 37.121,
+          "speed": 100.859,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 37.022,
+          "speed": 101.129,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 37.165,
+          "speed": 100.74,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 37.194,
+          "speed": 100.661,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 37.241,
+          "speed": 100.534,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 37.71,
+          "speed": 99.284,
+          "inPit": false
+        },
+        {
+          "lap": 15,
+          "time": 37.505,
+          "speed": 99.827,
+          "inPit": false
+        },
+        {
+          "lap": 16,
+          "time": 37.482,
+          "speed": 99.888,
+          "inPit": false
+        },
+        {
+          "lap": 17,
+          "time": 37.466,
+          "speed": 99.931,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "final",
+      "sessionName": "F300 Final",
+      "driver": "Jason Cooper",
+      "number": "69",
+      "best": 37.224,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 40.221,
+          "speed": 93.086,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 37.725,
+          "speed": 99.245,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 37.282,
+          "speed": 100.424,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 37.228,
+          "speed": 100.569,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 37.224,
+          "speed": 100.58,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 37.655,
+          "speed": 99.429,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 38.085,
+          "speed": 98.306,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 38.619,
+          "speed": 96.947,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 38.165,
+          "speed": 98.1,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 38.21,
+          "speed": 97.985,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 38.271,
+          "speed": 97.829,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 38.577,
+          "speed": 97.053,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 38.787,
+          "speed": 96.527,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 38.172,
+          "speed": 98.082,
+          "inPit": false
+        },
+        {
+          "lap": 15,
+          "time": 38.613,
+          "speed": 96.962,
+          "inPit": false
+        },
+        {
+          "lap": 16,
+          "time": 38.781,
+          "speed": 96.542,
+          "inPit": false
+        },
+        {
+          "lap": 17,
+          "time": 39.797,
+          "speed": 94.077,
+          "inPit": false
+        },
+        {
+          "lap": 18,
+          "time": 41.949,
+          "speed": 89.251,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "final",
+      "sessionName": "F300 Final",
+      "driver": "Lilly Brame",
+      "number": "43",
+      "best": 41.633,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 45.021,
+          "speed": 83.161,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 43.68,
+          "speed": 85.714,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 43.03,
+          "speed": 87.009,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 43.162,
+          "speed": 86.743,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 43.183,
+          "speed": 86.701,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 42.813,
+          "speed": 87.45,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 42.85,
+          "speed": 87.375,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 51.569,
+          "speed": 72.602,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 42.907,
+          "speed": 87.258,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 42.579,
+          "speed": 87.931,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 42.328,
+          "speed": 88.452,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 42.751,
+          "speed": 87.577,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 41.921,
+          "speed": 89.311,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 41.744,
+          "speed": 89.69,
+          "inPit": false
+        },
+        {
+          "lap": 15,
+          "time": 41.633,
+          "speed": 89.929,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "final",
+      "sessionName": "F300 Final",
+      "driver": "Nicholas Cleere",
+      "number": "44",
+      "best": 42.521,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 42.521,
+          "speed": 88.051,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "final",
+      "sessionName": "F300 Final",
+      "driver": "Nye Cortizo-White",
+      "number": "16",
+      "best": 38.624,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 40.471,
+          "speed": 92.511,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 38.78,
+          "speed": 96.545,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 39.083,
+          "speed": 95.796,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 38.83,
+          "speed": 96.42,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 38.624,
+          "speed": 96.935,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 38.791,
+          "speed": 96.517,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 38.634,
+          "speed": 96.909,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 38.828,
+          "speed": 96.425,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 39.259,
+          "speed": 95.367,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 39.274,
+          "speed": 95.33,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 39.015,
+          "speed": 95.963,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 39.352,
+          "speed": 95.141,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 39.22,
+          "speed": 95.461,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 39.434,
+          "speed": 94.943,
+          "inPit": false
+        },
+        {
+          "lap": 15,
+          "time": 39.239,
+          "speed": 95.415,
+          "inPit": false
+        },
+        {
+          "lap": 16,
+          "time": 39.263,
+          "speed": 95.357,
+          "inPit": false
+        },
+        {
+          "lap": 17,
+          "time": 39.227,
+          "speed": 95.444,
+          "inPit": false
+        },
+        {
+          "lap": 18,
+          "time": 40.699,
+          "speed": 91.992,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "track": "Lydd",
+      "sessionKey": "final",
+      "sessionName": "F300 Final",
+      "driver": "Ryan Martin",
+      "number": "17",
+      "best": 36.891,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 39.492,
+          "speed": 94.804,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 37.591,
+          "speed": 99.598,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 37.205,
+          "speed": 100.632,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 37.098,
+          "speed": 100.922,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 37.186,
+          "speed": 100.683,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 36.891,
+          "speed": 101.488,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 37.024,
+          "speed": 101.124,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 37.387,
+          "speed": 100.142,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 37.21,
+          "speed": 100.618,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 36.969,
+          "speed": 101.274,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 37.094,
+          "speed": 100.933,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 37.291,
+          "speed": 100.4,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 37.202,
+          "speed": 100.64,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 37.652,
+          "speed": 99.437,
+          "inPit": false
+        },
+        {
+          "lap": 15,
+          "time": 37.388,
+          "speed": 100.139,
+          "inPit": false
+        },
+        {
+          "lap": 16,
+          "time": 37.461,
+          "speed": 99.944,
+          "inPit": false
+        },
+        {
+          "lap": 17,
+          "time": 37.459,
+          "speed": 99.949,
+          "inPit": false
+        },
+        {
+          "lap": 18,
+          "time": 38.011,
+          "speed": 98.498,
+          "inPit": false
+        }
+      ]
+    },
     {
       "round": 4,
       "track": "Lydd",
