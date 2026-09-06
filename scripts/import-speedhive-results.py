@@ -312,21 +312,93 @@ def competitor_id(row: dict[str, Any]) -> str:
     return str(value or "").strip()
 
 
-def session_name(session: dict[str, Any]) -> str:
+
+def group_label(group: dict[str, Any]) -> str:
     value = lookup_any(
-        session,
+        group,
         (
-            "sessionName",
-            "session_name",
+            "name",
+            "groupName",
+            "group_name",
             "displayName",
             "display_name",
-            "name",
-            "description",
             "title",
+            "description",
+            "classification",
+            "className",
+            "class_name",
         ),
-        max_depth=2,
+        max_depth=1,
     )
     return str(value or "").strip()
+
+
+def grouped_sessions_with_context(event: dict[str, Any]) -> list[dict[str, Any]]:
+    """
+    Preserve Speedhive parent-group labels.
+
+    Speedhive often has structures like:
+        F300
+          -> Heat 1
+          -> Heat 2
+          -> Heat 3
+          -> Final
+
+    The wrapper's normal get_sessions() deliberately flattens those sessions,
+    which can discard the fact that a generic "Heat 1" belongs to F300.
+    """
+    found: list[dict[str, Any]] = []
+    seen: set[str] = set()
+
+    def visit(node: Any, parents: list[str]) -> None:
+        if not isinstance(node, dict):
+            return
+
+        label = group_label(node)
+        next_parents = parents + ([label] if label else [])
+
+        for session in node.get("sessions") or []:
+            if not isinstance(session, dict):
+                continue
+
+            sid = (
+                session.get("id")
+                or lookup_any(session, ("sessionId", "session_id", "id"), max_depth=1)
+            )
+            sid_key = str(sid or "")
+
+            if sid_key and sid_key in seen:
+                continue
+            if sid_key:
+                seen.add(sid_key)
+
+            item = dict(session)
+            item["_f300_parent_context"] = " · ".join(next_parents)
+            found.append(item)
+
+        for key in ("groups", "subGroups"):
+            for child in node.get(key) or []:
+                visit(child, next_parents)
+
+    visit(event, [])
+    return found
+
+
+def session_name(session: dict[str, Any]) -> str:
+    for key in (
+        "sessionName",
+        "session_name",
+        "displayName",
+        "display_name",
+        "name",
+        "description",
+        "title",
+    ):
+        value = session.get(key)
+        if value not in (None, ""):
+            return str(value).strip()
+
+    return ""
 
 
 def infer_session_key(name: str) -> str | None:
@@ -335,7 +407,14 @@ def infer_session_key(name: str) -> str | None:
     if "pre-final" in lowered or "prefinal" in lowered:
         return None
 
-    for key, patterns in SESSION_PATTERNS.items():
+    aliases = {
+        "h1": (r"\bheat\s*(?:1|one)\b", r"\bh1\b", r"\brace\s*(?:1|one)\b"),
+        "h2": (r"\bheat\s*(?:2|two)\b", r"\bh2\b", r"\brace\s*(?:2|two)\b"),
+        "h3": (r"\bheat\s*(?:3|three)\b", r"\bh3\b", r"\brace\s*(?:3|three)\b"),
+        "final": (r"\bfinal\b",),
+    }
+
+    for key, patterns in aliases.items():
         for pattern in patterns:
             if re.search(pattern, lowered, flags=re.I):
                 return key
@@ -392,12 +471,14 @@ def is_f300_session(
     by_number: dict[str, str],
     by_name: dict[str, str],
 ) -> bool:
-    combined = f"{text_blob(session)} {text_blob(rows[:5])}"
+    parent_context = str(session.get("_f300_parent_context") or "")
+    combined = f"{parent_context} {text_blob(session)} {text_blob(rows[:8])}"
+
     if re.search(r"\bf\s*300\b", combined, flags=re.I):
         return True
 
-    # Fallback for Speedhive structures where "F300" is only on a parent
-    # group that the flat session endpoint does not return.
+    # Fallback: if several competitors exactly match our known F300 roster,
+    # it is almost certainly the F300 class even if Speedhive omitted the label.
     exact_matches = sum(
         1 for row in rows
         if row_matches_roster(row, by_number, by_name)
@@ -503,9 +584,14 @@ def build_session_payload(
             }
         )
 
+    context = str(session.get("_f300_parent_context") or "").strip()
+    display_name = session_name(session) or f"Session {session_id}"
+    if context and context.lower() not in display_name.lower():
+        display_name = f"{context} · {display_name}"
+
     return {
         "key": key,
-        "name": session_name(session) or f"Session {session_id}",
+        "name": display_name,
         "sessionId": session_id,
         "results": results,
     }
@@ -576,10 +662,15 @@ def main() -> int:
     else:
         print("Warning: F300 roster could not be loaded; relying on F300 text labels only.")
 
-    sessions = client.get_sessions(event_id)
+    sessions = grouped_sessions_with_context(event)
+
+    if not sessions:
+        sessions = client.get_sessions(event_id)
+
     print(f"Speedhive sessions found: {len(sessions)}")
 
     recognized: dict[str, dict[str, Any]] = {}
+    diagnostics: list[dict[str, Any]] = []
 
     for session in sessions:
         sid = session.get("id") or lookup_any(session, ("id", "sessionId", "session_id"))
@@ -587,12 +678,25 @@ def main() -> int:
             continue
 
         name = session_name(session) or f"Session {sid}"
-        key = infer_session_key(name)
+        context = str(session.get("_f300_parent_context") or "").strip()
+        key = infer_session_key(f"{context} {name}")
+
+        rows = client.get_results(int(sid))
+
+        diagnostics.append(
+            {
+                "id": sid,
+                "context": context,
+                "name": name,
+                "key": key,
+                "result_count": len(rows),
+                "looks_f300": is_f300_session(session, rows, by_number, by_name),
+                "sample_keys": sorted(rows[0].keys()) if rows and isinstance(rows[0], dict) else [],
+            }
+        )
 
         if not key:
             continue
-
-        rows = client.get_results(int(sid))
 
         if not is_f300_session(session, rows, by_number, by_name):
             continue
@@ -610,11 +714,23 @@ def main() -> int:
     print("\nRecognized F300 sessions:")
     if not session_payloads:
         print("  NONE")
+        print("\nSpeedhive session diagnostic:")
+        for item in diagnostics:
+            print(
+                f"  id={item['id']} | "
+                f"context={item['context'] or '-'} | "
+                f"name={item['name']} | "
+                f"mapped={item['key'] or '-'} | "
+                f"results={item['result_count']} | "
+                f"looks_f300={item['looks_f300']} | "
+                f"sample_keys={','.join(item['sample_keys'][:20]) or '-'}"
+            )
+
         print(
-            "\nNothing will be written. The event may not have published archived "
-            "F300 results yet, or its session names need a small parser adjustment."
+            "\nNothing was written. This diagnostic run succeeded; "
+            "the output above tells us exactly how Speedhive labels this event."
         )
-        return 2
+        return 0
 
     for session in session_payloads:
         print(
