@@ -1,9 +1,19 @@
 window.F300_DATA = {
-  "updated": "6 Sep 2026 12:32",
+  "updated": "6 Sep 2026 12:39",
   "apiUrl": "https://script.google.com/macros/s/AKfycby4RgoqZdYFLcWkstoz9y5ZjsMoGt-u3T-IgBJ36AfIUFXp55fhA82TRKsa-_c3B-0o/exec",
   "standings": [
     {
       "position": 1,
+      "driver": "James Price",
+      "number": 8,
+      "rounds": 4,
+      "wins": 1,
+      "podiums": 1,
+      "bestFinal": 1,
+      "points": 460
+    },
+    {
+      "position": 2,
       "driver": "Gary Woodward",
       "number": 55,
       "rounds": 3,
@@ -11,16 +21,6 @@ window.F300_DATA = {
       "podiums": 1,
       "bestFinal": 2,
       "points": 442
-    },
-    {
-      "position": 2,
-      "driver": "James Price",
-      "number": 8,
-      "rounds": 4,
-      "wins": 1,
-      "podiums": 1,
-      "bestFinal": 1,
-      "points": 427
     },
     {
       "position": 3,
@@ -40,7 +40,7 @@ window.F300_DATA = {
       "wins": 0,
       "podiums": 1,
       "bestFinal": 3,
-      "points": 305
+      "points": 341
     },
     {
       "position": 5,
@@ -50,7 +50,7 @@ window.F300_DATA = {
       "wins": 0,
       "podiums": 1,
       "bestFinal": 3,
-      "points": 292
+      "points": 322
     },
     {
       "position": 6,
@@ -80,7 +80,7 @@ window.F300_DATA = {
       "wins": 0,
       "podiums": 0,
       "bestFinal": 4,
-      "points": 149
+      "points": 180
     },
     {
       "position": 9,
@@ -714,15 +714,15 @@ window.F300_DATA = {
       "round": 4,
       "track": "Lydd",
       "driver": "Jason Cooper",
-      "h1Result": "-",
-      "h1Points": 0,
+      "h1Result": "3",
+      "h1Points": 31,
       "h2Result": "-",
       "h2Points": 0,
       "h3Result": "-",
       "h3Points": 0,
       "finalResult": "-",
       "finalPoints": 0,
-      "weekendTotal": 0,
+      "weekendTotal": 31,
       "h1Lap": "-",
       "h2Lap": "-",
       "h3Lap": "-",
@@ -734,35 +734,35 @@ window.F300_DATA = {
       "round": 4,
       "track": "Lydd",
       "driver": "Jack Reeve",
-      "h1Result": "-",
-      "h1Points": 0,
+      "h1Result": "1",
+      "h1Points": 36,
       "h2Result": "-",
       "h2Points": 0,
       "h3Result": "-",
       "h3Points": 0,
       "finalResult": "-",
       "finalPoints": 0,
-      "weekendTotal": 0,
-      "h1Lap": "-",
+      "weekendTotal": 36,
+      "h1Lap": "36.929",
       "h2Lap": "-",
       "h3Lap": "-",
       "finalLap": "-",
-      "weekendBest": "-",
+      "weekendBest": "36.929",
       "notes": ""
     },
     {
       "round": 4,
       "track": "Lydd",
       "driver": "Nye Cortizo-White",
-      "h1Result": "-",
-      "h1Points": 0,
+      "h1Result": "4",
+      "h1Points": 30,
       "h2Result": "-",
       "h2Points": 0,
       "h3Result": "-",
       "h3Points": 0,
       "finalResult": "-",
       "finalPoints": 0,
-      "weekendTotal": 0,
+      "weekendTotal": 30,
       "h1Lap": "-",
       "h2Lap": "-",
       "h3Lap": "-",
@@ -774,20 +774,20 @@ window.F300_DATA = {
       "round": 4,
       "track": "Lydd",
       "driver": "James Price",
-      "h1Result": "-",
-      "h1Points": 0,
+      "h1Result": "2",
+      "h1Points": 33,
       "h2Result": "-",
       "h2Points": 0,
       "h3Result": "-",
       "h3Points": 0,
       "finalResult": "-",
       "finalPoints": 0,
-      "weekendTotal": 0,
-      "h1Lap": "-",
+      "weekendTotal": 33,
+      "h1Lap": "37.247",
       "h2Lap": "-",
       "h3Lap": "-",
       "finalLap": "-",
-      "weekendBest": "-",
+      "weekendBest": "37.247",
       "notes": ""
     }
   ],
