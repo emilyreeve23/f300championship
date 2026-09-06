@@ -30,6 +30,8 @@ from urllib.parse import parse_qs, urlparse
 import requests
 from speedhive.wrapper import SpeedhiveClient
 
+BOT_VERSION = "search-discovery-v4"
+
 
 SESSION_PATTERNS = {
     "h1": [
@@ -793,7 +795,7 @@ def discover_event_id_from_search(
     search_term = search_term_from_url(search_url)
     date_variants = speedhive_date_variants(date_key)
 
-    print("\nSpeedhive public-search discovery:")
+    print("\nSpeedhive public-search discovery:", flush=True)
     print(f"  Search URL: {search_url}")
     print(f"  F300 calendar track: {track}")
     print(f"  F300 calendar date: {date_key}")
@@ -1244,7 +1246,13 @@ def pick_event_id(
 
 
 def main() -> int:
+    print(f"F300 Speedhive bot version: {BOT_VERSION}", flush=True)
     args = parse_args()
+
+    print(
+        f"Requested event/search: {args.event} | F300 round: {args.round} | dry_run={args.dry_run}",
+        flush=True,
+    )
 
     if args.round < 1:
         raise RuntimeError("Round must be 1 or greater.")
