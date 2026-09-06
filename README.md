@@ -25,7 +25,7 @@ Live site: **f300championship.co.uk**
 - Weekend total and weekend-best lap
 - Fastest laps highlighted
 - Driver filter
-- Results ordered by Final finishing position
+- Results ordered live by current race-weekend points as each Heat/Final is published
 - Stylised track artwork for championship venues
 
 ### Race calendar
@@ -70,6 +70,10 @@ Requests are written to the championship admin Google Sheet rather than opening 
 - Offline app shell and cached championship data
 - Short app switches keep the current screen
 - Longer inactive sessions return to Standings and refresh the app experience
+
+### Live data refresh
+
+While the app is open, it checks the published `data.js` approximately every 15 seconds. When the Google Sheet → GitHub → Cloudflare pipeline publishes a newer dataset, Standings, Results, Calendar and public profile data refresh automatically without requiring the user to close or restart the PWA.
 
 ## Data and backend
 
@@ -157,6 +161,7 @@ Current v1.1 work includes:
 - In-app Contact F300 support form
 - Offline/PWA installation support
 - Automatic Google Sheet → GitHub → Cloudflare championship-data updates
+- In-app live refresh when newly published championship data becomes available
 
 ---
 

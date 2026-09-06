@@ -37,12 +37,16 @@ function setupStartupSplash() {
   showStartupSplash(1450);
 }
 
-const data = window.F300_DATA;
-const standings = data.standings || [];
-const raceResults = data.raceResults || [];
-const driverProfiles = data.profiles || [];
-const submissionWindow = data.submissionWindow || { open: false };
-const apiUrl = data.apiUrl || "";
+let data = window.F300_DATA || {};
+let standings = data.standings || [];
+let raceResults = data.raceResults || [];
+let driverProfiles = data.profiles || [];
+let submissionWindow = data.submissionWindow || { open: false };
+let apiUrl = data.apiUrl || "";
+
+const PUBLIC_DATA_REFRESH_MS = 15000;
+let publicDataSignature = JSON.stringify(data);
+let publicDataRefreshBusy = false;
 let hubAuth = { driver: "", authenticated: false, registered: null, resetAllowed: false, token: "" };
 const $ = (sel) => document.querySelector(sel);
 
@@ -837,6 +841,35 @@ function finalSortValue(value) {
   return 1002;
 }
 
+function currentRaceOrder(a, b) {
+  const aPoints = Number(a.weekendTotal) || 0;
+  const bPoints = Number(b.weekendTotal) || 0;
+
+  if (bPoints !== aPoints) return bPoints - aPoints;
+
+  // For equal points, use the latest completed session first,
+  // then work backwards through the race day.
+  const sessions = [
+    ["finalPoints", "finalResult"],
+    ["h3Points", "h3Result"],
+    ["h2Points", "h2Result"],
+    ["h1Points", "h1Result"]
+  ];
+
+  for (const [pointsKey, resultKey] of sessions) {
+    const ap = Number(a[pointsKey]) || 0;
+    const bp = Number(b[pointsKey]) || 0;
+
+    if (bp !== ap) return bp - ap;
+
+    const ar = finalSortValue(a[resultKey]);
+    const br = finalSortValue(b[resultKey]);
+    if (ar !== br) return ar - br;
+  }
+
+  return String(a.driver || "").localeCompare(String(b.driver || ""));
+}
+
 /*
   Small decorative circuit outlines for the Results header.
   These are stylised illustrations rather than official circuit maps.
@@ -906,7 +939,7 @@ function renderResults(round) {
   }
 
   const fastest = fastestLapsForRound(allRoundRows);
-  const sortedAll = [...allRoundRows].sort((a,b) => finalSortValue(a.finalResult)-finalSortValue(b.finalResult));
+  const sortedAll = [...allRoundRows].sort(currentRaceOrder);
   let rows = selectedDriver ? sortedAll.filter(r => r.driver === selectedDriver) : sortedAll;
 
   const visibleText = selectedDriver ? `${rows.length ? 1 : 0} selected driver` : `${rows.length} drivers`;
@@ -915,7 +948,7 @@ function renderResults(round) {
   $("#round-summary").innerHTML = `
     <div class="round-summary-copy">
       <strong>${escapeHtml(roundTrack)}${weekendDate ? ` <span class="round-weekend-date">· ${escapeHtml(weekendDate)}</span>` : ""}</strong>
-      <span>${visibleText} · ordered by Final result</span>
+      <span>${visibleText} · ordered by current race points</span>
     </div>
     <div class="round-track-art">${trackIllustration(roundTrack)}</div>
     <div class="summary-round">ROUND ${round}</div>`;
@@ -957,10 +990,10 @@ function setupDriverFilter() {
   select.innerHTML = `<option value="">All drivers</option>` + standings.map(d => `<option value="${escapeHtml(d.driver)}">#${d.number} · ${escapeHtml(d.driver)}</option>`).join("");
   if (!standings.some(d => d.driver === selectedDriver)) selectedDriver = "";
   select.value = selectedDriver;
-  select.addEventListener("change", () => {
+  select.onchange = () => {
     selectedDriver = select.value;
     if (selectedRound !== null) renderResults(selectedRound);
-  });
+  };
 }
 
 function setupResults() {
@@ -977,8 +1010,105 @@ function setupResults() {
 
   document.querySelectorAll(".round-chip").forEach(btn => btn.addEventListener("click", () => choose(Number(btn.dataset.round))));
 
-  const initial = rounds.length ? rounds[0].round : null;
+  const currentStillExists = rounds.some(r => r.round === selectedRound);
+  const initial = currentStillExists
+    ? selectedRound
+    : (rounds.length ? rounds[0].round : null);
+
   if (initial !== null) choose(initial);
+}
+
+function parsePublicDataScript(text) {
+  const equalsAt = text.indexOf("=");
+  if (equalsAt === -1) throw new Error("Invalid data.js response.");
+
+  const jsonText = text
+    .slice(equalsAt + 1)
+    .trim()
+    .replace(/;\s*$/, "");
+
+  return JSON.parse(jsonText);
+}
+
+function applyFreshPublicData(nextData) {
+  const activeHubDriver =
+    (hubAuth.authenticated && hubAuth.driver) ||
+    $("#hub-driver-select")?.value ||
+    "";
+
+  data = nextData || {};
+  standings = data.standings || [];
+  raceResults = data.raceResults || [];
+  driverProfiles = data.profiles || [];
+  submissionWindow = data.submissionWindow || { open: false };
+  apiUrl = data.apiUrl || "";
+
+  $("#driver-count").textContent = standings.length;
+  $("#completed-count").textContent = getRounds().length;
+
+  renderStandings();
+  renderCalendar();
+  setupDriverFilter();
+  setupResults();
+
+  // Refresh the current driver/profile display without changing login state.
+  if (activeHubDriver) {
+    const hubSelect = $("#hub-driver-select");
+
+    if (hubSelect && standings.some(d => d.driver === activeHubDriver)) {
+      hubSelect.innerHTML =
+        `<option value="">Choose your driver</option>` +
+        standings
+          .map(d => `<option value="${escapeHtml(d.driver)}">#${d.number} · ${escapeHtml(d.driver)}</option>`)
+          .join("");
+
+      hubSelect.value = activeHubDriver;
+      renderHubProfile(activeHubDriver);
+      renderLocalGearing(activeHubDriver);
+      updateHubDriverPicker();
+      updateHubControls();
+    }
+
+    const windowTarget = $("#submission-window");
+    if (windowTarget) windowTarget.innerHTML = formatSubmissionWindow();
+  }
+}
+
+async function refreshPublicData() {
+  if (publicDataRefreshBusy || !navigator.onLine) return;
+
+  publicDataRefreshBusy = true;
+
+  try {
+    const url = new URL("./data.js", window.location.href);
+    url.searchParams.set("fresh", String(Date.now()));
+
+    const response = await fetch(url.href, {
+      cache: "no-store",
+      headers: { "Cache-Control": "no-cache" }
+    });
+
+    if (!response.ok) return;
+
+    const nextData = parsePublicDataScript(await response.text());
+    const nextSignature = JSON.stringify(nextData);
+
+    if (nextSignature === publicDataSignature) return;
+
+    publicDataSignature = nextSignature;
+    applyFreshPublicData(nextData);
+  } catch (error) {
+    // Stay quiet if offline or a deployment is between versions.
+    console.debug("F300 data refresh skipped:", error);
+  } finally {
+    publicDataRefreshBusy = false;
+  }
+}
+
+function startPublicDataRefresh() {
+  window.setInterval(() => {
+    if (!document.hidden) refreshPublicData();
+  }, PUBLIC_DATA_REFRESH_MS);
 }
 
 function navigateTo(target) {
@@ -1197,6 +1327,11 @@ document.addEventListener("visibilitychange", () => {
   }
 
   handleAppResume();
+  refreshPublicData();
 });
+
+window.addEventListener("online", () => refreshPublicData());
+
+startPublicDataRefresh();
 
 if ("serviceWorker" in navigator) window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {}));
