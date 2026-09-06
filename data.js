@@ -1,6 +1,6 @@
 window.F300_DATA = {
-  "updated": "6 Sep 2026 18:18",
-  "apiUrl": "https://script.google.com/macros/s/AKfycby4RgoqZdYFLcWkstoz9y5ZjsMoGt-u3T-IgBJ36AfIUFXp55fhA82TRKsa-_c3B-0o/exec",
+  "updated": "6 Sep 2026 18:28",
+  "apiUrl": "https://script.google.com/macros/s/AKfycbwqNnwg6FTL6GKOw0774fQXbr4ASWXsEwhZkW8eCUmECfxS72pnhf5Tq9SwXCiFuHv2/exec",
   "standings": [
     {
       "position": 1,
@@ -789,6 +789,1432 @@ window.F300_DATA = {
       "finalLap": "37.333",
       "weekendBest": "37.198",
       "notes": ""
+    }
+  ],
+  "lapTimes": [
+    {
+      "round": 4,
+      "track": "Lydd",
+      "sessionKey": "h1",
+      "sessionName": "F300 & Rotax Senior & 177 Timed Qualifying",
+      "driver": "Jack Reeve",
+      "number": "4",
+      "best": 36.929,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 37.564,
+          "speed": 99.67,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 36.929,
+          "speed": 101.384,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 37.365,
+          "speed": 100.201,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 41.249,
+          "speed": 90.766,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 37.195,
+          "speed": 100.659,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 37.3,
+          "speed": 100.375,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 4,
+      "track": "Lydd",
+      "sessionKey": "h1",
+      "sessionName": "F300 & Rotax Senior & 177 Timed Qualifying",
+      "driver": "James Price",
+      "number": "8",
+      "best": 37.247,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 37.616,
+          "speed": 99.532,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 37.377,
+          "speed": 100.169,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 37.247,
+          "speed": 100.518,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 37.4,
+          "speed": 100.107,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 37.316,
+          "speed": 100.332,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 37.769,
+          "speed": 99.129,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 37.512,
+          "speed": 99.808,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 37.615,
+          "speed": 99.535,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 4,
+      "track": "Lydd",
+      "sessionKey": "h1",
+      "sessionName": "F300 & Rotax Senior & 177 Timed Qualifying",
+      "driver": "Jason Cooper",
+      "number": "69",
+      "best": 37.783,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 38.066,
+          "speed": 98.355,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 38.146,
+          "speed": 98.149,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 37.783,
+          "speed": 99.092,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 37.839,
+          "speed": 98.946,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 38.186,
+          "speed": 98.046,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 38.124,
+          "speed": 98.206,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 40.684,
+          "speed": 92.026,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 4,
+      "track": "Lydd",
+      "sessionKey": "h1",
+      "sessionName": "F300 & Rotax Senior & 177 Timed Qualifying",
+      "driver": "Nye Cortizo-White",
+      "number": "16",
+      "best": 38.515,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 39.101,
+          "speed": 95.752,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 38.667,
+          "speed": 96.827,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 38.532,
+          "speed": 97.166,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 38.525,
+          "speed": 97.184,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 38.515,
+          "speed": 97.209,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 38.778,
+          "speed": 96.55,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 38.631,
+          "speed": 96.917,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 4,
+      "track": "Lydd",
+      "sessionKey": "h2",
+      "sessionName": "F300 & Rotax Senior & 177 Heat",
+      "driver": "Jack Reeve",
+      "number": "4",
+      "best": 37.227,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 38.729,
+          "speed": 96.672,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 37.505,
+          "speed": 99.827,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 38.38,
+          "speed": 97.551,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 38.224,
+          "speed": 97.949,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 37.447,
+          "speed": 99.981,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 37.545,
+          "speed": 99.72,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 37.227,
+          "speed": 100.572,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 37.383,
+          "speed": 100.152,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 37.597,
+          "speed": 99.582,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 37.6,
+          "speed": 99.574,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 38.155,
+          "speed": 98.126,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 38.045,
+          "speed": 98.41,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 37.956,
+          "speed": 98.641,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 38.923,
+          "speed": 96.19,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 4,
+      "track": "Lydd",
+      "sessionKey": "h2",
+      "sessionName": "F300 & Rotax Senior & 177 Heat",
+      "driver": "James Price",
+      "number": "8",
+      "best": 37.198,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 38.963,
+          "speed": 96.091,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 37.198,
+          "speed": 100.651,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 37.437,
+          "speed": 100.008,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 37.435,
+          "speed": 100.013,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 37.918,
+          "speed": 98.739,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 37.759,
+          "speed": 99.155,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 37.702,
+          "speed": 99.305,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 37.82,
+          "speed": 98.995,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 37.569,
+          "speed": 99.657,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 37.626,
+          "speed": 99.506,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 37.509,
+          "speed": 99.816,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 37.528,
+          "speed": 99.766,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 38.123,
+          "speed": 98.208,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 38.148,
+          "speed": 98.144,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 4,
+      "track": "Lydd",
+      "sessionKey": "h2",
+      "sessionName": "F300 & Rotax Senior & 177 Heat",
+      "driver": "Jason Cooper",
+      "number": "69",
+      "best": 37.722,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 39.229,
+          "speed": 95.44,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 37.915,
+          "speed": 98.747,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 37.849,
+          "speed": 98.919,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 38.118,
+          "speed": 98.221,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 38.442,
+          "speed": 97.393,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 37.722,
+          "speed": 99.252,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 37.96,
+          "speed": 98.63,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 38.716,
+          "speed": 96.704,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 40.094,
+          "speed": 93.381,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 39.024,
+          "speed": 95.941,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 39.704,
+          "speed": 94.298,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 38.988,
+          "speed": 96.03,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 38.498,
+          "speed": 97.252,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 39.613,
+          "speed": 94.514,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 4,
+      "track": "Lydd",
+      "sessionKey": "h2",
+      "sessionName": "F300 & Rotax Senior & 177 Heat",
+      "driver": "Nye Cortizo-White",
+      "number": "16",
+      "best": 38.408,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 39.816,
+          "speed": 94.033,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 38.88,
+          "speed": 96.296,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 38.735,
+          "speed": 96.657,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 38.604,
+          "speed": 96.985,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 38.408,
+          "speed": 97.48,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 38.427,
+          "speed": 97.431,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 38.71,
+          "speed": 96.719,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 38.562,
+          "speed": 97.09,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 38.794,
+          "speed": 96.51,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 38.519,
+          "speed": 97.199,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 38.666,
+          "speed": 96.829,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 38.522,
+          "speed": 97.191,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 38.84,
+          "speed": 96.395,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 38.947,
+          "speed": 96.131,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 4,
+      "track": "Lydd",
+      "sessionKey": "h3",
+      "sessionName": "F300 & Rotax Senior & 177 Pre-Final",
+      "driver": "Jack Reeve",
+      "number": "4",
+      "best": 37.382,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 39.406,
+          "speed": 95.011,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 37.849,
+          "speed": 98.919,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 37.881,
+          "speed": 98.836,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 37.733,
+          "speed": 99.223,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 37.692,
+          "speed": 99.331,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 37.382,
+          "speed": 100.155,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 37.905,
+          "speed": 98.773,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 37.688,
+          "speed": 99.342,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 37.58,
+          "speed": 99.627,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 38.096,
+          "speed": 98.278,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 38.059,
+          "speed": 98.374,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 37.567,
+          "speed": 99.662,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 38.08,
+          "speed": 98.319,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 37.982,
+          "speed": 98.573,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 4,
+      "track": "Lydd",
+      "sessionKey": "h3",
+      "sessionName": "F300 & Rotax Senior & 177 Pre-Final",
+      "driver": "James Price",
+      "number": "8",
+      "best": 37.61,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 39.115,
+          "speed": 95.718,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 37.792,
+          "speed": 99.069,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 37.672,
+          "speed": 99.384,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 37.742,
+          "speed": 99.2,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 37.648,
+          "speed": 99.448,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 37.852,
+          "speed": 98.912,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 37.797,
+          "speed": 99.055,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 37.807,
+          "speed": 99.029,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 37.61,
+          "speed": 99.548,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 38.14,
+          "speed": 98.165,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 37.789,
+          "speed": 99.076,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 37.745,
+          "speed": 99.192,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 37.719,
+          "speed": 99.26,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 38.19,
+          "speed": 98.036,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 4,
+      "track": "Lydd",
+      "sessionKey": "h3",
+      "sessionName": "F300 & Rotax Senior & 177 Pre-Final",
+      "driver": "Jason Cooper",
+      "number": "69",
+      "best": 37.984,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 39.692,
+          "speed": 94.326,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 38.12,
+          "speed": 98.216,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 38.159,
+          "speed": 98.116,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 37.984,
+          "speed": 98.568,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 38.027,
+          "speed": 98.456,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 38.025,
+          "speed": 98.462,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 38.895,
+          "speed": 96.259,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 39.285,
+          "speed": 95.304,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 38.715,
+          "speed": 96.707,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 38.827,
+          "speed": 96.428,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 39.201,
+          "speed": 95.508,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 40.503,
+          "speed": 92.438,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 39.375,
+          "speed": 95.086,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 42.849,
+          "speed": 87.377,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 4,
+      "track": "Lydd",
+      "sessionKey": "h3",
+      "sessionName": "F300 & Rotax Senior & 177 Pre-Final",
+      "driver": "Nye Cortizo-White",
+      "number": "16",
+      "best": 38.624,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 40.588,
+          "speed": 92.244,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 39.091,
+          "speed": 95.777,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 38.624,
+          "speed": 96.935,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 39.153,
+          "speed": 95.625,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 39.031,
+          "speed": 95.924,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 38.708,
+          "speed": 96.724,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 38.925,
+          "speed": 96.185,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 38.909,
+          "speed": 96.225,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 38.963,
+          "speed": 96.091,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 38.928,
+          "speed": 96.178,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 39.22,
+          "speed": 95.461,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 39.669,
+          "speed": 94.381,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 39.356,
+          "speed": 95.132,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 39.446,
+          "speed": 94.915,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 4,
+      "track": "Lydd",
+      "sessionKey": "final",
+      "sessionName": "F300 & Rotax Senior & 177 Final",
+      "driver": "Jack Reeve",
+      "number": "4",
+      "best": 37.367,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 39.184,
+          "speed": 95.549,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 37.574,
+          "speed": 99.643,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 37.677,
+          "speed": 99.371,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 37.367,
+          "speed": 100.195,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 37.422,
+          "speed": 100.048,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 37.541,
+          "speed": 99.731,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 37.577,
+          "speed": 99.635,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 37.674,
+          "speed": 99.379,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 37.728,
+          "speed": 99.237,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 37.961,
+          "speed": 98.628,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 38.371,
+          "speed": 97.574,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 39.39,
+          "speed": 95.05,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 40.521,
+          "speed": 92.397,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 40.67,
+          "speed": 92.058,
+          "inPit": false
+        },
+        {
+          "lap": 15,
+          "time": 40.432,
+          "speed": 92.6,
+          "inPit": false
+        },
+        {
+          "lap": 16,
+          "time": 40.764,
+          "speed": 91.846,
+          "inPit": false
+        },
+        {
+          "lap": 17,
+          "time": 41.885,
+          "speed": 89.388,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 4,
+      "track": "Lydd",
+      "sessionKey": "final",
+      "sessionName": "F300 & Rotax Senior & 177 Final",
+      "driver": "James Price",
+      "number": "8",
+      "best": 37.333,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 38.959,
+          "speed": 96.101,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 37.646,
+          "speed": 99.453,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 38.044,
+          "speed": 98.412,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 37.627,
+          "speed": 99.503,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 37.343,
+          "speed": 100.26,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 37.333,
+          "speed": 100.287,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 37.584,
+          "speed": 99.617,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 37.686,
+          "speed": 99.347,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 37.753,
+          "speed": 99.171,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 38.074,
+          "speed": 98.335,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 37.794,
+          "speed": 99.063,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 37.973,
+          "speed": 98.596,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 37.994,
+          "speed": 98.542,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 37.883,
+          "speed": 98.831,
+          "inPit": false
+        },
+        {
+          "lap": 15,
+          "time": 38.268,
+          "speed": 97.836,
+          "inPit": false
+        },
+        {
+          "lap": 16,
+          "time": 38.29,
+          "speed": 97.78,
+          "inPit": false
+        },
+        {
+          "lap": 17,
+          "time": 38.372,
+          "speed": 97.571,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 4,
+      "track": "Lydd",
+      "sessionKey": "final",
+      "sessionName": "F300 & Rotax Senior & 177 Final",
+      "driver": "Jason Cooper",
+      "number": "69",
+      "best": 38.115,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 39.955,
+          "speed": 93.705,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 38.715,
+          "speed": 96.707,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 38.728,
+          "speed": 96.674,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 38.738,
+          "speed": 96.649,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 38.829,
+          "speed": 96.423,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 38.939,
+          "speed": 96.15,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 39.546,
+          "speed": 94.675,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 39.648,
+          "speed": 94.431,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 38.957,
+          "speed": 96.106,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 40.008,
+          "speed": 93.581,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 39.2,
+          "speed": 95.51,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 38.983,
+          "speed": 96.042,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 38.858,
+          "speed": 96.351,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 38.138,
+          "speed": 98.17,
+          "inPit": false
+        },
+        {
+          "lap": 15,
+          "time": 38.115,
+          "speed": 98.229,
+          "inPit": false
+        },
+        {
+          "lap": 16,
+          "time": 38.292,
+          "speed": 97.775,
+          "inPit": false
+        },
+        {
+          "lap": 17,
+          "time": 38.168,
+          "speed": 98.093,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 4,
+      "track": "Lydd",
+      "sessionKey": "final",
+      "sessionName": "F300 & Rotax Senior & 177 Final",
+      "driver": "Nye Cortizo-White",
+      "number": "16",
+      "best": 39.108,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 40.753,
+          "speed": 91.871,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 39.552,
+          "speed": 94.66,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 39.375,
+          "speed": 95.086,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 39.73,
+          "speed": 94.236,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 39.636,
+          "speed": 94.46,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 39.584,
+          "speed": 94.584,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 39.617,
+          "speed": 94.505,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 39.108,
+          "speed": 95.735,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 40.417,
+          "speed": 92.634,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 39.173,
+          "speed": 95.576,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 39.272,
+          "speed": 95.335,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 40.602,
+          "speed": 92.212,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 39.761,
+          "speed": 94.163,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 39.886,
+          "speed": 93.868,
+          "inPit": false
+        },
+        {
+          "lap": 15,
+          "time": 40.167,
+          "speed": 93.211,
+          "inPit": false
+        },
+        {
+          "lap": 16,
+          "time": 40.266,
+          "speed": 92.982,
+          "inPit": false
+        },
+        {
+          "lap": 17,
+          "time": 40.257,
+          "speed": 93.002,
+          "inPit": false
+        }
+      ]
     }
   ],
   "profiles": [
