@@ -1,5 +1,5 @@
 window.F300_DATA = {
-  "updated": "6 Sep 2026 18:28",
+  "updated": "6 Sep 2026 18:39",
   "apiUrl": "https://script.google.com/macros/s/AKfycbwqNnwg6FTL6GKOw0774fQXbr4ASWXsEwhZkW8eCUmECfxS72pnhf5Tq9SwXCiFuHv2/exec",
   "standings": [
     {
@@ -2227,6 +2227,11 @@ window.F300_DATA = {
       "driver": "Jack Reeve",
       "number": 4,
       "photoUrl": "https://drive.google.com/thumbnail?id=1aZ8z23RK7I6IJmUHaRN4kh7tcVbOTOir&sz=w512"
+    },
+    {
+      "driver": "Nicholas Cleere",
+      "number": 44,
+      "photoUrl": "https://drive.google.com/thumbnail?id=1_aFbLTqv1519iOQ3bTkrOxlKbmuQF_-x&sz=w512"
     }
   ],
   "submissionWindow": {
