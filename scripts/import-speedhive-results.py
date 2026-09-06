@@ -3,7 +3,9 @@
 F300 Speedhive result importer.
 
 Pilot mode:
-- Give it a Speedhive event URL/ID and F300 round.
+- Give it a Speedhive event URL/ID OR a public Speedhive search URL and F300 round.
+- For a search URL, it reads the F300 Race Calendar to get the track/date,
+  discovers the matching public Speedhive event automatically, then imports it.
 - It reads public Speedhive Event Results data.
 - It finds F300 Heat 1 / Heat 2 / Heat 3 / Final.
 - It extracts kart number, driver name, finishing result and best lap.
@@ -21,7 +23,9 @@ import os
 import re
 import sys
 from collections import defaultdict
+from datetime import date
 from typing import Any, Iterable
+from urllib.parse import parse_qs, urlparse
 
 import requests
 from speedhive.wrapper import SpeedhiveClient
@@ -54,7 +58,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--event",
         default="",
-        help="Speedhive event URL or numeric event ID",
+        help="Speedhive event URL/ID or public Speedhive search URL",
     )
     parser.add_argument(
         "--round",
@@ -504,16 +508,22 @@ def infer_session_key(name: str) -> str | None:
     return None
 
 
-def fetch_f300_roster() -> tuple[dict[str, str], dict[str, str]]:
+def fetch_f300_feed() -> dict[str, Any]:
     data_url = os.environ.get("F300_DATA_URL", "").strip()
 
     if not data_url:
-        return {}, {}
+        return {}
 
     response = requests.get(data_url, timeout=30)
     response.raise_for_status()
     data = response.json()
 
+    return data if isinstance(data, dict) else {}
+
+
+def f300_roster_from_feed(
+    data: dict[str, Any],
+) -> tuple[dict[str, str], dict[str, str]]:
     by_number: dict[str, str] = {}
     by_name: dict[str, str] = {}
 
@@ -529,6 +539,46 @@ def fetch_f300_roster() -> tuple[dict[str, str], dict[str, str]]:
             by_number[number] = name
 
     return by_number, by_name
+
+
+def f300_race_context(
+    data: dict[str, Any],
+    round_number: int,
+) -> dict[str, str]:
+    for item in data.get("calendar", []):
+        try:
+            item_round = int(item.get("round"))
+        except (TypeError, ValueError):
+            continue
+
+        if item_round != round_number:
+            continue
+
+        track = str(item.get("track", "")).strip()
+        date_key = str(item.get("dateKey", "")).strip()
+
+        if not track:
+            raise RuntimeError(
+                f"Round {round_number} has no track in the F300 Race Calendar."
+            )
+
+        if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", date_key):
+            raise RuntimeError(
+                f"Round {round_number} does not have a usable dateKey in the "
+                "published F300 Race Calendar."
+            )
+
+        return {
+            "track": track,
+            "dateKey": date_key,
+            "dateText": str(item.get("date", "")).strip(),
+        }
+
+    raise RuntimeError(
+        f"Round {round_number} could not be found in the published F300 Race Calendar."
+    )
+
+
 
 
 def row_matches_roster(
@@ -689,18 +739,217 @@ def build_session_payload(
     }
 
 
+def is_speedhive_search_url(value: str) -> bool:
+    try:
+        parsed = urlparse(str(value or "").strip())
+    except Exception:
+        return False
+
+    return (
+        parsed.scheme in ("http", "https")
+        and parsed.netloc.lower().endswith("speedhive.mylaps.com")
+        and parsed.path.rstrip("/").lower() == "/search"
+    )
+
+
+def search_term_from_url(search_url: str) -> str:
+    parsed = urlparse(search_url)
+    values = parse_qs(parsed.query).get("term") or []
+    return str(values[0] if values else "").strip()
+
+
+def speedhive_date_variants(date_key: str) -> list[str]:
+    target = date.fromisoformat(date_key)
+
+    month_short = target.strftime("%b")
+    month_long = target.strftime("%B")
+
+    # Speedhive currently displays dates like "Sep 6, 2026", but keep
+    # several public-display variants so this is not tied to one layout.
+    return [
+        f"{month_short} {target.day}, {target.year}",
+        f"{month_long} {target.day}, {target.year}",
+        f"{target.day} {month_short} {target.year}",
+        f"{target.day} {month_long} {target.year}",
+        f"{target.day:02d} {month_short} {target.year}",
+        f"{target.day:02d} {month_long} {target.year}",
+    ]
+
+
+def discover_event_id_from_search(
+    search_url: str,
+    race_context: dict[str, str],
+) -> int:
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError as exc:
+        raise RuntimeError(
+            "Search-page discovery requires Playwright. "
+            "Use the updated GitHub workflow that installs Chromium."
+        ) from exc
+
+    track = race_context["track"]
+    date_key = race_context["dateKey"]
+    search_term = search_term_from_url(search_url)
+    date_variants = speedhive_date_variants(date_key)
+
+    print("\nSpeedhive public-search discovery:")
+    print(f"  Search URL: {search_url}")
+    print(f"  F300 calendar track: {track}")
+    print(f"  F300 calendar date: {date_key}")
+    if search_term:
+        print(f"  Search term in URL: {search_term}")
+
+    candidates: dict[str, dict[str, str]] = {}
+
+    with sync_playwright() as playwright:
+        browser = playwright.chromium.launch(headless=True)
+        page = browser.new_page(
+            viewport={"width": 1440, "height": 1000},
+            locale="en-GB",
+        )
+
+        try:
+            page.goto(
+                search_url,
+                wait_until="domcontentloaded",
+                timeout=60000,
+            )
+
+            # Speedhive renders search results client-side.
+            page.wait_for_selector(
+                'a[href*="/events/"]',
+                timeout=35000,
+            )
+
+            # Give the result list a moment to finish rendering.
+            page.wait_for_timeout(1200)
+
+            anchors = page.locator('a[href*="/events/"]')
+
+            for index in range(anchors.count()):
+                anchor = anchors.nth(index)
+                href = str(anchor.get_attribute("href") or "")
+                match = re.search(r"/events/(\d+)", href, flags=re.I)
+
+                if not match:
+                    continue
+
+                event_id = match.group(1)
+                title = " ".join(anchor.inner_text().split()).strip()
+
+                # Find the smallest nearby result-row container that includes
+                # a visible event date. This avoids accidentally reading the
+                # whole search-results panel as one event.
+                row_text = anchor.evaluate(
+                    """el => {
+                      const monthDate = /\\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\\s+\\d{1,2},\\s+\\d{4}\\b/i;
+                      let node = el;
+                      for (let i = 0; i < 7 && node; i += 1, node = node.parentElement) {
+                        const text = (node.innerText || "").replace(/\\s+/g, " ").trim();
+                        if (monthDate.test(text)) return text;
+                      }
+                      return (el.parentElement?.innerText || el.innerText || "")
+                        .replace(/\\s+/g, " ")
+                        .trim();
+                    }"""
+                )
+
+                candidates[event_id] = {
+                    "id": event_id,
+                    "title": title,
+                    "row": " ".join(str(row_text or "").split()).strip(),
+                }
+        finally:
+            browser.close()
+
+    print(f"  Public event links found: {len(candidates)}")
+
+    if not candidates:
+        raise RuntimeError(
+            "No Speedhive event links were visible on the public search page."
+        )
+
+    track_terms = {
+        normalize_name(track),
+        normalize_name(search_term),
+    }
+    track_terms.discard("")
+
+    matches: list[dict[str, str]] = []
+
+    for candidate in candidates.values():
+        haystack = normalize_name(
+            f"{candidate['title']} {candidate['row']}"
+        )
+
+        date_match = any(
+            variant.lower() in candidate["row"].lower()
+            for variant in date_variants
+        )
+        track_match = any(term in haystack for term in track_terms)
+
+        # Keep a concise diagnostic list in the GitHub log.
+        row_preview = candidate["row"][:180]
+        print(
+            f"    {candidate['id']} | {candidate['title'] or '-'} | "
+            f"{row_preview}"
+        )
+
+        if date_match and track_match:
+            matches.append(candidate)
+
+    if not matches:
+        raise RuntimeError(
+            f"No public Speedhive event matched {track} on {date_key}. "
+            "The event may not have been created yet."
+        )
+
+    if len(matches) > 1:
+        options = "; ".join(
+            f"{item['id']} ({item['title']})"
+            for item in matches
+        )
+        raise RuntimeError(
+            f"More than one Speedhive event matched {track} on {date_key}: "
+            f"{options}. The bot will not guess."
+        )
+
+    selected = matches[0]
+
+    print(
+        f"\nAutomatically selected event {selected['id']}: "
+        f"{selected['title'] or selected['row']}"
+    )
+
+    return int(selected["id"])
+
+
 def pick_event_id(
     client: SpeedhiveClient,
     requested: str,
+    race_context: dict[str, str] | None = None,
 ) -> int:
     explicit = event_id_from_value(requested)
     if explicit:
         return explicit
 
+    if is_speedhive_search_url(requested):
+        if not race_context:
+            raise RuntimeError(
+                "The F300 Race Calendar is required when using a Speedhive search URL."
+            )
+
+        return discover_event_id_from_search(
+            requested,
+            race_context,
+        )
+
     org_text = os.environ.get("SPEEDHIVE_ORG_ID", "").strip()
     if not org_text.isdigit():
         raise RuntimeError(
-            "No Speedhive event ID was supplied and SPEEDHIVE_ORG_ID is not configured."
+            "The Event value was neither a Speedhive event URL/ID nor a supported "
+            "public Speedhive search URL, and SPEEDHIVE_ORG_ID is not configured."
         )
 
     org_id = int(org_text)
@@ -735,8 +984,15 @@ def main() -> int:
     if args.round < 1:
         raise RuntimeError("Round must be 1 or greater.")
 
+    f300_feed = fetch_f300_feed()
+    race_context = f300_race_context(f300_feed, args.round)
+
     client = SpeedhiveClient.create(timeout=30)
-    event_id = pick_event_id(client, args.event)
+    event_id = pick_event_id(
+        client,
+        args.event,
+        race_context=race_context,
+    )
 
     event = client.get_event(event_id, include_sessions=True) or {}
     event_title = (
@@ -747,8 +1003,12 @@ def main() -> int:
     print(f"Event: {event_title}")
     print(f"Event ID: {event_id}")
     print(f"F300 round: {args.round}")
+    print(
+        f"F300 calendar: {race_context['track']} · "
+        f"{race_context['dateKey']}"
+    )
 
-    by_number, by_name = fetch_f300_roster()
+    by_number, by_name = f300_roster_from_feed(f300_feed)
     if by_name:
         print(f"Loaded {len(by_name)} F300 drivers for session matching.")
     else:
