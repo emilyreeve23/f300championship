@@ -1,5 +1,5 @@
 window.F300_DATA = {
-  "updated": "6 Sep 2026 12:43",
+  "updated": "6 Sep 2026 13:54",
   "apiUrl": "https://script.google.com/macros/s/AKfycby4RgoqZdYFLcWkstoz9y5ZjsMoGt-u3T-IgBJ36AfIUFXp55fhA82TRKsa-_c3B-0o/exec",
   "standings": [
     {
@@ -10,7 +10,7 @@ window.F300_DATA = {
       "wins": 1,
       "podiums": 1,
       "bestFinal": 1,
-      "points": 496
+      "points": 532
     },
     {
       "position": 2,
@@ -40,7 +40,7 @@ window.F300_DATA = {
       "wins": 0,
       "podiums": 1,
       "bestFinal": 3,
-      "points": 374
+      "points": 407
     },
     {
       "position": 5,
@@ -50,7 +50,7 @@ window.F300_DATA = {
       "wins": 0,
       "podiums": 1,
       "bestFinal": 3,
-      "points": 352
+      "points": 382
     },
     {
       "position": 6,
@@ -60,7 +60,7 @@ window.F300_DATA = {
       "wins": 0,
       "podiums": 0,
       "bestFinal": 4,
-      "points": 211
+      "points": 242
     },
     {
       "position": 7,
@@ -718,14 +718,14 @@ window.F300_DATA = {
       "h1Points": 31,
       "h2Result": "3",
       "h2Points": 31,
-      "h3Result": "-",
-      "h3Points": 0,
+      "h3Result": "3",
+      "h3Points": 31,
       "finalResult": "-",
       "finalPoints": 0,
-      "weekendTotal": 62,
+      "weekendTotal": 93,
       "h1Lap": "37.783",
       "h2Lap": "37.722",
-      "h3Lap": "-",
+      "h3Lap": "37.984",
       "finalLap": "-",
       "weekendBest": "-",
       "notes": ""
@@ -738,14 +738,14 @@ window.F300_DATA = {
       "h1Points": 36,
       "h2Result": "2",
       "h2Points": 33,
-      "h3Result": "-",
-      "h3Points": 0,
+      "h3Result": "2",
+      "h3Points": 33,
       "finalResult": "-",
       "finalPoints": 0,
-      "weekendTotal": 69,
+      "weekendTotal": 102,
       "h1Lap": "36.929",
       "h2Lap": "37.227",
-      "h3Lap": "-",
+      "h3Lap": "37.382",
       "finalLap": "-",
       "weekendBest": "36.929",
       "notes": ""
@@ -758,14 +758,14 @@ window.F300_DATA = {
       "h1Points": 30,
       "h2Result": "4",
       "h2Points": 30,
-      "h3Result": "-",
-      "h3Points": 0,
+      "h3Result": "4",
+      "h3Points": 30,
       "finalResult": "-",
       "finalPoints": 0,
-      "weekendTotal": 60,
+      "weekendTotal": 90,
       "h1Lap": "38.515",
       "h2Lap": "38.408",
-      "h3Lap": "-",
+      "h3Lap": "38.624",
       "finalLap": "-",
       "weekendBest": "38.408",
       "notes": ""
@@ -778,14 +778,14 @@ window.F300_DATA = {
       "h1Points": 33,
       "h2Result": "1",
       "h2Points": 36,
-      "h3Result": "-",
-      "h3Points": 0,
+      "h3Result": "1",
+      "h3Points": 36,
       "finalResult": "-",
       "finalPoints": 0,
-      "weekendTotal": 69,
+      "weekendTotal": 105,
       "h1Lap": "37.247",
       "h2Lap": "37.198",
-      "h3Lap": "-",
+      "h3Lap": "37.610",
       "finalLap": "-",
       "weekendBest": "37.198",
       "notes": ""
