@@ -30,7 +30,7 @@ from urllib.parse import parse_qs, urlparse
 import requests
 from speedhive.wrapper import SpeedhiveClient
 
-BOT_VERSION = "personal-lap-pages-v2"
+BOT_VERSION = "personal-lap-pages-v3"
 
 
 SESSION_PATTERNS = {
@@ -651,97 +651,162 @@ def is_f300_session(
 
 def scrape_personal_lap_rows_from_page(page: Any) -> list[dict[str, Any]]:
     """
-    Extract visible Personal Results rows from a Speedhive driver lap page.
+    Read the rendered Personal Results lap table from a Speedhive driver page.
 
-    Speedhive has used several table/div layouts over time, so this searches
-    normal table rows, ARIA rows and row-like DIVs rather than relying on one
-    fragile CSS class.
+    Speedhive renders the cells as separate DIVs rather than conventional
+    HTML table rows. The browser's body.innerText is stable and preserves the
+    visible table cell order, so parse the table from that rendered text.
+
+    Qualifying-style table:
+      Lap | Lap Time | Diff to Last Lap | Diff to Best Lap | Speed
+
+    Race-style table:
+      Lap | Pos | Lap Time | Diff to Last Lap | Diff to Best Lap |
+      Gap in Front | Diff to P1 | Speed
     """
-    raw_rows = page.evaluate(
-        """() => {
-          const selectors = [
-            "tr",
-            '[role="row"]',
-            ".row",
-            '[class*="lap"][class*="row"]',
-            '[class*="result"][class*="row"]'
-          ];
+    body_text = page.locator("body").inner_text(timeout=15000)
 
-          const nodes = Array.from(
-            new Set(
-              selectors.flatMap(selector =>
-                Array.from(document.querySelectorAll(selector))
-              )
-            )
-          );
+    lines = [
+        line.strip().replace("−", "-").replace("–", "-")
+        for line in body_text.splitlines()
+        if line.strip()
+    ]
 
-          return nodes
-            .filter(node => {
-              const style = window.getComputedStyle(node);
-              if (style.display === "none" || style.visibility === "hidden") {
-                return false;
-              }
+    # Locate the actual Personal Results header. Chart axis labels appear
+    # earlier on the page, so anchor on "Lap Time" with a nearby "Lap".
+    candidates: list[tuple[int, int]] = []
 
-              const text = String(node.innerText || "")
-                .replace(/\\s+/g, " ")
-                .trim();
-
-              return (
-                /^\\d+\\s+/.test(text) &&
-                /\\b\\d{2,3}\\.\\d{3}\\b/.test(text)
-              );
-            })
-            .map(node =>
-              String(node.innerText || "")
-                .replace(/\\s+/g, " ")
-                .trim()
-            );
-        }"""
-    )
-
-    laps: dict[int, dict[str, Any]] = {}
-
-    for row_text in raw_rows:
-        lap_match = re.match(r"^\s*(\d+)\b", row_text)
-        if not lap_match:
+    for index, value in enumerate(lines):
+        if value != "Lap Time":
             continue
 
-        lap_number = int(lap_match.group(1))
-        if lap_number < 1:
-            continue
-
-        # The first plausible xx.xxx / xxx.xxx number after the lap number is
-        # the lap time. Later values may be speed/diffs.
-        rest = row_text[lap_match.end():]
-        lap_time = None
-
-        for match in re.finditer(r"\b(\d{2,3}\.\d{3})\b", rest):
-            value = float(match.group(1))
-            if 10 <= value <= 300:
-                lap_time = round(value, 3)
+        lap_index = None
+        for probe in range(index - 1, max(-1, index - 5), -1):
+            if lines[probe] == "Lap":
+                lap_index = probe
                 break
 
-        if lap_time is None:
-            continue
+        if lap_index is not None:
+            candidates.append((lap_index, index))
 
-        speed_match = re.search(
-            r"\b(\d{2,3}(?:\.\d{1,3})?)\s*km/h\b",
-            row_text,
+    if not candidates:
+        return []
+
+    header_start, lap_time_index = candidates[-1]
+
+    speed_index = None
+    for probe in range(lap_time_index + 1, min(len(lines), lap_time_index + 12)):
+        if lines[probe] == "Speed":
+            speed_index = probe
+            break
+
+    if speed_index is None:
+        return []
+
+    headers = lines[header_start:speed_index + 1]
+    has_position = "Pos" in headers
+
+    # The visible table ends before the standard Speedhive footer.
+    end_index = len(lines)
+    for probe in range(speed_index + 1, len(lines)):
+        if lines[probe] == "About Speedhive":
+            end_index = probe
+            break
+
+    cells = lines[speed_index + 1:end_index]
+
+    # Speedhive supplies a value/dash for each displayed column. Chunking by
+    # the visible header count is therefore more reliable than looking for
+    # CSS row elements.
+    column_count = len(headers)
+    laps: dict[int, dict[str, Any]] = {}
+
+    if column_count >= 4:
+        cursor = 0
+
+        while cursor + column_count <= len(cells):
+            chunk = cells[cursor:cursor + column_count]
+            cursor += column_count
+
+            try:
+                lap_number = int(float(chunk[0]))
+            except (TypeError, ValueError):
+                continue
+
+            if lap_number < 1:
+                continue
+
+            time_index = 2 if has_position else 1
+
+            try:
+                lap_time = float(chunk[time_index])
+            except (TypeError, ValueError, IndexError):
+                continue
+
+            if not 10 <= lap_time <= 300:
+                continue
+
+            speed = None
+            speed_cell = chunk[-1]
+
+            speed_match = re.search(
+                r"(\d{1,3}(?:\.\d{1,3})?)\s*km/h",
+                speed_cell,
+                flags=re.I,
+            )
+
+            if speed_match:
+                try:
+                    speed = round(float(speed_match.group(1)), 3)
+                except ValueError:
+                    speed = None
+
+            laps[lap_number] = {
+                "lap": lap_number,
+                "time": round(lap_time, 3),
+                "speed": speed,
+                "inPit": any(
+                    re.search(r"\bPIT\b", cell, flags=re.I)
+                    for cell in chunk
+                ),
+            }
+
+    # Fallback for a future Speedhive layout that does not preserve a fixed
+    # number of cells. Each visible row normally ends with its km/h speed.
+    if not laps:
+        chunk: list[str] = []
+        speed_pattern = re.compile(
+            r"^(\d{1,3}(?:\.\d{1,3})?)\s*km/h$",
             flags=re.I,
         )
 
-        speed = (
-            round(float(speed_match.group(1)), 3)
-            if speed_match
-            else None
-        )
+        for cell in cells:
+            chunk.append(cell)
+            speed_match = speed_pattern.match(cell)
 
-        laps[lap_number] = {
-            "lap": lap_number,
-            "time": lap_time,
-            "speed": speed,
-            "inPit": bool(re.search(r"\bPIT\b", row_text, flags=re.I)),
-        }
+            if not speed_match:
+                continue
+
+            try:
+                lap_number = int(float(chunk[0]))
+                time_index = 2 if has_position else 1
+                lap_time = float(chunk[time_index])
+            except (TypeError, ValueError, IndexError):
+                chunk = []
+                continue
+
+            if lap_number >= 1 and 10 <= lap_time <= 300:
+                laps[lap_number] = {
+                    "lap": lap_number,
+                    "time": round(lap_time, 3),
+                    "speed": round(float(speed_match.group(1)), 3),
+                    "inPit": any(
+                        re.search(r"\bPIT\b", value, flags=re.I)
+                        for value in chunk
+                    ),
+                }
+
+            chunk = []
 
     return [laps[key] for key in sorted(laps)]
 
