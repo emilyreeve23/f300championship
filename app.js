@@ -55,6 +55,7 @@ let adminAuth = {
   dashboard: null
 };
 let adminRefreshTimer = null;
+const F300_THEME_KEY = "f300-theme";
 const $ = (sel) => document.querySelector(sel);
 
 let selectedRound = null;
@@ -1116,18 +1117,30 @@ function renderLapDriverDetail() {
 
   const standing = standings.find(item => item.driver === selectedLapDriver);
   const entries = allDriverLapEntries(selectedLapDriver);
-  const rounds = Array.from(new Set(
+  const availableRounds = Array.from(new Set(
     entries.map(item => Number(item.round))
   )).filter(Number.isFinite).sort((a,b) => a-b);
+  const availableSet = new Set(availableRounds);
 
-  if (!rounds.length) {
+  const calendarRounds = Array.from(new Set(
+    (data.calendar || [])
+      .filter(item => String(item.status || "").toLowerCase() !== "cancelled")
+      .map(item => Number(item.round))
+      .filter(Number.isFinite)
+  )).sort((a,b) => a-b);
+
+  const rounds = Array.from(new Set([...calendarRounds, ...availableRounds]))
+    .sort((a,b) => a-b);
+
+  if (!availableRounds.length) {
     selectedLapDriver = "";
     renderLapDriverDetail();
     return;
   }
 
-  if (!rounds.includes(Number(selectedLapRound))) {
-    selectedLapRound = rounds[0];
+  if (!availableSet.has(Number(selectedLapRound))) {
+    // Open on the newest round for which this driver actually has lap data.
+    selectedLapRound = availableRounds[availableRounds.length - 1];
   }
 
   overview.hidden = true;
@@ -1149,14 +1162,26 @@ function renderLapDriverDetail() {
       </div>
     </div>`;
 
+  $("#lap-round-scroller").style.setProperty("--round-count", String(Math.max(1, rounds.length)));
   $("#lap-round-scroller").innerHTML = rounds
-    .map(round => `
-      <button class="round-chip ${Number(round) === Number(selectedLapRound) ? "active" : ""}" type="button" data-lap-round="${round}">
-        Round ${round}
-      </button>`)
+    .map(round => {
+      const available = availableSet.has(Number(round));
+      const active = available && Number(round) === Number(selectedLapRound);
+
+      return `
+        <button
+          class="round-chip ${active ? "active" : ""} ${available ? "" : "lap-round-unavailable"}"
+          type="button"
+          data-lap-round="${round}"
+          ${available ? "" : "disabled"}
+          aria-disabled="${available ? "false" : "true"}"
+          title="${available ? `View Round ${round} lap times` : `Round ${round} lap times are not available yet`}">
+          <span>Round ${round}</span>
+        </button>`;
+    })
     .join("");
 
-  $("#lap-round-scroller").querySelectorAll("[data-lap-round]").forEach(button => {
+  $("#lap-round-scroller").querySelectorAll("[data-lap-round]:not([disabled])").forEach(button => {
     button.addEventListener("click", () => {
       selectedLapRound = Number(button.dataset.lapRound);
       renderLapDriverDetail();
@@ -1170,7 +1195,9 @@ function renderLapDriverDetail() {
       ["h1","h2","h3","final"].indexOf(b.sessionKey)
     );
 
-  const track = roundEntries[0]?.track || "";
+  const event = calendarEventForRound(selectedLapRound);
+  const track = roundEntries[0]?.track || event?.track || "";
+  const weekendDate = event?.date || "";
   const totalLaps = roundEntries.reduce(
     (sum,item) => sum + (item.laps || []).length,
     0
@@ -1182,7 +1209,7 @@ function renderLapDriverDetail() {
   }, null);
 
   $("#lap-round-summary").innerHTML = `
-    <span><strong>Round ${selectedLapRound}</strong> · ${escapeHtml(track)}</span>
+    <span><strong>Round ${selectedLapRound}</strong> · ${escapeHtml(track)}${weekendDate ? ` · ${escapeHtml(weekendDate)}` : ""}</span>
     <span>${totalLaps} recorded lap${totalLaps === 1 ? "" : "s"}${roundBest === null ? "" : ` · Best ${roundBest.toFixed(3)}`}</span>`;
 
   $("#lap-session-list").innerHTML = roundEntries.map(entry => {
@@ -1634,6 +1661,49 @@ function openDriver(d) {
   if (button) button.addEventListener("click", () => showDriverResults(d.driver));
 }
 
+
+function currentF300Theme() {
+  return document.documentElement.dataset.theme === "light" ? "light" : "dark";
+}
+
+function updateThemeControl() {
+  const theme = currentF300Theme();
+  const icon = $("#theme-toggle-icon");
+  const label = $("#theme-toggle-label");
+  const button = $("#theme-toggle");
+
+  if (icon) icon.textContent = theme === "dark" ? "☀️" : "🌙";
+  if (label) label.textContent = theme === "dark" ? "Light mode" : "Dark mode";
+  if (button) {
+    button.setAttribute(
+      "aria-label",
+      theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
+    );
+  }
+
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
+  if (themeMeta) themeMeta.setAttribute("content", theme === "dark" ? "#05080d" : "#f7f9fb");
+}
+
+function applyF300Theme(theme, remember = true) {
+  const next = theme === "light" ? "light" : "dark";
+  document.documentElement.dataset.theme = next;
+
+  if (remember) {
+    try { localStorage.setItem(F300_THEME_KEY, next); } catch (_) {}
+  }
+
+  updateThemeControl();
+}
+
+function setupThemeToggle() {
+  updateThemeControl();
+  $("#theme-toggle")?.addEventListener("click", () => {
+    applyF300Theme(currentF300Theme() === "dark" ? "light" : "dark");
+  });
+}
+
+
 function setupNavigation() {
   document.querySelectorAll(".nav-button").forEach(btn => btn.addEventListener("click", () => navigateTo(btn.dataset.target)));
 }
@@ -1795,6 +1865,7 @@ $("#driver-dialog").addEventListener("click", e => { if (e.target === $("#driver
 $("#driver-count").textContent = standings.length;
 $("#completed-count").textContent = getRounds().length;
 
+setupThemeToggle();
 setupStartupSplash();
 setupLogoFallbacks();
 setupInstallExperience();

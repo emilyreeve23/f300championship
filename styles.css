@@ -507,3 +507,225 @@ body.splash-active{overflow:hidden}
     font-size:6.4px;
   }
 }
+
+
+/* v1.2 appearance switch */
+html[data-theme="dark"]{
+  --bg:#05080d;
+}
+html[data-theme="dark"] body{
+  background:radial-gradient(circle at 85% -10%,rgba(18,216,200,.13),transparent 30%),linear-gradient(180deg,#05080d 0%,#07111b 100%);
+}
+
+.theme-card{
+  margin-top:10px;
+  padding:14px 15px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:rgba(14,27,44,.92);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+}
+.theme-card-copy{min-width:0}
+.theme-card h3{margin:3px 0 4px;font-size:16px}
+.theme-card p{margin:0;color:var(--muted);font-size:9px;line-height:1.45}
+.theme-toggle{
+  flex:0 0 auto;
+  min-width:104px;
+  border:1px solid rgba(18,216,200,.22);
+  border-radius:13px;
+  background:var(--panel-2);
+  color:var(--text);
+  padding:9px 10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  font-weight:850;
+  font-size:9px;
+  cursor:pointer;
+}
+.theme-toggle-icon{font-size:17px;line-height:1}
+
+.lap-round-unavailable,
+.round-chip.lap-round-unavailable:disabled{
+  opacity:.34;
+  filter:grayscale(1);
+  cursor:not-allowed;
+  background:rgba(14,27,44,.48);
+  color:var(--muted);
+  border-style:dashed;
+  box-shadow:none;
+}
+
+/* High-contrast light theme. The logo/artwork remains branded while app
+   surfaces and text switch to a bright, readable palette. */
+html[data-theme="light"]{
+  --bg:#f7f9fb;
+  --panel:#ffffff;
+  --panel-2:#eef3f7;
+  --panel-soft:#e5edf3;
+  --text:#111827;
+  --muted:#5b6877;
+  --teal:#007d74;
+  --gold:#8b6800;
+  --silver:#53606d;
+  --bronze:#8a5424;
+  --danger:#b42318;
+  --line:rgba(15,23,42,.13);
+}
+html[data-theme="light"],
+html[data-theme="light"] body{
+  background:#f7f9fb;
+  color:var(--text);
+}
+html[data-theme="light"] body{
+  background:radial-gradient(circle at 85% -10%,rgba(0,125,116,.09),transparent 31%),linear-gradient(180deg,#ffffff 0%,#f3f6f8 100%);
+}
+html[data-theme="light"] .topbar,
+html[data-theme="light"] .bottom-nav,
+html[data-theme="light"] .results-controls{
+  background:rgba(255,255,255,.96);
+  border-color:var(--line);
+  box-shadow:0 8px 24px rgba(15,23,42,.04);
+}
+html[data-theme="light"] .brand-fallback,
+html[data-theme="light"] .live-pill{
+  color:#0f5f59;
+}
+html[data-theme="light"] .leader-card,
+html[data-theme="light"] .driver-card,
+html[data-theme="light"] .result-card,
+html[data-theme="light"] .calendar-card,
+html[data-theme="light"] .hub-card,
+html[data-theme="light"] .info-card,
+html[data-theme="light"] .install-card,
+html[data-theme="light"] .theme-card,
+html[data-theme="light"] .testing-card,
+html[data-theme="light"] .contact-mini-button,
+html[data-theme="light"] .lap-driver-card,
+html[data-theme="light"] .lap-driver-profile,
+html[data-theme="light"] .lap-session-card,
+html[data-theme="light"] .lap-round-summary,
+html[data-theme="light"] .admin-review-card,
+html[data-theme="light"] .admin-dashboard-summary,
+html[data-theme="light"] .empty-state,
+html[data-theme="light"] .round-summary{
+  background:#ffffff;
+  color:var(--text);
+  border-color:var(--line);
+  box-shadow:0 8px 22px rgba(15,23,42,.035);
+}
+html[data-theme="light"] .leader-card{
+  background:linear-gradient(120deg,rgba(139,104,0,.07),#ffffff 70%);
+}
+html[data-theme="light"] .driver-card.p2,
+html[data-theme="light"] .driver-card.p3,
+html[data-theme="light"] .calendar-card.upcoming,
+html[data-theme="light"] .update-card{
+  background:#ffffff;
+}
+html[data-theme="light"] .session-card,
+html[data-theme="light"] .result-total,
+html[data-theme="light"] .weekend-best,
+html[data-theme="light"] .driver-history-row,
+html[data-theme="light"] .lap-table,
+html[data-theme="light"] .hub-auth,
+html[data-theme="light"] .hub-profile-preview,
+html[data-theme="light"] .admin-empty{
+  background:#f7f9fb;
+  color:var(--text);
+}
+html[data-theme="light"] .mobile-select,
+html[data-theme="light"] input,
+html[data-theme="light"] textarea,
+html[data-theme="light"] .admin-login-panel input{
+  background:#ffffff;
+  color:#111827;
+  border-color:rgba(15,23,42,.18);
+}
+html[data-theme="light"] .round-chip,
+html[data-theme="light"] .secondary-button,
+html[data-theme="light"] .theme-toggle{
+  background:#eef3f7;
+  color:#182230;
+  border-color:rgba(15,23,42,.13);
+}
+html[data-theme="light"] .round-chip.active{
+  background:var(--teal);
+  border-color:var(--teal);
+  color:#ffffff;
+}
+html[data-theme="light"] .round-chip.active span{color:#ffffff}
+html[data-theme="light"] .lap-round-unavailable,
+html[data-theme="light"] .round-chip.lap-round-unavailable:disabled{
+  background:#eef1f4;
+  color:#8994a1;
+  border-color:rgba(15,23,42,.12);
+}
+html[data-theme="light"] .primary-button,
+html[data-theme="light"] .install-nudge-action{
+  color:#ffffff;
+}
+html[data-theme="light"] .contact-mini-button{color:#16202b}
+html[data-theme="light"] .info-card p,
+html[data-theme="light"] .update-card p,
+html[data-theme="light"] .update-list,
+html[data-theme="light"] .install-card p,
+html[data-theme="light"] .hub-copy,
+html[data-theme="light"] .admin-review-card p,
+html[data-theme="light"] .laps-intro{
+  color:#536273;
+}
+html[data-theme="light"] .final-badge,
+html[data-theme="light"] .leader-stats div,
+html[data-theme="light"] .info-grid div,
+html[data-theme="light"] .round-badge,
+html[data-theme="light"] .lap-driver-rank{
+  background:#eef3f7;
+  color:#233044;
+}
+html[data-theme="light"] .final-badge.winner{
+  background:rgba(139,104,0,.08);
+  color:#705400;
+}
+html[data-theme="light"] .nav-button{color:#667487}
+html[data-theme="light"] .nav-button.active{
+  color:#006c64;
+  background:rgba(0,125,116,.09);
+}
+html[data-theme="light"] .track-art-shadow{stroke:rgba(15,23,42,.18)}
+html[data-theme="light"] .track-start-line{stroke:#273443}
+html[data-theme="light"] .driver-dialog,
+html[data-theme="light"] .install-dialog,
+html[data-theme="light"] .admin-dialog{
+  background:#ffffff;
+  color:#111827;
+  border-color:rgba(15,23,42,.15);
+}
+html[data-theme="light"] .dialog-close{
+  background:#edf2f6;
+  color:#263445;
+}
+html[data-theme="light"] .startup-splash{
+  background:radial-gradient(circle at 50% 38%,rgba(0,125,116,.09),transparent 34%),#ffffff;
+}
+html[data-theme="light"] .splash-title{color:#111827}
+html[data-theme="light"] .splash-loader{background:rgba(15,23,42,.10)}
+html[data-theme="light"] .install-nudge,
+html[data-theme="light"] .admin-alert-nudge{
+  background:rgba(255,255,255,.98);
+  color:#111827;
+  border-color:rgba(0,125,116,.22);
+  box-shadow:0 16px 45px rgba(15,23,42,.15);
+}
+html[data-theme="light"] .admin-alert-nudge>button:first-child{color:#111827}
+html[data-theme="light"] .admin-alert-close{color:#5f6d7c}
+html[data-theme="light"] .app-rights{color:#6f7c8a}
+
+@media(max-width:430px){
+  .theme-card{align-items:flex-start;flex-direction:column}
+  .theme-toggle{width:100%}
+}

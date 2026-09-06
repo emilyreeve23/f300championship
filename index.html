@@ -12,6 +12,16 @@
   <link rel="manifest" href="./manifest.webmanifest" />
   <link rel="apple-touch-icon" href="./icon-180.png" />
   <link rel="icon" href="./icon-192.png" />
+  <script>
+    (() => {
+      try {
+        const saved = localStorage.getItem("f300-theme");
+        document.documentElement.dataset.theme = saved === "light" ? "light" : "dark";
+      } catch (_) {
+        document.documentElement.dataset.theme = "dark";
+      }
+    })();
+  </script>
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body class="splash-active">
@@ -162,6 +172,18 @@
           </div>
         </div>
 
+        <div class="theme-card" id="theme-card">
+          <div class="theme-card-copy">
+            <span class="eyebrow">APPEARANCE</span>
+            <h3>App theme</h3>
+            <p>Switch between a dark background and a bright light background. Your choice is remembered on this device.</p>
+          </div>
+          <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch app theme">
+            <span id="theme-toggle-icon" class="theme-toggle-icon" aria-hidden="true">☀️</span>
+            <span id="theme-toggle-label">Light mode</span>
+          </button>
+        </div>
+
 
         <div class="install-card" id="install-card">
           <div class="install-card-icon"><img src="./icon-192.png" alt="" /></div>
@@ -176,20 +198,18 @@
 
         <div class="update-card">
           <div class="update-card-head">
-            <div><span class="eyebrow">APP VERSION</span><h3>Version 1.1</h3></div>
-            <span class="version-badge">FIRST PUBLIC BUILD</span>
+            <div><span class="eyebrow">APP VERSION</span><h3>Version 1.2</h3></div>
+            <span class="version-badge">RACE DAY UPDATE</span>
           </div>
-          <p><strong>29 Aug 2026</strong> · First public-use build of the F300 Championship app.</p>
+          <p><strong>6 Sep 2026</strong> · Race-day, driver and timing improvements across the F300 app.</p>
           <ul class="update-list">
-            <li>Championship standings, complete race-weekend results and season calendar.</li>
-            <li>Miniature circuit illustrations personalise the Race Results and Calendar screens.</li>
-            <li>Results are ordered by current race-weekend points and can be filtered by driver.</li>
-            <li>Quick app-switches keep your place; after longer inactivity the app returns cleanly to Standings.</li>
-            <li>Home Screen installation support for iPhone, iPad and Android.</li>
-            <li>Offline caching allows the most recently downloaded championship data to remain available without signal.</li>
-            <li>F300 startup screen appears on launch and after returning from around a minute of inactivity.</li>
-            <li>In-app Contact F300 form sends questions, bug reports and PIN help requests directly to the championship admin sheet.</li>
-            <li>My Profile includes self-service 4-digit PIN access and profile photos.</li>
+            <li>All Lap Times adds driver-by-driver lap history for supported race weekends, split by round, Heat 1, Heat 2, Heat 3 and Final.</li>
+            <li>Missing lap-history rounds remain visible but are greyed out until timing data is available.</li>
+            <li>Speedhive events can be discovered from the F300 race calendar using the circuit and race-weekend date.</li>
+            <li>Race Results refresh while the app is open and order drivers by the current race-weekend points.</li>
+            <li>Private Admin review shows timing/import issues and new Contact F300 requests.</li>
+            <li>My Profile includes 4-digit PIN access, profile photos and saved gearing notes.</li>
+            <li>New light and dark themes can be switched from the Info screen.</li>
           </ul>
         </div>
 

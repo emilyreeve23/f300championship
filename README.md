@@ -2,7 +2,7 @@
 
 Public, mobile-first web app for the **F300 Karting Championship 2026**.
 
-**Current build: v1.1 — pre-launch/public-use build**
+**Current build: v1.2**
 
 Live site: **f300championship.co.uk**
 
@@ -175,22 +175,25 @@ Production domain:
 
 ## Version
 
-### v1.1
+### v1.2
 
-First public-use build of the F300 Championship PWA.
+Race-day update released 6 Sep 2026.
 
-Current v1.1 work includes:
+Current v1.2 work includes:
 
-- Standings, Results and Calendar
-- Driver profile photos
-- My Profile driver PIN access
-- Signed-in driver profile locking
-- Profile-photo uploads
+- Standings, live race-day Results and Race Calendar
+- Driver profile photos and My Profile PIN access
 - Private driver gearing/setup notes
-- In-app Contact F300 support form
-- Offline/PWA installation support
+- In-app Contact F300 support and private Admin review centre
 - Automatic Google Sheet → GitHub → Cloudflare championship-data updates
-- In-app live refresh when newly published championship data becomes available
+- In-app refresh when newly published championship data becomes available
+- Speedhive event discovery from F300 circuit/date information
+- Speedhive Heat/Final imports with driver-number matching and admin issue flags
+- All Lap Times archive with Heat 1, Heat 2, Heat 3 and Final lap-by-lap history
+- Past/current round backfill attempts for Speedhive-supported circuits
+- Greyed-out lap-history rounds when no supported timing data is available
+- User-selectable light and dark app themes
+- Offline/PWA installation support
 
 ---
 
@@ -212,6 +215,14 @@ Timing results are designed to import by default.
 
 Supported timing imports can store every valid lap from Heat 1, Heat 2, Heat 3 and Final. Practice/warm-up sessions remain excluded.
 
-The importer uses the Speedhive session lap feed rather than browser-clicking each driver. Lap records are matched back to the F300 result competitor, canonicalised to the F300 driver name/number, and stored in the hidden `Lap Times` sheet.
+The importer discovers each F300 result position, opens Speedhive’s public Personal Results lap page for that driver/session, and reads the rendered lap table. Lap records are canonicalised to the F300 driver name/number and stored in the hidden `Lap Times` sheet.
 
 The public feed groups those rows by driver / round / session for the `All Lap Times` app view. Re-importing the same session replaces that driver's existing lap rows for the session instead of creating duplicates.
+
+### Historical Speedhive lap backfill
+
+The `Backfill Speedhive Lap Times` GitHub Action checks non-cancelled F300 rounds whose calendar date is today or earlier. For each round it constructs a public Speedhive search from the F300 circuit name and matches the event against the F300 race-weekend date. Two-day calendar weekends accept either day of the weekend.
+
+Rounds with no matching Speedhive event are skipped rather than guessed. The app still shows those official rounds in All Lap Times, but the unavailable round buttons remain greyed out.
+
+This is currently a Speedhive-only backfill. Other timing providers can be added later without changing the All Lap Times app format.
