@@ -337,12 +337,15 @@ def is_practice_session(name: str) -> bool:
 def is_actual_final_session(name: str) -> bool:
     lowered = name.lower()
 
+    # Pre-Final / Semi-Final are scoring races before the real Final.
     if "pre-final" in lowered or "prefinal" in lowered:
         return False
     if "semi-final" in lowered or "semifinal" in lowered:
         return False
 
-    return bool(re.search(r"\\bfinal\\b", lowered, flags=re.I))
+    # Speedhive may append text such as "- Provisional Result".
+    # Any remaining session containing the standalone word Final is the actual Final.
+    return bool(re.search(r"\bfinal\b", lowered, flags=re.I))
 
 
 def session_sort_value(session: dict[str, Any]) -> tuple[int, str]:
@@ -375,7 +378,7 @@ def likely_f300_result(
         return row_matches_roster(row, by_number, by_name)
 
     # Fallback if the public F300 feed is unavailable.
-    return bool(re.search(r"\\bf\\s*300\\b", result_class(row), flags=re.I))
+    return bool(re.search(r"\bf\s*300\b", result_class(row), flags=re.I))
 
 
 def competitor_id(row: dict[str, Any]) -> str:
