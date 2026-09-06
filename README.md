@@ -206,3 +206,12 @@ Timing results are designed to import by default.
 - Duplicate driver numbers inside one session are treated as a hard ambiguity: all rows for that duplicated number are left untouched while the rest of the session imports.
 - Re-checking unchanged clean timing data does not create another Admin notification.
 - Each new import batch creates an Admin summary such as `Lydd · Round 4: Heat 1, Heat 2, Heat 3 and Final imported. 1 issue to review.`
+
+
+### Lap-by-lap race archive
+
+Supported timing imports can store every valid lap from Heat 1, Heat 2, Heat 3 and Final. Practice/warm-up sessions remain excluded.
+
+The importer uses the Speedhive session lap feed rather than browser-clicking each driver. Lap records are matched back to the F300 result competitor, canonicalised to the F300 driver name/number, and stored in the hidden `Lap Times` sheet.
+
+The public feed groups those rows by driver / round / session for the `All Lap Times` app view. Re-importing the same session replaces that driver's existing lap rows for the session instead of creating duplicates.

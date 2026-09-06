@@ -67,6 +67,26 @@
         <div class="results-list" id="results-list"></div>
       </section>
 
+      <section class="view" id="laps-view" data-view="laps">
+        <div class="section-heading">
+          <div><span class="eyebrow">RACE PACE</span><h2>All Lap Times</h2></div>
+        </div>
+
+        <div id="lap-times-overview">
+          <p class="laps-intro">Drivers are shown in current championship order. Tap a driver to browse every recorded race lap by round and session.</p>
+          <div id="lap-driver-list" class="lap-driver-list"></div>
+        </div>
+
+        <div id="lap-driver-detail" hidden>
+          <button id="lap-times-back" class="secondary-button compact-button lap-back-button" type="button">‹ All drivers</button>
+          <div id="lap-driver-header" class="lap-driver-header"></div>
+          <div class="control-label">Choose round</div>
+          <div class="round-tabs lap-round-tabs" id="lap-round-scroller" aria-label="Lap time rounds"></div>
+          <div id="lap-round-summary" class="lap-round-summary"></div>
+          <div id="lap-session-list" class="lap-session-list"></div>
+        </div>
+      </section>
+
       <section class="view" id="calendar-view" data-view="calendar">
         <div class="section-heading calendar-heading">
           <div><span class="eyebrow">2026 SEASON</span><h2>Race Calendar</h2></div>
@@ -205,6 +225,7 @@
     <nav class="bottom-nav" aria-label="Main navigation">
       <button class="nav-button active" data-target="standings" aria-label="Standings"><span class="nav-icon">🏆</span><span>Standings</span></button>
       <button class="nav-button" data-target="results" aria-label="Race Results"><span class="nav-icon">🏎️</span><span>Results</span></button>
+      <button class="nav-button" data-target="laps" aria-label="All Lap Times"><span class="nav-icon">⏱️</span><span>All Lap Times</span></button>
       <button class="nav-button" data-target="calendar" aria-label="Calendar"><span class="nav-icon">🏁</span><span>Calendar</span></button>
       <button class="nav-button" data-target="driver" aria-label="My Profile"><span class="nav-icon">👤</span><span>My Profile</span></button>
       <button class="nav-button admin-nav-host" data-target="info" aria-label="Info"><span class="nav-icon">ℹ️</span><span>Info</span><b id="admin-nav-badge" class="admin-nav-badge" hidden>0</b></button>

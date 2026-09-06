@@ -40,6 +40,7 @@ function setupStartupSplash() {
 let data = window.F300_DATA || {};
 let standings = data.standings || [];
 let raceResults = data.raceResults || [];
+let lapTimes = data.lapTimes || [];
 let driverProfiles = data.profiles || [];
 let submissionWindow = data.submissionWindow || { open: false };
 let apiUrl = data.apiUrl || "";
@@ -59,6 +60,8 @@ const $ = (sel) => document.querySelector(sel);
 let selectedRound = null;
 localStorage.removeItem("f300-driver-filter");
 let selectedDriver = "";
+let selectedLapDriver = "";
+let selectedLapRound = null;
 let calendarShowingAll = false;
 
 function resetResultsFilter() {
@@ -1012,6 +1015,235 @@ function renderStandings() {
   setupAvatarFallbacks($("#standings-list"));
 }
 
+
+function lapSessionLabel(key) {
+  return ({
+    h1:"Heat 1",
+    h2:"Heat 2",
+    h3:"Heat 3",
+    final:"Final"
+  })[String(key || "").toLowerCase()] || String(key || "Session").toUpperCase();
+}
+
+function allDriverLapEntries(driverName) {
+  return lapTimes.filter(item => item.driver === driverName);
+}
+
+function driverLifetimeBest(driverName) {
+  const entries = allDriverLapEntries(driverName);
+  let best = null;
+  let context = null;
+
+  entries.forEach(entry => {
+    (entry.laps || []).forEach(lap => {
+      const time = validLap(lap.time);
+      if (time === null) return;
+
+      if (best === null || time < best) {
+        best = time;
+        context = {
+          round:entry.round,
+          track:entry.track,
+          sessionKey:entry.sessionKey
+        };
+      }
+    });
+  });
+
+  return { best, context };
+}
+
+function renderLapTimesOverview() {
+  const target = $("#lap-driver-list");
+  if (!target) return;
+
+  if (!lapTimes.length) {
+    target.innerHTML = `
+      <div class="lap-empty-card">
+        <strong>No lap-by-lap data yet</strong>
+        <span>Lap times will appear here after a supported race timing import.</span>
+      </div>`;
+    return;
+  }
+
+  target.innerHTML = standings.map(driver => {
+    const lifetime = driverLifetimeBest(driver.driver);
+    const best = lifetime.best;
+    const context = lifetime.context;
+    const hasData = allDriverLapEntries(driver.driver).length > 0;
+
+    return `
+      <button class="lap-driver-card" type="button" data-lap-driver="${escapeHtml(driver.driver)}" ${hasData ? "" : "disabled"}>
+        <span class="lap-driver-rank">${driver.position}</span>
+        ${avatarMarkup(driver.driver, "list-avatar")}
+        <span class="lap-driver-copy">
+          <strong>${escapeHtml(driver.driver)}</strong>
+          <small>#${escapeHtml(driver.number)}${context ? ` · Best at ${escapeHtml(context.track)} R${context.round}` : " · No imported laps yet"}</small>
+        </span>
+        <span class="lap-driver-best">
+          <b>${best === null ? "—" : best.toFixed(3)}</b>
+          <small>BEST LAP</small>
+        </span>
+      </button>`;
+  }).join("");
+
+  target.querySelectorAll(".lap-driver-card:not([disabled])").forEach(button => {
+    button.addEventListener("click", () => {
+      selectedLapDriver = button.dataset.lapDriver || "";
+      const rounds = Array.from(new Set(
+        allDriverLapEntries(selectedLapDriver).map(item => Number(item.round))
+      )).filter(Number.isFinite).sort((a,b) => a-b);
+
+      selectedLapRound = rounds.length ? rounds[0] : null;
+      renderLapDriverDetail();
+    });
+  });
+
+  setupAvatarFallbacks(target);
+}
+
+function renderLapDriverDetail() {
+  const overview = $("#lap-times-overview");
+  const detail = $("#lap-driver-detail");
+  if (!overview || !detail) return;
+
+  if (!selectedLapDriver) {
+    overview.hidden = false;
+    detail.hidden = true;
+    renderLapTimesOverview();
+    return;
+  }
+
+  const standing = standings.find(item => item.driver === selectedLapDriver);
+  const entries = allDriverLapEntries(selectedLapDriver);
+  const rounds = Array.from(new Set(
+    entries.map(item => Number(item.round))
+  )).filter(Number.isFinite).sort((a,b) => a-b);
+
+  if (!rounds.length) {
+    selectedLapDriver = "";
+    renderLapDriverDetail();
+    return;
+  }
+
+  if (!rounds.includes(Number(selectedLapRound))) {
+    selectedLapRound = rounds[0];
+  }
+
+  overview.hidden = true;
+  detail.hidden = false;
+
+  const lifetime = driverLifetimeBest(selectedLapDriver);
+
+  $("#lap-driver-header").innerHTML = `
+    <div class="lap-driver-profile">
+      ${avatarMarkup(selectedLapDriver, "dialog-avatar lap-driver-avatar")}
+      <div>
+        <span class="eyebrow">DRIVER LAP HISTORY</span>
+        <h3>${escapeHtml(selectedLapDriver)}</h3>
+        <p>#${escapeHtml(standing?.number || entries[0]?.number || "—")} · Championship P${escapeHtml(standing?.position || "—")}</p>
+      </div>
+      <div class="lap-lifetime-best">
+        <strong>${lifetime.best === null ? "—" : lifetime.best.toFixed(3)}</strong>
+        <span>Best recorded lap</span>
+      </div>
+    </div>`;
+
+  $("#lap-round-scroller").innerHTML = rounds
+    .map(round => `
+      <button class="round-chip ${Number(round) === Number(selectedLapRound) ? "active" : ""}" type="button" data-lap-round="${round}">
+        Round ${round}
+      </button>`)
+    .join("");
+
+  $("#lap-round-scroller").querySelectorAll("[data-lap-round]").forEach(button => {
+    button.addEventListener("click", () => {
+      selectedLapRound = Number(button.dataset.lapRound);
+      renderLapDriverDetail();
+    });
+  });
+
+  const roundEntries = entries
+    .filter(item => Number(item.round) === Number(selectedLapRound))
+    .sort((a,b) =>
+      ["h1","h2","h3","final"].indexOf(a.sessionKey) -
+      ["h1","h2","h3","final"].indexOf(b.sessionKey)
+    );
+
+  const track = roundEntries[0]?.track || "";
+  const totalLaps = roundEntries.reduce(
+    (sum,item) => sum + (item.laps || []).length,
+    0
+  );
+  const roundBest = roundEntries.reduce((best,item) => {
+    const value = validLap(item.best);
+    if (value === null) return best;
+    return best === null || value < best ? value : best;
+  }, null);
+
+  $("#lap-round-summary").innerHTML = `
+    <span><strong>Round ${selectedLapRound}</strong> · ${escapeHtml(track)}</span>
+    <span>${totalLaps} recorded lap${totalLaps === 1 ? "" : "s"}${roundBest === null ? "" : ` · Best ${roundBest.toFixed(3)}`}</span>`;
+
+  $("#lap-session-list").innerHTML = roundEntries.map(entry => {
+    const laps = entry.laps || [];
+    const best = validLap(entry.best);
+
+    return `
+      <details class="lap-session-card">
+        <summary>
+          <span>
+            <strong>${lapSessionLabel(entry.sessionKey)}</strong>
+            <small>${laps.length} lap${laps.length === 1 ? "" : "s"}</small>
+          </span>
+          <span class="lap-session-best">
+            <b>${best === null ? "—" : best.toFixed(3)}</b>
+            <small>BEST</small>
+          </span>
+        </summary>
+        <div class="lap-table">
+          ${laps.map(lap => {
+            const time = validLap(lap.time);
+            const isBest = best !== null && time !== null && Math.abs(time - best) < 0.0005;
+
+            return `
+              <div class="lap-row ${isBest ? "lap-row-best" : ""}">
+                <span>Lap ${escapeHtml(lap.lap)}</span>
+                <strong>${time === null ? "—" : time.toFixed(3)}</strong>
+                <small>${lap.inPit ? "PIT" : ""}</small>
+              </div>`;
+          }).join("") || `<div class="lap-empty-inline">No lap times recorded.</div>`}
+        </div>
+      </details>`;
+  }).join("") || `
+    <div class="lap-empty-card">
+      <strong>No lap data for this round</strong>
+    </div>`;
+
+  setupAvatarFallbacks($("#lap-driver-header"));
+}
+
+function renderLapTimes() {
+  if (selectedLapDriver) {
+    renderLapDriverDetail();
+  } else {
+    $("#lap-times-overview").hidden = false;
+    $("#lap-driver-detail").hidden = true;
+    renderLapTimesOverview();
+  }
+}
+
+function setupLapTimes() {
+  $("#lap-times-back")?.addEventListener("click", () => {
+    selectedLapDriver = "";
+    selectedLapRound = null;
+    renderLapTimes();
+  });
+
+  renderLapTimes();
+}
+
+
 function calendarSort(events) {
   const upcoming = events.filter(e => e.status === "Upcoming").sort((a,b) => a.dateKey.localeCompare(b.dateKey));
   const others = events.filter(e => e.status !== "Upcoming").sort((a,b) => b.dateKey.localeCompare(a.dateKey));
@@ -1289,6 +1521,7 @@ function applyFreshPublicData(nextData) {
   data = nextData || {};
   standings = data.standings || [];
   raceResults = data.raceResults || [];
+  lapTimes = data.lapTimes || [];
   driverProfiles = data.profiles || [];
   submissionWindow = data.submissionWindow || { open: false };
   apiUrl = data.apiUrl || "";
@@ -1298,6 +1531,7 @@ function applyFreshPublicData(nextData) {
 
   renderStandings();
   renderCalendar();
+  renderLapTimes();
   setupDriverFilter();
   setupResults();
 
@@ -1568,6 +1802,7 @@ renderStandings();
 renderCalendar();
 setupDriverFilter();
 setupResults();
+setupLapTimes();
 setupDriverHub();
 setupContactSupport();
 setupAdminTools();
