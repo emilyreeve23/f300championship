@@ -23,14 +23,14 @@ import os
 import re
 import sys
 from collections import defaultdict
-from datetime import date
+from datetime import date, timedelta
 from typing import Any, Iterable
-from urllib.parse import parse_qs, urlparse
+from urllib.parse import parse_qs, quote_plus, urlparse
 
 import requests
 from speedhive.wrapper import SpeedhiveClient
 
-BOT_VERSION = "personal-lap-pages-v3"
+BOT_VERSION = "v1.2-speedhive-laps"
 
 
 SESSION_PATTERNS = {
@@ -597,10 +597,45 @@ def f300_race_context(
                 "published F300 Race Calendar."
             )
 
+        date_text = str(item.get("date", "")).strip()
+        date_keys = [date_key]
+
+        # F300 calendar weekends such as "9th-10th May" may appear on
+        # Speedhive under either the Saturday or Sunday date. Keep the exact
+        # calendar start date, and include the rest of a short displayed date
+        # range when one is present.
+        range_match = re.search(
+            r"(\d{1,2})(?:st|nd|rd|th)?\s*[-–]\s*(\d{1,2})(?:st|nd|rd|th)?",
+            date_text,
+            flags=re.I,
+        )
+
+        if range_match:
+            start_date = date.fromisoformat(date_key)
+            end_day = int(range_match.group(2))
+
+            try:
+                if end_day >= start_date.day:
+                    end_date = start_date.replace(day=end_day)
+                else:
+                    # Rare month-crossing weekend, e.g. 31st-1st.
+                    probe = start_date + timedelta(days=1)
+                    while probe.day != end_day and (probe - start_date).days <= 7:
+                        probe += timedelta(days=1)
+                    end_date = probe
+
+                probe = start_date + timedelta(days=1)
+                while probe <= end_date and (probe - start_date).days <= 7:
+                    date_keys.append(probe.isoformat())
+                    probe += timedelta(days=1)
+            except ValueError:
+                pass
+
         return {
             "track": track,
             "dateKey": date_key,
-            "dateText": str(item.get("date", "")).strip(),
+            "dateKeys": date_keys,
+            "dateText": date_text,
         }
 
     raise RuntimeError(
@@ -1076,13 +1111,18 @@ def discover_event_id_from_search(
 
     track = race_context["track"]
     date_key = race_context["dateKey"]
+    date_keys = race_context.get("dateKeys") or [date_key]
     search_term = search_term_from_url(search_url)
-    date_variants = speedhive_date_variants(date_key)
+    date_variants = [
+        variant
+        for key in date_keys
+        for variant in speedhive_date_variants(key)
+    ]
 
     print("\nSpeedhive public-search discovery:", flush=True)
     print(f"  Search URL: {search_url}")
     print(f"  F300 calendar track: {track}")
-    print(f"  F300 calendar date: {date_key}")
+    print(f"  F300 calendar date(s): {', '.join(date_keys)}")
     if search_term:
         print(f"  Search term in URL: {search_term}")
 
@@ -1247,7 +1287,7 @@ def discover_event_id_from_search(
             if not candidate_rows:
                 preview = body_text[:1500]
                 raise RuntimeError(
-                    f"No visible Speedhive result matched {track} on {date_key}. "
+                    f"No visible Speedhive result matched {track} on the F300 weekend ({', '.join(date_keys)}). "
                     "The event may not have been created yet, or Speedhive did "
                     f"not return search results to the runner. Page text: {preview}"
                 )
@@ -1269,8 +1309,8 @@ def discover_event_id_from_search(
                     for row in unique_rows[:6]
                 )
                 raise RuntimeError(
-                    f"More than one Speedhive result matched {track} on "
-                    f"{date_key}. The bot will not guess. Matches: {options}"
+                    f"More than one Speedhive result matched {track} on the F300 weekend "
+                    f"({', '.join(date_keys)}). The bot will not guess. Matches: {options}"
                 )
 
             target_text = unique_rows[0]["text"]
@@ -1485,6 +1525,20 @@ def pick_event_id(
     if explicit:
         return explicit
 
+    requested_clean = str(requested or "").strip().lower()
+    if requested_clean in {"", "auto", "speedhive"}:
+        if not race_context:
+            raise RuntimeError(
+                "The F300 Race Calendar is required for automatic Speedhive discovery."
+            )
+
+        auto_url = (
+            "https://speedhive.mylaps.com/search?term="
+            f"{quote_plus(race_context['track'])}&source="
+        )
+        print(f"Auto-built Speedhive search URL: {auto_url}")
+        return discover_event_id_from_search(auto_url, race_context)
+
     if is_speedhive_search_url(requested):
         if not race_context:
             raise RuntimeError(
@@ -1562,7 +1616,7 @@ def main() -> int:
     print(f"F300 round: {args.round}")
     print(
         f"F300 calendar: {race_context['track']} · "
-        f"{race_context['dateKey']}"
+        f"{', '.join(race_context.get('dateKeys') or [race_context['dateKey']])}"
     )
 
     by_number, by_name = f300_roster_from_feed(f300_feed)
