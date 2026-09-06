@@ -231,15 +231,19 @@ def result_name(row: dict[str, Any]) -> str:
 
 
 def result_position(row: dict[str, Any]) -> int | None:
+    # Mixed Speedhive classes are common at Lydd. Prefer the driver's
+    # position within their result class over the combined overall position.
     value = lookup_any(
         row,
         (
+            "positionInClass",
+            "position_in_class",
+            "classPosition",
+            "class_position",
             "position",
             "rank",
             "overallPosition",
             "overall_position",
-            "classPosition",
-            "class_position",
         ),
     )
 
@@ -297,6 +301,81 @@ def result_best_lap(row: dict[str, Any]) -> float | None:
         ),
     )
     return to_seconds(value)
+
+
+
+def result_class(row: dict[str, Any]) -> str:
+    value = lookup_any(
+        row,
+        (
+            "resultClass",
+            "result_class",
+            "className",
+            "class_name",
+            "category",
+        ),
+        max_depth=3,
+    )
+    return str(value or "").strip()
+
+
+def is_practice_session(name: str) -> bool:
+    lowered = name.lower()
+    return any(
+        phrase in lowered
+        for phrase in (
+            "practice",
+            "warm-up",
+            "warm up",
+            "warmup",
+            "test session",
+            "testing",
+        )
+    )
+
+
+def is_actual_final_session(name: str) -> bool:
+    lowered = name.lower()
+
+    if "pre-final" in lowered or "prefinal" in lowered:
+        return False
+    if "semi-final" in lowered or "semifinal" in lowered:
+        return False
+
+    return bool(re.search(r"\\bfinal\\b", lowered, flags=re.I))
+
+
+def session_sort_value(session: dict[str, Any]) -> tuple[int, str]:
+    """
+    Speedhive session IDs increase in event order for the meetings tested.
+    Prefer an explicit session ID because it is stable even when labels vary.
+    """
+    sid = (
+        session.get("id")
+        or lookup_any(session, ("sessionId", "session_id", "id"), max_depth=1)
+        or 0
+    )
+
+    try:
+        number = int(sid)
+    except (TypeError, ValueError):
+        number = 0
+
+    return (number, session_name(session).lower())
+
+
+def likely_f300_result(
+    row: dict[str, Any],
+    by_number: dict[str, str],
+    by_name: dict[str, str],
+) -> bool:
+    # When our F300 roster is available, exact roster matching is the safest
+    # way to remove Rotax/177 competitors from combined Speedhive sessions.
+    if by_number or by_name:
+        return row_matches_roster(row, by_number, by_name)
+
+    # Fallback if the public F300 feed is unavailable.
+    return bool(re.search(r"\\bf\\s*300\\b", result_class(row), flags=re.I))
 
 
 def competitor_id(row: dict[str, Any]) -> str:
@@ -545,6 +624,9 @@ def build_session_payload(
     session: dict[str, Any],
     rows: list[dict[str, Any]],
     key: str,
+    by_number: dict[str, str],
+    by_name: dict[str, str],
+    mapping_reason: str,
 ) -> dict[str, Any]:
     sid_raw = session.get("id") or lookup_any(session, ("id", "sessionId", "session_id"))
     session_id = int(sid_raw)
@@ -554,6 +636,9 @@ def build_session_payload(
 
     for row in rows:
         if not isinstance(row, dict):
+            continue
+
+        if not likely_f300_result(row, by_number, by_name):
             continue
 
         number = result_number(row)
@@ -581,6 +666,7 @@ def build_session_payload(
                 "position": position,
                 "status": status,
                 "bestLap": best_lap,
+                "resultClass": result_class(row),
             }
         )
 
@@ -593,6 +679,7 @@ def build_session_payload(
         "key": key,
         "name": display_name,
         "sessionId": session_id,
+        "mappingReason": mapping_reason,
         "results": results,
     }
 
@@ -669,47 +756,137 @@ def main() -> int:
 
     print(f"Speedhive sessions found: {len(sessions)}")
 
-    recognized: dict[str, dict[str, Any]] = {}
     diagnostics: list[dict[str, Any]] = []
+    f300_candidates: list[tuple[dict[str, Any], list[dict[str, Any]]]] = []
 
     for session in sessions:
-        sid = session.get("id") or lookup_any(session, ("id", "sessionId", "session_id"))
+        sid = session.get("id") or lookup_any(
+            session,
+            ("id", "sessionId", "session_id"),
+        )
         if not sid:
             continue
 
         name = session_name(session) or f"Session {sid}"
         context = str(session.get("_f300_parent_context") or "").strip()
-        key = infer_session_key(f"{context} {name}")
-
         rows = client.get_results(int(sid))
+        looks_f300 = is_f300_session(
+            session,
+            rows,
+            by_number,
+            by_name,
+        )
 
         diagnostics.append(
             {
                 "id": sid,
                 "context": context,
                 "name": name,
-                "key": key,
-                "result_count": len(rows),
-                "looks_f300": is_f300_session(session, rows, by_number, by_name),
-                "sample_keys": sorted(rows[0].keys()) if rows and isinstance(rows[0], dict) else [],
+                "results": len(rows),
+                "looks_f300": looks_f300,
+                "practice": is_practice_session(f"{context} {name}"),
+                "actual_final": is_actual_final_session(f"{context} {name}"),
+                "sample_keys": (
+                    sorted(rows[0].keys())
+                    if rows and isinstance(rows[0], dict)
+                    else []
+                ),
             }
         )
 
-        if not key:
+        if looks_f300:
+            f300_candidates.append((session, rows))
+
+    f300_candidates.sort(key=lambda item: session_sort_value(item[0]))
+
+    warnings: list[str] = []
+    scoring_before_final: list[tuple[dict[str, Any], list[dict[str, Any]]]] = []
+    final_candidates: list[tuple[dict[str, Any], list[dict[str, Any]]]] = []
+
+    for session, rows in f300_candidates:
+        name = session_name(session)
+        context = str(session.get("_f300_parent_context") or "")
+        label = f"{context} {name}".strip()
+
+        if is_practice_session(label):
             continue
 
-        if not is_f300_session(session, rows, by_number, by_name):
+        if is_actual_final_session(label):
+            final_candidates.append((session, rows))
             continue
 
-        payload = build_session_payload(client, session, rows, key)
+        scoring_before_final.append((session, rows))
 
-        # If duplicate Heat/Final names exist, keep the latest/highest session id.
-        previous = recognized.get(key)
-        if previous is None or int(payload["sessionId"]) > int(previous["sessionId"]):
-            recognized[key] = payload
+    if len(scoring_before_final) > 3:
+        extras = [
+            session_name(item[0]) or str(item[0].get("id") or "?")
+            for item in scoring_before_final[3:]
+        ]
+        warnings.append(
+            "More than three non-practice sessions were found before the Final. "
+            "The first three were mapped to H1/H2/H3 and these extra sessions "
+            f"were not imported: {', '.join(extras)}"
+        )
+
+    if final_candidates and len(scoring_before_final) < 3:
+        warnings.append(
+            f"A Final was found but only {len(scoring_before_final)} scoring "
+            "session(s) were found before it."
+        )
+
+    if len(final_candidates) > 1:
+        warnings.append(
+            "More than one Final-like session was found. "
+            "The latest Final was used."
+        )
+
+    mapped: dict[str, tuple[dict[str, Any], list[dict[str, Any]], str]] = {}
+
+    for index, item in enumerate(scoring_before_final[:3]):
+        key = ("h1", "h2", "h3")[index]
+        session, rows = item
+        mapped[key] = (
+            session,
+            rows,
+            (
+                f"Mapped by race-day order: non-practice scoring session "
+                f"{index + 1} → {key.upper()}."
+            ),
+        )
+
+    if final_candidates:
+        session, rows = final_candidates[-1]
+        mapped["final"] = (
+            session,
+            rows,
+            "Mapped because this is the actual Final (Pre-Final is not treated as Final).",
+        )
 
     ordered_keys = ["h1", "h2", "h3", "final"]
-    session_payloads = [recognized[key] for key in ordered_keys if key in recognized]
+    session_payloads: list[dict[str, Any]] = []
+
+    for key in ordered_keys:
+        if key not in mapped:
+            continue
+
+        session, rows, reason = mapped[key]
+        payload = build_session_payload(
+            client,
+            session,
+            rows,
+            key,
+            by_number,
+            by_name,
+            reason,
+        )
+
+        if not payload["results"]:
+            warnings.append(
+                f"{payload['name']} mapped to {key.upper()} but no drivers "
+                "matched the current F300 roster."
+            )
+
+        session_payloads.append(payload)
 
     print("\nRecognized F300 sessions:")
     if not session_payloads:
@@ -720,7 +897,8 @@ def main() -> int:
                 f"  id={item['id']} | "
                 f"context={item['context'] or '-'} | "
                 f"name={item['name']} | "
-                f"mapped={item['key'] or '-'} | "
+                f"practice={item['practice']} | "
+                f"actual_final={item['actual_final']} | "
                 f"results={item['result_count']} | "
                 f"looks_f300={item['looks_f300']} | "
                 f"sample_keys={','.join(item['sample_keys'][:20]) or '-'}"
@@ -750,12 +928,18 @@ def main() -> int:
                 f"P={result_text!s:<4} best={lap_text}"
             )
 
+    if warnings:
+        print("\nImporter warnings:")
+        for warning in warnings:
+            print(f"  - {warning}")
+
     outgoing = {
         "action": "timingImport",
         "secret": os.environ.get("F300_TIMING_BOT_SECRET", ""),
         "source": "Speedhive",
         "eventId": str(event_id),
         "round": args.round,
+        "warnings": warnings,
         "sessions": session_payloads,
     }
 
