@@ -539,11 +539,13 @@ def row_matches_roster(
     number = normalize_number(result_number(row))
     name = normalize_name(result_name(row))
 
+    # Kart/driver number is the authoritative F300 identity.
+    # Speedhive display names can vary between meetings, so a known number
+    # must still match even when the shown name is different.
     if number and number in by_number:
-        if not name:
-            return True
-        return normalize_name(by_number[number]) == name
+        return True
 
+    # Only fall back to name when Speedhive has no usable known number.
     return bool(name and name in by_name)
 
 
