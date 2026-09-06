@@ -30,7 +30,7 @@ from urllib.parse import parse_qs, urlparse
 import requests
 from speedhive.wrapper import SpeedhiveClient
 
-BOT_VERSION = "search-discovery-v4"
+BOT_VERSION = "lap-times-trial-v1"
 
 
 SESSION_PATTERNS = {
@@ -622,25 +622,40 @@ def is_f300_session(
     return exact_matches >= 2
 
 
-def lap_lookup(
+def lap_data_for_session(
     client: SpeedhiveClient,
     session_id: int,
-) -> tuple[dict[str, float], dict[str, float]]:
-    by_competitor: dict[str, list[float]] = defaultdict(list)
-    by_number: dict[str, list[float]] = defaultdict(list)
+) -> tuple[
+    dict[str, list[dict[str, Any]]],
+    dict[str, list[dict[str, Any]]],
+]:
+    """
+    Return every valid lap, grouped by Speedhive competitor ID and, where
+    available, start number.
+
+    Speedhive's flattened lap feed provides competitorId, lapNumber,
+    lapTime, speed and inPit. We keep all valid lap times rather than only
+    the session best.
+    """
+    by_competitor: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    by_number: dict[str, list[dict[str, Any]]] = defaultdict(list)
 
     try:
         laps = client.get_laps(session_id)
-    except Exception:
+    except Exception as exc:
+        print(
+            f"Warning: lap feed could not be read for session {session_id}: {exc}",
+            file=sys.stderr,
+        )
         return {}, {}
 
-    for lap in laps:
-        if not isinstance(lap, dict):
+    for raw in laps:
+        if not isinstance(raw, dict):
             continue
 
         seconds = to_seconds(
             lookup_any(
-                lap,
+                raw,
                 ("lapTime", "lap_time", "time", "duration"),
                 max_depth=2,
             )
@@ -648,9 +663,23 @@ def lap_lookup(
         if seconds is None:
             continue
 
+        lap_raw = lookup_any(
+            raw,
+            ("lapNumber", "lap_number", "lap"),
+            max_depth=2,
+        )
+
+        try:
+            lap_number = int(float(str(lap_raw)))
+        except (TypeError, ValueError):
+            continue
+
+        if lap_number < 1:
+            continue
+
         comp_id = str(
             lookup_any(
-                lap,
+                raw,
                 ("competitorId", "competitor_id"),
                 max_depth=2,
             )
@@ -659,21 +688,62 @@ def lap_lookup(
 
         number = normalize_number(
             lookup_any(
-                lap,
+                raw,
                 ("startNumber", "start_number", "number"),
                 max_depth=2,
             )
         )
 
-        if comp_id:
-            by_competitor[comp_id].append(seconds)
-        if number:
-            by_number[number].append(seconds)
+        speed_raw = lookup_any(
+            raw,
+            ("speed", "bestSpeed", "best_speed"),
+            max_depth=2,
+        )
+        try:
+            speed = float(speed_raw) if speed_raw not in (None, "") else None
+        except (TypeError, ValueError):
+            speed = None
 
-    return (
-        {key: min(values) for key, values in by_competitor.items() if values},
-        {key: min(values) for key, values in by_number.items() if values},
-    )
+        in_pit_raw = lookup_any(
+            raw,
+            ("inPit", "in_pit"),
+            max_depth=2,
+        )
+        in_pit = str(in_pit_raw).strip().lower() in {
+            "true", "1", "yes", "y"
+        } if not isinstance(in_pit_raw, bool) else in_pit_raw
+
+        item = {
+            "lap": lap_number,
+            "time": round(float(seconds), 3),
+            "speed": round(speed, 3) if speed is not None else None,
+            "inPit": bool(in_pit),
+        }
+
+        if comp_id:
+            by_competitor[comp_id].append(item)
+        if number:
+            by_number[number].append(item)
+
+    def clean(groups: dict[str, list[dict[str, Any]]]) -> dict[str, list[dict[str, Any]]]:
+        cleaned: dict[str, list[dict[str, Any]]] = {}
+
+        for key, values in groups.items():
+            dedup: dict[int, dict[str, Any]] = {}
+
+            for item in values:
+                # Keep the latest record for the same lap number if
+                # Speedhive emits a duplicate update.
+                dedup[int(item["lap"])] = item
+
+            cleaned[key] = [
+                dedup[lap_number]
+                for lap_number in sorted(dedup)
+            ]
+
+        return cleaned
+
+    return clean(by_competitor), clean(by_number)
 
 
 def build_session_payload(
@@ -687,7 +757,7 @@ def build_session_payload(
 ) -> dict[str, Any]:
     sid_raw = session.get("id") or lookup_any(session, ("id", "sessionId", "session_id"))
     session_id = int(sid_raw)
-    comp_laps, number_laps = lap_lookup(client, session_id)
+    comp_laps, number_laps = lap_data_for_session(client, session_id)
 
     results: list[dict[str, Any]] = []
 
@@ -703,15 +773,20 @@ def build_session_payload(
         position = result_position(row)
         status = result_status(row)
         best_lap = result_best_lap(row)
+        cid = competitor_id(row)
+        normalized_number = normalize_number(number)
 
-        if best_lap is None:
-            cid = competitor_id(row)
-            if cid and cid in comp_laps:
-                best_lap = comp_laps[cid]
-            else:
-                normalized_number = normalize_number(number)
-                if normalized_number in number_laps:
-                    best_lap = number_laps[normalized_number]
+        driver_laps = []
+        if cid and cid in comp_laps:
+            driver_laps = comp_laps[cid]
+        elif normalized_number and normalized_number in number_laps:
+            driver_laps = number_laps[normalized_number]
+
+        if best_lap is None and driver_laps:
+            best_lap = min(
+                (lap["time"] for lap in driver_laps if lap.get("time") is not None),
+                default=None,
+            )
 
         if not number and not name:
             continue
@@ -724,6 +799,8 @@ def build_session_payload(
                 "status": status,
                 "bestLap": best_lap,
                 "resultClass": result_class(row),
+                "competitorId": cid,
+                "laps": driver_laps,
             }
         )
 
@@ -1463,8 +1540,22 @@ def main() -> int:
             print(
                 f"        #{row['number'] or '?':<4} "
                 f"{row['name'] or 'Unknown':<28} "
-                f"P={result_text!s:<4} best={lap_text}"
+                f"P={result_text!s:<4} best={lap_text} "
+                f"laps={len(row.get('laps') or [])}"
             )
+
+            if args.dry_run:
+                for lap in row.get("laps") or []:
+                    pit = " PIT" if lap.get("inPit") else ""
+                    speed = (
+                        f" speed={lap['speed']:.3f}"
+                        if isinstance(lap.get("speed"), (int, float))
+                        else ""
+                    )
+                    print(
+                        f"              Lap {int(lap['lap']):>2}: "
+                        f"{float(lap['time']):.3f}{pit}{speed}"
+                    )
 
     if warnings:
         print("\nImporter warnings:")
