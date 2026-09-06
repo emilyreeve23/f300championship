@@ -30,7 +30,7 @@ from urllib.parse import parse_qs, urlparse
 import requests
 from speedhive.wrapper import SpeedhiveClient
 
-BOT_VERSION = "lap-times-trial-v1"
+BOT_VERSION = "personal-lap-pages-v2"
 
 
 SESSION_PATTERNS = {
@@ -259,6 +259,33 @@ def result_position(row: dict[str, Any]) -> int | None:
         return None
 
     return number if 1 <= number <= 99 else None
+
+
+def result_overall_position(row: dict[str, Any]) -> int | None:
+    """
+    Position used by Speedhive's /laptimes?pos=X page.
+
+    This must be the combined session result position, not the F300
+    positionInClass used for championship scoring.
+    """
+    value = lookup_any(
+        row,
+        (
+            "position",
+            "overallPosition",
+            "overall_position",
+            "rank",
+        ),
+        max_depth=3,
+    )
+
+    try:
+        number = int(float(str(value)))
+    except (TypeError, ValueError):
+        return None
+
+    return number if 1 <= number <= 999 else None
+
 
 
 def result_status(row: dict[str, Any]) -> str:
@@ -622,128 +649,237 @@ def is_f300_session(
     return exact_matches >= 2
 
 
-def lap_data_for_session(
-    client: SpeedhiveClient,
-    session_id: int,
-) -> tuple[
-    dict[str, list[dict[str, Any]]],
-    dict[str, list[dict[str, Any]]],
-]:
+def scrape_personal_lap_rows_from_page(page: Any) -> list[dict[str, Any]]:
     """
-    Return every valid lap, grouped by Speedhive competitor ID and, where
-    available, start number.
+    Extract visible Personal Results rows from a Speedhive driver lap page.
 
-    Speedhive's flattened lap feed provides competitorId, lapNumber,
-    lapTime, speed and inPit. We keep all valid lap times rather than only
-    the session best.
+    Speedhive has used several table/div layouts over time, so this searches
+    normal table rows, ARIA rows and row-like DIVs rather than relying on one
+    fragile CSS class.
     """
-    by_competitor: dict[str, list[dict[str, Any]]] = defaultdict(list)
-    by_number: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    raw_rows = page.evaluate(
+        """() => {
+          const selectors = [
+            "tr",
+            '[role="row"]',
+            ".row",
+            '[class*="lap"][class*="row"]',
+            '[class*="result"][class*="row"]'
+          ];
 
-    try:
-        laps = client.get_laps(session_id)
-    except Exception as exc:
-        print(
-            f"Warning: lap feed could not be read for session {session_id}: {exc}",
-            file=sys.stderr,
-        )
-        return {}, {}
-
-    for raw in laps:
-        if not isinstance(raw, dict):
-            continue
-
-        seconds = to_seconds(
-            lookup_any(
-                raw,
-                ("lapTime", "lap_time", "time", "duration"),
-                max_depth=2,
+          const nodes = Array.from(
+            new Set(
+              selectors.flatMap(selector =>
+                Array.from(document.querySelectorAll(selector))
+              )
             )
-        )
-        if seconds is None:
+          );
+
+          return nodes
+            .filter(node => {
+              const style = window.getComputedStyle(node);
+              if (style.display === "none" || style.visibility === "hidden") {
+                return false;
+              }
+
+              const text = String(node.innerText || "")
+                .replace(/\\s+/g, " ")
+                .trim();
+
+              return (
+                /^\\d+\\s+/.test(text) &&
+                /\\b\\d{2,3}\\.\\d{3}\\b/.test(text)
+              );
+            })
+            .map(node =>
+              String(node.innerText || "")
+                .replace(/\\s+/g, " ")
+                .trim()
+            );
+        }"""
+    )
+
+    laps: dict[int, dict[str, Any]] = {}
+
+    for row_text in raw_rows:
+        lap_match = re.match(r"^\s*(\d+)\b", row_text)
+        if not lap_match:
             continue
 
-        lap_raw = lookup_any(
-            raw,
-            ("lapNumber", "lap_number", "lap"),
-            max_depth=2,
-        )
-
-        try:
-            lap_number = int(float(str(lap_raw)))
-        except (TypeError, ValueError):
-            continue
-
+        lap_number = int(lap_match.group(1))
         if lap_number < 1:
             continue
 
-        comp_id = str(
-            lookup_any(
-                raw,
-                ("competitorId", "competitor_id"),
-                max_depth=2,
-            )
-            or ""
-        ).strip()
+        # The first plausible xx.xxx / xxx.xxx number after the lap number is
+        # the lap time. Later values may be speed/diffs.
+        rest = row_text[lap_match.end():]
+        lap_time = None
 
-        number = normalize_number(
-            lookup_any(
-                raw,
-                ("startNumber", "start_number", "number"),
-                max_depth=2,
-            )
+        for match in re.finditer(r"\b(\d{2,3}\.\d{3})\b", rest):
+            value = float(match.group(1))
+            if 10 <= value <= 300:
+                lap_time = round(value, 3)
+                break
+
+        if lap_time is None:
+            continue
+
+        speed_match = re.search(
+            r"\b(\d{2,3}(?:\.\d{1,3})?)\s*km/h\b",
+            row_text,
+            flags=re.I,
         )
 
-        speed_raw = lookup_any(
-            raw,
-            ("speed", "bestSpeed", "best_speed"),
-            max_depth=2,
+        speed = (
+            round(float(speed_match.group(1)), 3)
+            if speed_match
+            else None
         )
-        try:
-            speed = float(speed_raw) if speed_raw not in (None, "") else None
-        except (TypeError, ValueError):
-            speed = None
 
-        in_pit_raw = lookup_any(
-            raw,
-            ("inPit", "in_pit"),
-            max_depth=2,
-        )
-        in_pit = str(in_pit_raw).strip().lower() in {
-            "true", "1", "yes", "y"
-        } if not isinstance(in_pit_raw, bool) else in_pit_raw
-
-        item = {
+        laps[lap_number] = {
             "lap": lap_number,
-            "time": round(float(seconds), 3),
-            "speed": round(speed, 3) if speed is not None else None,
-            "inPit": bool(in_pit),
+            "time": lap_time,
+            "speed": speed,
+            "inPit": bool(re.search(r"\bPIT\b", row_text, flags=re.I)),
         }
 
-        if comp_id:
-            by_competitor[comp_id].append(item)
-        if number:
-            by_number[number].append(item)
+    return [laps[key] for key in sorted(laps)]
 
-    def clean(groups: dict[str, list[dict[str, Any]]]) -> dict[str, list[dict[str, Any]]]:
-        cleaned: dict[str, list[dict[str, Any]]] = {}
 
-        for key, values in groups.items():
-            dedup: dict[int, dict[str, Any]] = {}
+def scrape_personal_laps_for_results(
+    session_id: int,
+    rows: list[dict[str, Any]],
+) -> dict[int, list[dict[str, Any]]]:
+    """
+    Visit Speedhive's per-driver Personal Results page for each result row.
 
-            for item in values:
-                # Keep the latest record for the same lap number if
-                # Speedhive emits a duplicate update.
-                dedup[int(item["lap"])] = item
+    URL format confirmed from the public site:
+      /sessions/<session-id>/laptimes?pos=<overall-result-position>
+    """
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError as exc:
+        raise RuntimeError(
+            "Personal lap-page scraping requires Playwright. "
+            "Use the current GitHub workflow that installs Chromium."
+        ) from exc
 
-            cleaned[key] = [
-                dedup[lap_number]
-                for lap_number in sorted(dedup)
-            ]
+    wanted_positions = []
 
-        return cleaned
+    for row in rows:
+        overall_pos = result_overall_position(row)
+        if overall_pos is not None:
+            wanted_positions.append(
+                (
+                    overall_pos,
+                    result_number(row),
+                    result_name(row),
+                )
+            )
 
-    return clean(by_competitor), clean(by_number)
+    if not wanted_positions:
+        return {}
+
+    found: dict[int, list[dict[str, Any]]] = {}
+
+    with sync_playwright() as playwright:
+        browser = playwright.chromium.launch(
+            headless=True,
+            args=["--disable-blink-features=AutomationControlled"],
+        )
+
+        page = browser.new_page(
+            viewport={"width": 1440, "height": 1000},
+            locale="en-GB",
+            user_agent=(
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/152.0.0.0 Safari/537.36"
+            ),
+        )
+
+        try:
+            for overall_pos, number, name in wanted_positions:
+                url = (
+                    f"https://speedhive.mylaps.com/sessions/"
+                    f"{session_id}/laptimes?pos={overall_pos}"
+                )
+
+                print(
+                    f"        Personal laps: session={session_id} "
+                    f"pos={overall_pos} #{number or '?'} {name or 'Unknown'}",
+                    flush=True,
+                )
+
+                try:
+                    page.goto(
+                        url,
+                        wait_until="domcontentloaded",
+                        timeout=60000,
+                    )
+                    page.wait_for_timeout(1800)
+
+                    # Personal Results / Lap Time is rendered client-side.
+                    try:
+                        page.get_by_text(
+                            "Lap Time",
+                            exact=True,
+                        ).first.wait_for(timeout=12000)
+                    except Exception:
+                        page.wait_for_timeout(1800)
+
+                    body_text = " ".join(
+                        page.locator("body").inner_text(timeout=10000).split()
+                    )
+
+                    normalized_expected_name = normalize_name(name)
+                    normalized_body = normalize_name(body_text)
+
+                    if (
+                        normalized_expected_name
+                        and normalized_expected_name not in normalized_body
+                    ):
+                        print(
+                            f"          Warning: expected driver name "
+                            f'"{name}" was not visible on the lap page.',
+                            file=sys.stderr,
+                        )
+
+                    laps = scrape_personal_lap_rows_from_page(page)
+                    found[overall_pos] = laps
+
+                    print(
+                        f"          Found {len(laps)} personal lap rows.",
+                        flush=True,
+                    )
+
+                    if not laps:
+                        # Useful diagnostic if Speedhive changes its DOM again.
+                        preview_lines = [
+                            line.strip()
+                            for line in page.locator("body")
+                            .inner_text(timeout=10000)
+                            .splitlines()
+                            if line.strip()
+                        ][:120]
+
+                        print(
+                            "          Personal lap page diagnostic:",
+                            flush=True,
+                        )
+                        for line in preview_lines:
+                            print(f"            {line}", flush=True)
+
+                except Exception as exc:
+                    print(
+                        f"          Warning: could not read {url}: {exc}",
+                        file=sys.stderr,
+                    )
+                    found[overall_pos] = []
+        finally:
+            browser.close()
+
+    return found
 
 
 def build_session_payload(
@@ -757,16 +893,22 @@ def build_session_payload(
 ) -> dict[str, Any]:
     sid_raw = session.get("id") or lookup_any(session, ("id", "sessionId", "session_id"))
     session_id = int(sid_raw)
-    comp_laps, number_laps = lap_data_for_session(client, session_id)
+
+    eligible_rows = [
+        row
+        for row in rows
+        if isinstance(row, dict)
+        and likely_f300_result(row, by_number, by_name)
+    ]
+
+    personal_laps = scrape_personal_laps_for_results(
+        session_id,
+        eligible_rows,
+    )
 
     results: list[dict[str, Any]] = []
 
-    for row in rows:
-        if not isinstance(row, dict):
-            continue
-
-        if not likely_f300_result(row, by_number, by_name):
-            continue
+    for row in eligible_rows:
 
         number = result_number(row)
         name = result_name(row)
@@ -774,13 +916,12 @@ def build_session_payload(
         status = result_status(row)
         best_lap = result_best_lap(row)
         cid = competitor_id(row)
-        normalized_number = normalize_number(number)
-
-        driver_laps = []
-        if cid and cid in comp_laps:
-            driver_laps = comp_laps[cid]
-        elif normalized_number and normalized_number in number_laps:
-            driver_laps = number_laps[normalized_number]
+        overall_position = result_overall_position(row)
+        driver_laps = (
+            personal_laps.get(overall_position, [])
+            if overall_position is not None
+            else []
+        )
 
         if best_lap is None and driver_laps:
             best_lap = min(
@@ -800,6 +941,7 @@ def build_session_payload(
                 "bestLap": best_lap,
                 "resultClass": result_class(row),
                 "competitorId": cid,
+                "lapPagePos": overall_position,
                 "laps": driver_laps,
             }
         )
@@ -1541,6 +1683,7 @@ def main() -> int:
                 f"        #{row['number'] or '?':<4} "
                 f"{row['name'] or 'Unknown':<28} "
                 f"P={result_text!s:<4} best={lap_text} "
+                f"webpos={row.get('lapPagePos') or '-'} "
                 f"laps={len(row.get('laps') or [])}"
             )
 
