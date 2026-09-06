@@ -75,6 +75,35 @@ Requests are written to the championship admin Google Sheet rather than opening 
 
 While the app is open, it checks the published `data.js` approximately every 15 seconds. When the Google Sheet → GitHub → Cloudflare pipeline publishes a newer dataset, Standings, Results, Calendar and public profile data refresh automatically without requiring the user to close or restart the PWA.
 
+
+### Private admin review centre
+
+The Info screen includes a private admin login. Admin authentication is handled by Apps Script and is not published in `data.js`.
+
+After sign-in, the app can show:
+
+- New Contact F300 support tickets
+- Timing/import items marked `Needs review`
+- An unread count while the admin session remains active
+- A `Mark seen` action that updates the corresponding Google Sheet row to `Seen`
+
+The admin access code is generated from Apps Script with `createAdminAccessCode()` and the app stores only a signed admin session token on the device.
+
+### Speedhive import behaviour
+
+For mixed/named Speedhive meetings the importer does not rely on exact labels such as `Heat 1`.
+
+It:
+
+1. Finds the F300 class/session group (including combined labels containing F300).
+2. Ignores Practice/Warm-up sessions.
+3. Maps the first three non-practice scoring sessions in chronological order to H1, H2 and H3.
+4. Treats Pre-Final as one of those three scoring sessions, not as the Final.
+5. Maps the actual Final to the F300 Final.
+6. Uses F300 driver number/name matching to ignore competitors from other combined classes.
+7. Prefers `positionInClass` when Speedhive supplies it.
+8. Logs unusual mappings, missing/extra sessions or skipped F300 matches as `Needs review`.
+
 ## Data and backend
 
 The championship Google Sheet is the administration/source-of-truth system.

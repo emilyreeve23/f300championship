@@ -163,7 +163,7 @@
           <ul class="update-list">
             <li>Championship standings, complete race-weekend results and season calendar.</li>
             <li>Miniature circuit illustrations personalise the Race Results and Calendar screens.</li>
-            <li>Results are ordered by Final result and can be filtered by driver.</li>
+            <li>Results are ordered by current race-weekend points and can be filtered by driver.</li>
             <li>Quick app-switches keep your place; after longer inactivity the app returns cleanly to Standings.</li>
             <li>Home Screen installation support for iPhone, iPad and Android.</li>
             <li>Offline caching allows the most recently downloaded championship data to remain available without signal.</li>
@@ -176,6 +176,17 @@
         <button id="contact-open-button" class="contact-mini-button" type="button">
           <span><strong>Contact F300</strong><small>Questions, bugs or PIN help</small></span>
           <span aria-hidden="true">›</span>
+        </button>
+
+        <button id="admin-open-button" class="contact-mini-button admin-mini-button" type="button">
+          <span>
+            <strong>Admin</strong>
+            <small id="admin-open-copy">Private championship tools</small>
+          </span>
+          <span class="admin-open-tail">
+            <b id="admin-open-badge" class="admin-count-badge" hidden>0</b>
+            <span aria-hidden="true">›</span>
+          </span>
         </button>
 
         <div class="testing-card" role="status">
@@ -196,9 +207,17 @@
       <button class="nav-button" data-target="results" aria-label="Race Results"><span class="nav-icon">🏎️</span><span>Results</span></button>
       <button class="nav-button" data-target="calendar" aria-label="Calendar"><span class="nav-icon">🏁</span><span>Calendar</span></button>
       <button class="nav-button" data-target="driver" aria-label="My Profile"><span class="nav-icon">👤</span><span>My Profile</span></button>
-      <button class="nav-button" data-target="info" aria-label="Info"><span class="nav-icon">ℹ️</span><span>Info</span></button>
+      <button class="nav-button admin-nav-host" data-target="info" aria-label="Info"><span class="nav-icon">ℹ️</span><span>Info</span><b id="admin-nav-badge" class="admin-nav-badge" hidden>0</b></button>
     </nav>
   </div>
+
+  <aside id="admin-alert-nudge" class="admin-alert-nudge" hidden>
+    <button id="admin-alert-open" type="button">
+      <span><strong>Admin</strong><small id="admin-alert-copy">New items need review</small></span>
+      <b id="admin-alert-count">0</b>
+    </button>
+    <button id="admin-alert-close" class="admin-alert-close" type="button" aria-label="Dismiss admin alert">×</button>
+  </aside>
 
   <aside id="install-nudge" class="install-nudge" hidden aria-label="Install F300 app">
     <img src="./icon-192.png" alt="" />
@@ -238,6 +257,42 @@
       <button class="primary-button" type="submit">Send to F300</button>
       <div id="contact-status" class="hub-status" aria-live="polite"></div>
     </form>
+  </dialog>
+
+  <dialog id="admin-dialog" class="install-dialog admin-dialog">
+    <button class="dialog-close" id="admin-dialog-close" aria-label="Close">×</button>
+
+    <div id="admin-login-panel" class="admin-login-panel">
+      <span class="eyebrow">F300 ADMIN</span>
+      <h3>Admin sign in</h3>
+      <p>Use your private 8-digit F300 admin code.</p>
+      <form id="admin-login-form">
+        <label><span>Admin code</span><input id="admin-code-input" name="code" inputmode="numeric" maxlength="8" autocomplete="one-time-code" placeholder="••••••••"></label>
+        <button class="primary-button" type="submit">Sign in</button>
+        <div id="admin-login-status" class="hub-status" aria-live="polite"></div>
+      </form>
+    </div>
+
+    <div id="admin-dashboard-panel" class="admin-dashboard-panel" hidden>
+      <div class="admin-dashboard-head">
+        <div><span class="eyebrow">F300 ADMIN</span><h3>Review centre</h3></div>
+        <button id="admin-signout-button" class="secondary-button compact-button" type="button">Sign out</button>
+      </div>
+
+      <div id="admin-dashboard-summary" class="admin-dashboard-summary"></div>
+
+      <section class="admin-review-section">
+        <div class="admin-review-title"><strong>Support tickets</strong><span id="admin-support-count">0 new</span></div>
+        <div id="admin-support-list" class="admin-review-list"></div>
+      </section>
+
+      <section class="admin-review-section">
+        <div class="admin-review-title"><strong>Timing / import checks</strong><span id="admin-timing-count">0 new</span></div>
+        <div id="admin-timing-list" class="admin-review-list"></div>
+      </section>
+
+      <div id="admin-dashboard-status" class="hub-status" aria-live="polite"></div>
+    </div>
   </dialog>
 
   <dialog id="driver-dialog" class="driver-dialog">

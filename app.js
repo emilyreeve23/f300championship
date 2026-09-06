@@ -48,6 +48,12 @@ const PUBLIC_DATA_REFRESH_MS = 15000;
 let publicDataSignature = JSON.stringify(data);
 let publicDataRefreshBusy = false;
 let hubAuth = { driver: "", authenticated: false, registered: null, resetAllowed: false, token: "" };
+let adminAuth = {
+  authenticated: false,
+  token: localStorage.getItem("f300-admin-token") || "",
+  dashboard: null
+};
+let adminRefreshTimer = null;
 const $ = (sel) => document.querySelector(sel);
 
 let selectedRound = null;
@@ -692,6 +698,240 @@ function setupContactSupport() {
   });
 }
 
+
+function clearAdminSession() {
+  localStorage.removeItem("f300-admin-token");
+  adminAuth = { authenticated: false, token: "", dashboard: null };
+  updateAdminBadges(0);
+}
+
+function updateAdminBadges(count) {
+  const total = Number(count) || 0;
+  const openBadge = $("#admin-open-badge");
+  const navBadge = $("#admin-nav-badge");
+
+  [openBadge, navBadge].forEach(badge => {
+    if (!badge) return;
+    badge.textContent = String(total);
+    badge.hidden = total <= 0;
+  });
+
+  const copy = $("#admin-open-copy");
+  if (copy) {
+    copy.textContent = adminAuth.authenticated
+      ? (total ? `${total} new item${total === 1 ? "" : "s"} to review` : "No new admin items")
+      : "Private championship tools";
+  }
+
+  const nudge = $("#admin-alert-nudge");
+  if (nudge) {
+    if (adminAuth.authenticated && total > 0) {
+      $("#admin-alert-count").textContent = String(total);
+      $("#admin-alert-copy").textContent =
+        `${total} new item${total === 1 ? "" : "s"} need review`;
+      nudge.hidden = false;
+    } else {
+      nudge.hidden = true;
+    }
+  }
+}
+
+function adminItemEmpty(message) {
+  return `<div class="admin-empty">${escapeHtml(message)}</div>`;
+}
+
+function renderAdminDashboard() {
+  const dashboard = adminAuth.dashboard || { support: [], timing: [], unreadCount: 0 };
+  const support = dashboard.support || [];
+  const timing = dashboard.timing || [];
+
+  $("#admin-dashboard-summary").innerHTML = dashboard.unreadCount
+    ? `<strong>${dashboard.unreadCount}</strong><span>new item${dashboard.unreadCount === 1 ? "" : "s"} need your attention</span>`
+    : `<strong>✓</strong><span>Nothing new needs reviewing</span>`;
+
+  $("#admin-support-count").textContent = `${support.length} new`;
+  $("#admin-timing-count").textContent = `${timing.length} new`;
+
+  $("#admin-support-list").innerHTML = support.length
+    ? support.map(item => `
+        <article class="admin-review-card">
+          <div class="admin-review-card-head">
+            <div>
+              <span class="eyebrow">${escapeHtml(item.topic || "SUPPORT")}</span>
+              <strong>${escapeHtml(item.driver || "General enquiry")}</strong>
+            </div>
+            <span>${escapeHtml(item.receivedAt || "")}</span>
+          </div>
+          ${item.contact ? `<div class="admin-review-meta">${escapeHtml(item.contact)}</div>` : ""}
+          <p>${escapeHtml(item.message || "")}</p>
+          <button class="secondary-button admin-seen-button" type="button" data-admin-kind="support" data-admin-row="${item.row}">Mark seen</button>
+        </article>`).join("")
+    : adminItemEmpty("No new support tickets.");
+
+  $("#admin-timing-list").innerHTML = timing.length
+    ? timing.map(item => `
+        <article class="admin-review-card admin-review-warning">
+          <div class="admin-review-card-head">
+            <div>
+              <span class="eyebrow">${escapeHtml(item.source || "TIMING")}</span>
+              <strong>Round ${escapeHtml(item.round || "?")} · ${escapeHtml(item.session || "Import check")}</strong>
+            </div>
+            <span>${escapeHtml(item.importedAt || "")}</span>
+          </div>
+          <div class="admin-review-meta">${escapeHtml(item.updated || "0")} updated · ${escapeHtml(item.skipped || "0")} skipped</div>
+          <p>${escapeHtml(item.notes || "The timing import asked for a manual check.")}</p>
+          <button class="secondary-button admin-seen-button" type="button" data-admin-kind="timing" data-admin-row="${item.row}">Mark seen</button>
+        </article>`).join("")
+    : adminItemEmpty("No timing/import issues need review.");
+
+  document.querySelectorAll(".admin-seen-button").forEach(button => {
+    button.onclick = async () => {
+      const status = $("#admin-dashboard-status");
+      button.disabled = true;
+
+      try {
+        status.textContent = "Updating…";
+
+        await apiPost({
+          action: "adminMarkSeen",
+          token: adminAuth.token,
+          kind: button.dataset.adminKind,
+          row: Number(button.dataset.adminRow)
+        });
+
+        await refreshAdminDashboard();
+        status.textContent = "Marked as seen.";
+      } catch (error) {
+        button.disabled = false;
+        status.textContent = error.message || "Could not update this item.";
+      }
+    };
+  });
+
+  updateAdminBadges(dashboard.unreadCount || 0);
+}
+
+async function refreshAdminDashboard() {
+  if (!adminAuth.authenticated || !adminAuth.token || !apiUrl) return;
+
+  try {
+    const result = await apiPost({
+      action: "adminDashboard",
+      token: adminAuth.token
+    });
+
+    adminAuth.dashboard = result;
+    renderAdminDashboard();
+  } catch (error) {
+    if (/expired|sign in/i.test(String(error.message || ""))) {
+      clearAdminSession();
+    }
+  }
+}
+
+async function verifyStoredAdminSession() {
+  if (!adminAuth.token || !apiUrl) {
+    updateAdminBadges(0);
+    return;
+  }
+
+  try {
+    const result = await apiPost({
+      action: "adminVerify",
+      token: adminAuth.token
+    });
+
+    if (!result.authenticated) {
+      clearAdminSession();
+      return;
+    }
+
+    adminAuth.authenticated = true;
+    await refreshAdminDashboard();
+  } catch {
+    clearAdminSession();
+  }
+}
+
+function showAdminDialog() {
+  const dialog = $("#admin-dialog");
+  if (!dialog) return;
+
+  const loggedIn = adminAuth.authenticated;
+
+  $("#admin-login-panel").hidden = loggedIn;
+  $("#admin-dashboard-panel").hidden = !loggedIn;
+  $("#admin-login-status").textContent = "";
+  $("#admin-dashboard-status").textContent = "";
+
+  if (loggedIn) refreshAdminDashboard();
+
+  dialog.showModal();
+}
+
+function setupAdminTools() {
+  $("#admin-open-button")?.addEventListener("click", showAdminDialog);
+  $("#admin-alert-open")?.addEventListener("click", showAdminDialog);
+  $("#admin-alert-close")?.addEventListener("click", () => {
+    $("#admin-alert-nudge").hidden = true;
+  });
+  $("#admin-dialog-close")?.addEventListener("click", () => $("#admin-dialog")?.close());
+
+  $("#admin-login-form")?.addEventListener("submit", async event => {
+    event.preventDefault();
+
+    const status = $("#admin-login-status");
+    const code = String($("#admin-code-input")?.value || "").trim();
+
+    if (!/^\d{8}$/.test(code)) {
+      status.textContent = "Enter the 8-digit admin code.";
+      return;
+    }
+
+    try {
+      status.textContent = "Signing in…";
+
+      const result = await apiPost({
+        action: "adminLogin",
+        code
+      });
+
+      adminAuth = {
+        authenticated: true,
+        token: result.token,
+        dashboard: null
+      };
+
+      localStorage.setItem("f300-admin-token", result.token);
+      $("#admin-code-input").value = "";
+      $("#admin-login-panel").hidden = true;
+      $("#admin-dashboard-panel").hidden = false;
+
+      await refreshAdminDashboard();
+      status.textContent = "";
+    } catch (error) {
+      status.textContent = error.message || "Admin sign in failed.";
+    }
+  });
+
+  $("#admin-signout-button")?.addEventListener("click", () => {
+    clearAdminSession();
+    $("#admin-dashboard-panel").hidden = true;
+    $("#admin-login-panel").hidden = false;
+    $("#admin-dashboard-status").textContent = "";
+  });
+
+  verifyStoredAdminSession();
+
+  if (adminRefreshTimer) window.clearInterval(adminRefreshTimer);
+  adminRefreshTimer = window.setInterval(() => {
+    if (!document.hidden && adminAuth.authenticated) {
+      refreshAdminDashboard();
+    }
+  }, 60000);
+}
+
+
 function compressProfilePhoto(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -1097,6 +1337,7 @@ async function refreshPublicData() {
 
     publicDataSignature = nextSignature;
     applyFreshPublicData(nextData);
+    if (adminAuth.authenticated) refreshAdminDashboard();
   } catch (error) {
     // Stay quiet if offline or a deployment is between versions.
     console.debug("F300 data refresh skipped:", error);
@@ -1319,6 +1560,7 @@ setupDriverFilter();
 setupResults();
 setupDriverHub();
 setupContactSupport();
+setupAdminTools();
 setupNavigation();
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) {
@@ -1328,6 +1570,7 @@ document.addEventListener("visibilitychange", () => {
 
   handleAppResume();
   refreshPublicData();
+  if (adminAuth.authenticated) refreshAdminDashboard();
 });
 
 window.addEventListener("online", () => refreshPublicData());
