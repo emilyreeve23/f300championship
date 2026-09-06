@@ -1,5 +1,5 @@
 window.F300_DATA = {
-  "updated": "6 Sep 2026 13:54",
+  "updated": "6 Sep 2026 15:21",
   "apiUrl": "https://script.google.com/macros/s/AKfycby4RgoqZdYFLcWkstoz9y5ZjsMoGt-u3T-IgBJ36AfIUFXp55fhA82TRKsa-_c3B-0o/exec",
   "standings": [
     {
@@ -7,13 +7,23 @@ window.F300_DATA = {
       "driver": "James Price",
       "number": 8,
       "rounds": 4,
-      "wins": 1,
-      "podiums": 1,
+      "wins": 2,
+      "podiums": 2,
       "bestFinal": 1,
-      "points": 532
+      "points": 604
     },
     {
       "position": 2,
+      "driver": "Jack Reeve",
+      "number": 4,
+      "rounds": 3,
+      "wins": 0,
+      "podiums": 2,
+      "bestFinal": 2,
+      "points": 473
+    },
+    {
+      "position": 3,
       "driver": "Gary Woodward",
       "number": 55,
       "rounds": 3,
@@ -23,7 +33,17 @@ window.F300_DATA = {
       "points": 442
     },
     {
-      "position": 3,
+      "position": 4,
+      "driver": "Nye Cortizo-White",
+      "number": 16,
+      "rounds": 3,
+      "wins": 0,
+      "podiums": 1,
+      "bestFinal": 3,
+      "points": 442
+    },
+    {
+      "position": 5,
       "driver": "Ryan Martin",
       "number": 17,
       "rounds": 3,
@@ -33,34 +53,14 @@ window.F300_DATA = {
       "points": 415
     },
     {
-      "position": 4,
-      "driver": "Jack Reeve",
-      "number": 4,
-      "rounds": 3,
-      "wins": 0,
-      "podiums": 1,
-      "bestFinal": 3,
-      "points": 407
-    },
-    {
-      "position": 5,
-      "driver": "Nye Cortizo-White",
-      "number": 16,
-      "rounds": 3,
-      "wins": 0,
-      "podiums": 1,
-      "bestFinal": 3,
-      "points": 382
-    },
-    {
       "position": 6,
       "driver": "Jason Cooper",
       "number": 69,
       "rounds": 2,
       "wins": 0,
-      "podiums": 0,
-      "bestFinal": 4,
-      "points": 242
+      "podiums": 1,
+      "bestFinal": 3,
+      "points": 304
     },
     {
       "position": 7,
@@ -720,14 +720,14 @@ window.F300_DATA = {
       "h2Points": 31,
       "h3Result": "3",
       "h3Points": 31,
-      "finalResult": "-",
-      "finalPoints": 0,
-      "weekendTotal": 93,
+      "finalResult": "3",
+      "finalPoints": 62,
+      "weekendTotal": 155,
       "h1Lap": "37.783",
       "h2Lap": "37.722",
       "h3Lap": "37.984",
-      "finalLap": "-",
-      "weekendBest": "-",
+      "finalLap": "38.115",
+      "weekendBest": "37.722",
       "notes": ""
     },
     {
@@ -740,13 +740,13 @@ window.F300_DATA = {
       "h2Points": 33,
       "h3Result": "2",
       "h3Points": 33,
-      "finalResult": "-",
-      "finalPoints": 0,
-      "weekendTotal": 102,
+      "finalResult": "2",
+      "finalPoints": 66,
+      "weekendTotal": 168,
       "h1Lap": "36.929",
       "h2Lap": "37.227",
       "h3Lap": "37.382",
-      "finalLap": "-",
+      "finalLap": "37.367",
       "weekendBest": "36.929",
       "notes": ""
     },
@@ -760,13 +760,13 @@ window.F300_DATA = {
       "h2Points": 30,
       "h3Result": "4",
       "h3Points": 30,
-      "finalResult": "-",
-      "finalPoints": 0,
-      "weekendTotal": 90,
+      "finalResult": "4",
+      "finalPoints": 60,
+      "weekendTotal": 150,
       "h1Lap": "38.515",
       "h2Lap": "38.408",
       "h3Lap": "38.624",
-      "finalLap": "-",
+      "finalLap": "39.108",
       "weekendBest": "38.408",
       "notes": ""
     },
@@ -780,13 +780,13 @@ window.F300_DATA = {
       "h2Points": 36,
       "h3Result": "1",
       "h3Points": 36,
-      "finalResult": "-",
-      "finalPoints": 0,
-      "weekendTotal": 105,
+      "finalResult": "1",
+      "finalPoints": 72,
+      "weekendTotal": 177,
       "h1Lap": "37.247",
       "h2Lap": "37.198",
       "h3Lap": "37.610",
-      "finalLap": "-",
+      "finalLap": "37.333",
       "weekendBest": "37.198",
       "notes": ""
     }
