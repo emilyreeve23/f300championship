@@ -1,0 +1,58 @@
+name: Import Speedhive Results
+
+on:
+  workflow_dispatch:
+    inputs:
+      event:
+        description: "Speedhive event URL or event ID"
+        required: true
+        type: string
+      round:
+        description: "F300 championship round number"
+        required: true
+        default: "4"
+        type: string
+      dry_run:
+        description: "Test only - do not write to Google Sheets"
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  import-speedhive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install Speedhive client
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "speedhive-tools==0.9.20" "requests>=2.32,<3"
+
+      - name: Read and import Speedhive results
+        env:
+          F300_DATA_URL: ${{ secrets.F300_DATA_URL }}
+          F300_TIMING_BOT_SECRET: ${{ secrets.F300_TIMING_BOT_SECRET }}
+          SPEEDHIVE_ORG_ID: ${{ vars.SPEEDHIVE_ORG_ID }}
+        run: |
+          EXTRA=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            EXTRA="--dry-run"
+          fi
+
+          python scripts/import-speedhive-results.py \
+            --event "${{ inputs.event }}" \
+            --round "${{ inputs.round }}" \
+            $EXTRA
