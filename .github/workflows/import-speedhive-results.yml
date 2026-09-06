@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       event:
-        description: "Speedhive event URL or event ID"
+        description: "Speedhive event URL/ID or public search URL"
         required: true
         type: string
       round:
@@ -35,10 +35,11 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install Speedhive client
+      - name: Install Speedhive client and browser
         run: |
           python -m pip install --upgrade pip
-          python -m pip install "speedhive-tools==0.9.20" "requests>=2.32,<3"
+          python -m pip install "speedhive-tools==0.9.20" "requests>=2.32,<3" "playwright>=1.48,<2"
+          python -m playwright install --with-deps chromium
 
       - name: Read and import Speedhive results
         env:
