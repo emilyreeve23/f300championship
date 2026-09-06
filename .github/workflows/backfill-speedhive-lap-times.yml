@@ -1,17 +1,12 @@
-name: Import Speedhive Results
+name: Backfill Speedhive Lap Times
 
 on:
   workflow_dispatch:
     inputs:
-      event:
-        description: "Use auto, or supply a Speedhive event/search URL"
+      rounds:
+        description: "Optional rounds, e.g. 1,2,3,4. Leave blank to try all past/current rounds."
         required: false
-        default: "auto"
-        type: string
-      round:
-        description: "F300 championship round number"
-        required: true
-        default: "4"
+        default: ""
         type: string
       dry_run:
         description: "Test only - do not write to Google Sheets"
@@ -23,9 +18,9 @@ permissions:
   contents: read
 
 jobs:
-  import-speedhive:
+  backfill-speedhive-laps:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 30
 
     steps:
       - name: Check out repository
@@ -44,25 +39,19 @@ jobs:
 
       - name: Verify F300 importer file
         run: |
-          echo "Importer file details:"
-          ls -lh scripts/import-speedhive-results.py
-          echo "Expected bot version line:"
           grep -n 'BOT_VERSION = "v1.2-speedhive-laps"' scripts/import-speedhive-results.py
-          echo "Main entry point:"
-          grep -n 'if __name__ == "__main__":' scripts/import-speedhive-results.py
+          python -m py_compile scripts/import-speedhive-results.py scripts/backfill-speedhive-laps.py
 
-      - name: Read and import Speedhive results
+      - name: Try historical F300 rounds
         env:
           F300_DATA_URL: ${{ secrets.F300_DATA_URL }}
           F300_TIMING_BOT_SECRET: ${{ secrets.F300_TIMING_BOT_SECRET }}
-          SPEEDHIVE_ORG_ID: ${{ vars.SPEEDHIVE_ORG_ID }}
         run: |
           EXTRA=""
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             EXTRA="--dry-run"
           fi
 
-          python -u scripts/import-speedhive-results.py \
-            --event "${{ inputs.event }}" \
-            --round "${{ inputs.round }}" \
+          python -u scripts/backfill-speedhive-laps.py \
+            --rounds "${{ inputs.rounds }}" \
             $EXTRA
