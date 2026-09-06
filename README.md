@@ -195,3 +195,14 @@ Current v1.1 work includes:
 ---
 
 © 2026 F300 Championship. All rights reserved.
+
+### Automatic timing import review rules
+
+Timing results are designed to import by default.
+
+- A known driver number is authoritative even if the timing-site display name differs.
+- A name difference is a soft issue: the result is imported and Admin is asked to confirm it.
+- Unknown drivers/results are skipped and flagged.
+- Duplicate driver numbers inside one session are treated as a hard ambiguity: all rows for that duplicated number are left untouched while the rest of the session imports.
+- Re-checking unchanged clean timing data does not create another Admin notification.
+- Each new import batch creates an Admin summary such as `Lydd · Round 4: Heat 1, Heat 2, Heat 3 and Final imported. 1 issue to review.`

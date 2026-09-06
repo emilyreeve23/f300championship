@@ -705,7 +705,7 @@ function clearAdminSession() {
   updateAdminBadges(0);
 }
 
-function updateAdminBadges(count) {
+function updateAdminBadges(count, importMessage = "") {
   const total = Number(count) || 0;
   const openBadge = $("#admin-open-badge");
   const navBadge = $("#admin-nav-badge");
@@ -728,7 +728,8 @@ function updateAdminBadges(count) {
     if (adminAuth.authenticated && total > 0) {
       $("#admin-alert-count").textContent = String(total);
       $("#admin-alert-copy").textContent =
-        `${total} new item${total === 1 ? "" : "s"} need review`;
+        importMessage ||
+        `${total} new admin item${total === 1 ? "" : "s"}`;
       nudge.hidden = false;
     } else {
       nudge.hidden = true;
@@ -769,20 +770,29 @@ function renderAdminDashboard() {
     : adminItemEmpty("No new support tickets.");
 
   $("#admin-timing-list").innerHTML = timing.length
-    ? timing.map(item => `
-        <article class="admin-review-card admin-review-warning">
-          <div class="admin-review-card-head">
-            <div>
-              <span class="eyebrow">${escapeHtml(item.source || "TIMING")}</span>
-              <strong>Round ${escapeHtml(item.round || "?")} · ${escapeHtml(item.session || "Import check")}</strong>
+    ? timing.map(item => {
+        const isSummary = Boolean(item.isSummary);
+        const title = isSummary
+          ? `Round ${escapeHtml(item.round || "?")} import complete`
+          : `Round ${escapeHtml(item.round || "?")} · ${escapeHtml(item.session || "Import check")}`;
+        const eyebrow = isSummary ? "IMPORT COMPLETE" : escapeHtml(item.source || "TIMING");
+        const buttonText = isSummary ? "Noted" : "Confirm / mark seen";
+
+        return `
+          <article class="admin-review-card ${isSummary ? "" : "admin-review-warning"}">
+            <div class="admin-review-card-head">
+              <div>
+                <span class="eyebrow">${eyebrow}</span>
+                <strong>${title}</strong>
+              </div>
+              <span>${escapeHtml(item.importedAt || "")}</span>
             </div>
-            <span>${escapeHtml(item.importedAt || "")}</span>
-          </div>
-          <div class="admin-review-meta">${escapeHtml(item.updated || "0")} updated · ${escapeHtml(item.skipped || "0")} skipped</div>
-          <p>${escapeHtml(item.notes || "The timing import asked for a manual check.")}</p>
-          <button class="secondary-button admin-seen-button" type="button" data-admin-kind="timing" data-admin-row="${item.row}">Mark seen</button>
-        </article>`).join("")
-    : adminItemEmpty("No timing/import issues need review.");
+            <div class="admin-review-meta">${escapeHtml(item.updated || "0")} updated · ${escapeHtml(item.skipped || "0")} blocked</div>
+            <p>${escapeHtml(item.notes || "Timing import completed.")}</p>
+            <button class="secondary-button admin-seen-button" type="button" data-admin-kind="timing" data-admin-row="${item.row}">${buttonText}</button>
+          </article>`;
+      }).join("")
+    : adminItemEmpty("No new timing imports or issues.");
 
   document.querySelectorAll(".admin-seen-button").forEach(button => {
     button.onclick = async () => {
@@ -808,7 +818,7 @@ function renderAdminDashboard() {
     };
   });
 
-  updateAdminBadges(dashboard.unreadCount || 0);
+  updateAdminBadges(dashboard.unreadCount || 0, dashboard.latestImportMessage || "");
 }
 
 async function refreshAdminDashboard() {
