@@ -800,13 +800,20 @@ def discover_event_id_from_search(
     if search_term:
         print(f"  Search term in URL: {search_term}")
 
-    candidates: dict[str, dict[str, str]] = {}
-
     with sync_playwright() as playwright:
-        browser = playwright.chromium.launch(headless=True)
+        browser = playwright.chromium.launch(
+            headless=True,
+            args=["--disable-blink-features=AutomationControlled"],
+        )
+
         page = browser.new_page(
             viewport={"width": 1440, "height": 1000},
             locale="en-GB",
+            user_agent=(
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/152.0.0.0 Safari/537.36"
+            ),
         )
 
         try:
@@ -815,114 +822,372 @@ def discover_event_id_from_search(
                 wait_until="domcontentloaded",
                 timeout=60000,
             )
+            page.wait_for_timeout(4500)
 
-            # Speedhive renders search results client-side.
-            page.wait_for_selector(
-                'a[href*="/events/"]',
-                timeout=35000,
+            def current_body_text() -> str:
+                try:
+                    return " ".join(
+                        page.locator("body").inner_text(timeout=10000).split()
+                    )
+                except Exception:
+                    return ""
+
+            body_text = current_body_text()
+
+            # Some Speedhive builds do not automatically execute the query
+            # from ?term= when loaded headlessly. If the result date is not
+            # visible yet, explicitly submit the same public search.
+            if (
+                search_term
+                and not any(
+                    variant.lower() in body_text.lower()
+                    for variant in date_variants
+                )
+            ):
+                inputs = page.locator("input")
+                filled = False
+
+                for index in range(inputs.count()):
+                    field = inputs.nth(index)
+                    try:
+                        if not field.is_visible():
+                            continue
+
+                        value = str(field.input_value() or "").strip().lower()
+                        placeholder = str(
+                            field.get_attribute("placeholder") or ""
+                        ).lower()
+
+                        if (
+                            value == search_term.lower()
+                            or "search" in placeholder
+                            or index == 0
+                        ):
+                            field.fill(search_term)
+                            filled = True
+                            break
+                    except Exception:
+                        continue
+
+                if filled:
+                    search_buttons = page.get_by_text("Search", exact=True)
+
+                    for index in range(search_buttons.count()):
+                        button = search_buttons.nth(index)
+                        try:
+                            if button.is_visible():
+                                button.click()
+                                break
+                        except Exception:
+                            continue
+
+                    page.wait_for_timeout(5000)
+                    body_text = current_body_text()
+
+            # Return the smallest DOM rows that contain both our track/search
+            # term and the exact race date. This works even when Speedhive
+            # uses JS click handlers instead of ordinary href links.
+            candidate_rows = page.evaluate(
+                """({ track, searchTerm, dates }) => {
+                  const norm = value =>
+                    String(value || "")
+                      .toLowerCase()
+                      .replace(/[^a-z0-9]+/g, " ")
+                      .trim()
+                      .replace(/\\s+/g, " ");
+
+                  const wantedTerms = [track, searchTerm]
+                    .map(norm)
+                    .filter(Boolean);
+
+                  const wantedDates = dates.map(value =>
+                    String(value || "").toLowerCase()
+                  );
+
+                  const matches = el => {
+                    const text = String(el.innerText || "")
+                      .replace(/\\s+/g, " ")
+                      .trim();
+
+                    if (!text) return false;
+
+                    const normalized = norm(text);
+                    const trackOk = wantedTerms.some(term =>
+                      normalized.includes(term)
+                    );
+                    const dateOk = wantedDates.some(value =>
+                      text.toLowerCase().includes(value)
+                    );
+
+                    return trackOk && dateOk;
+                  };
+
+                  return Array.from(document.querySelectorAll("body *"))
+                    .filter(el => matches(el))
+                    .filter(el =>
+                      !Array.from(el.children || []).some(child => matches(child))
+                    )
+                    .map((el, index) => ({
+                      index,
+                      text: String(el.innerText || "")
+                        .replace(/\\s+/g, " ")
+                        .trim(),
+                      tag: el.tagName,
+                      role: el.getAttribute("role") || "",
+                      className:
+                        typeof el.className === "string"
+                          ? el.className.slice(0, 180)
+                          : "",
+                    }));
+                }""",
+                {
+                    "track": track,
+                    "searchTerm": search_term,
+                    "dates": date_variants,
+                },
             )
 
-            # Give the result list a moment to finish rendering.
-            page.wait_for_timeout(1200)
+            print(
+                f"  Visible rows matching track + exact date: "
+                f"{len(candidate_rows)}"
+            )
 
-            anchors = page.locator('a[href*="/events/"]')
-
-            for index in range(anchors.count()):
-                anchor = anchors.nth(index)
-                href = str(anchor.get_attribute("href") or "")
-                match = re.search(r"/events/(\d+)", href, flags=re.I)
-
-                if not match:
-                    continue
-
-                event_id = match.group(1)
-                title = " ".join(anchor.inner_text().split()).strip()
-
-                # Find the smallest nearby result-row container that includes
-                # a visible event date. This avoids accidentally reading the
-                # whole search-results panel as one event.
-                row_text = anchor.evaluate(
-                    """el => {
-                      const monthDate = /\\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\\s+\\d{1,2},\\s+\\d{4}\\b/i;
-                      let node = el;
-                      for (let i = 0; i < 7 && node; i += 1, node = node.parentElement) {
-                        const text = (node.innerText || "").replace(/\\s+/g, " ").trim();
-                        if (monthDate.test(text)) return text;
-                      }
-                      return (el.parentElement?.innerText || el.innerText || "")
-                        .replace(/\\s+/g, " ")
-                        .trim();
-                    }"""
+            for row in candidate_rows[:10]:
+                print(
+                    f"    {row.get('tag','?')} | "
+                    f"{str(row.get('text',''))[:220]}"
                 )
 
-                candidates[event_id] = {
-                    "id": event_id,
-                    "title": title,
-                    "row": " ".join(str(row_text or "").split()).strip(),
-                }
+            if not candidate_rows:
+                preview = body_text[:1500]
+                raise RuntimeError(
+                    f"No visible Speedhive result matched {track} on {date_key}. "
+                    "The event may not have been created yet, or Speedhive did "
+                    f"not return search results to the runner. Page text: {preview}"
+                )
+
+            # De-duplicate equivalent visible row text.
+            unique_rows = []
+            seen_text = set()
+
+            for row in candidate_rows:
+                key = " ".join(str(row.get("text", "")).split()).lower()
+                if not key or key in seen_text:
+                    continue
+                seen_text.add(key)
+                unique_rows.append(row)
+
+            if len(unique_rows) > 1:
+                options = " | ".join(
+                    str(row.get("text", ""))[:180]
+                    for row in unique_rows[:6]
+                )
+                raise RuntimeError(
+                    f"More than one Speedhive result matched {track} on "
+                    f"{date_key}. The bot will not guess. Matches: {options}"
+                )
+
+            target_text = unique_rows[0]["text"]
+
+            print(f"\n  Clicking matched public result: {target_text}")
+
+            clicked = page.evaluate(
+                """({ track, searchTerm, dates, targetText }) => {
+                  const norm = value =>
+                    String(value || "")
+                      .toLowerCase()
+                      .replace(/[^a-z0-9]+/g, " ")
+                      .trim()
+                      .replace(/\\s+/g, " ");
+
+                  const wantedTerms = [track, searchTerm]
+                    .map(norm)
+                    .filter(Boolean);
+
+                  const wantedDates = dates.map(value =>
+                    String(value || "").toLowerCase()
+                  );
+
+                  const matches = el => {
+                    const text = String(el.innerText || "")
+                      .replace(/\\s+/g, " ")
+                      .trim();
+
+                    if (!text) return false;
+
+                    const normalized = norm(text);
+                    return (
+                      wantedTerms.some(term => normalized.includes(term)) &&
+                      wantedDates.some(value =>
+                        text.toLowerCase().includes(value)
+                      )
+                    );
+                  };
+
+                  const rows = Array.from(
+                    document.querySelectorAll("body *")
+                  )
+                    .filter(el => matches(el))
+                    .filter(el =>
+                      !Array.from(el.children || []).some(child => matches(child))
+                    );
+
+                  const row = rows.find(el =>
+                    String(el.innerText || "")
+                      .replace(/\\s+/g, " ")
+                      .trim() === targetText
+                  );
+
+                  if (!row) return false;
+
+                  // Click the visible row first. React/Angular click handlers
+                  // attached to a parent still receive this bubbled click.
+                  row.click();
+                  return true;
+                }""",
+                {
+                    "track": track,
+                    "searchTerm": search_term,
+                    "dates": date_variants,
+                    "targetText": target_text,
+                },
+            )
+
+            if not clicked:
+                raise RuntimeError(
+                    "The matching Speedhive row disappeared before it could "
+                    "be opened."
+                )
+
+            try:
+                page.wait_for_url(
+                    re.compile(r".*/events/\d+.*", flags=re.I),
+                    timeout=15000,
+                )
+            except Exception:
+                # Some rows put the click target on a parent/button rather
+                # than the text container. Try clicking the closest clickable
+                # ancestor or descendant before giving up.
+                page.evaluate(
+                    """({ track, searchTerm, dates, targetText }) => {
+                      const norm = value =>
+                        String(value || "")
+                          .toLowerCase()
+                          .replace(/[^a-z0-9]+/g, " ")
+                          .trim()
+                          .replace(/\\s+/g, " ");
+
+                      const wantedTerms = [track, searchTerm]
+                        .map(norm)
+                        .filter(Boolean);
+                      const wantedDates = dates.map(value =>
+                        String(value || "").toLowerCase()
+                      );
+
+                      const matches = el => {
+                        const text = String(el.innerText || "")
+                          .replace(/\\s+/g, " ")
+                          .trim();
+
+                        if (!text) return false;
+
+                        const normalized = norm(text);
+                        return (
+                          wantedTerms.some(term =>
+                            normalized.includes(term)
+                          ) &&
+                          wantedDates.some(value =>
+                            text.toLowerCase().includes(value)
+                          )
+                        );
+                      };
+
+                      const rows = Array.from(
+                        document.querySelectorAll("body *")
+                      )
+                        .filter(el => matches(el))
+                        .filter(el =>
+                          !Array.from(el.children || [])
+                            .some(child => matches(child))
+                        );
+
+                      const row = rows.find(el =>
+                        String(el.innerText || "")
+                          .replace(/\\s+/g, " ")
+                          .trim() === targetText
+                      );
+
+                      if (!row) return false;
+
+                      let node = row;
+                      for (let i = 0; i < 6 && node; i += 1) {
+                        const role = node.getAttribute?.("role") || "";
+                        const style = window.getComputedStyle(node);
+                        if (
+                          node.tagName === "A" ||
+                          node.tagName === "BUTTON" ||
+                          role === "link" ||
+                          role === "button" ||
+                          style.cursor === "pointer"
+                        ) {
+                          node.click();
+                          return true;
+                        }
+                        node = node.parentElement;
+                      }
+
+                      const child = row.querySelector(
+                        'a,button,[role="link"],[role="button"],svg'
+                      );
+
+                      if (child) {
+                        child.click();
+                        return true;
+                      }
+
+                      return false;
+                    }""",
+                    {
+                        "track": track,
+                        "searchTerm": search_term,
+                        "dates": date_variants,
+                        "targetText": target_text,
+                    },
+                )
+
+                try:
+                    page.wait_for_url(
+                        re.compile(r".*/events/\d+.*", flags=re.I),
+                        timeout=12000,
+                    )
+                except Exception as exc:
+                    raise RuntimeError(
+                        "Speedhive showed the correct dated event row, but "
+                        "the automated browser could not open it. "
+                        f"Current URL remained: {page.url}"
+                    ) from exc
+
+            match = re.search(
+                r"/events/(\d+)",
+                page.url,
+                flags=re.I,
+            )
+
+            if not match:
+                raise RuntimeError(
+                    f"Speedhive opened the result but no event ID was present "
+                    f"in the URL: {page.url}"
+                )
+
+            event_id = int(match.group(1))
+
+            print(
+                f"Automatically discovered Speedhive event ID: {event_id}"
+            )
+
+            return event_id
         finally:
             browser.close()
-
-    print(f"  Public event links found: {len(candidates)}")
-
-    if not candidates:
-        raise RuntimeError(
-            "No Speedhive event links were visible on the public search page."
-        )
-
-    track_terms = {
-        normalize_name(track),
-        normalize_name(search_term),
-    }
-    track_terms.discard("")
-
-    matches: list[dict[str, str]] = []
-
-    for candidate in candidates.values():
-        haystack = normalize_name(
-            f"{candidate['title']} {candidate['row']}"
-        )
-
-        date_match = any(
-            variant.lower() in candidate["row"].lower()
-            for variant in date_variants
-        )
-        track_match = any(term in haystack for term in track_terms)
-
-        # Keep a concise diagnostic list in the GitHub log.
-        row_preview = candidate["row"][:180]
-        print(
-            f"    {candidate['id']} | {candidate['title'] or '-'} | "
-            f"{row_preview}"
-        )
-
-        if date_match and track_match:
-            matches.append(candidate)
-
-    if not matches:
-        raise RuntimeError(
-            f"No public Speedhive event matched {track} on {date_key}. "
-            "The event may not have been created yet."
-        )
-
-    if len(matches) > 1:
-        options = "; ".join(
-            f"{item['id']} ({item['title']})"
-            for item in matches
-        )
-        raise RuntimeError(
-            f"More than one Speedhive event matched {track} on {date_key}: "
-            f"{options}. The bot will not guess."
-        )
-
-    selected = matches[0]
-
-    print(
-        f"\nAutomatically selected event {selected['id']}: "
-        f"{selected['title'] or selected['row']}"
-    )
-
-    return int(selected["id"])
 
 
 def pick_event_id(
