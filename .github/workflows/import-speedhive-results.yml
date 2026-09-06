@@ -41,6 +41,15 @@ jobs:
           python -m pip install "speedhive-tools==0.9.20" "requests>=2.32,<3" "playwright>=1.48,<2"
           python -m playwright install --with-deps chromium
 
+      - name: Verify F300 importer file
+        run: |
+          echo "Importer file details:"
+          ls -lh scripts/import-speedhive-results.py
+          echo "Expected bot version line:"
+          grep -n 'BOT_VERSION = "search-discovery-v4"' scripts/import-speedhive-results.py
+          echo "Main entry point:"
+          grep -n 'if __name__ == "__main__":' scripts/import-speedhive-results.py
+
       - name: Read and import Speedhive results
         env:
           F300_DATA_URL: ${{ secrets.F300_DATA_URL }}
@@ -52,7 +61,7 @@ jobs:
             EXTRA="--dry-run"
           fi
 
-          python scripts/import-speedhive-results.py \
+          python -u scripts/import-speedhive-results.py \
             --event "${{ inputs.event }}" \
             --round "${{ inputs.round }}" \
             $EXTRA
