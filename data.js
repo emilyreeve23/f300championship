@@ -1,5 +1,5 @@
 window.F300_DATA = {
-  "updated": "7 Sep 2026 13:42",
+  "updated": "7 Sep 2026 19:59",
   "apiUrl": "https://script.google.com/macros/s/AKfycbwqNnwg6FTL6GKOw0774fQXbr4ASWXsEwhZkW8eCUmECfxS72pnhf5Tq9SwXCiFuHv2/exec",
   "standings": [
     {
@@ -5703,7 +5703,7 @@ window.F300_DATA = {
     {
       "driver": "Nicholas Cleere",
       "number": 44,
-      "photoUrl": "https://drive.google.com/thumbnail?id=1_aFbLTqv1519iOQ3bTkrOxlKbmuQF_-x&sz=w512"
+      "photoUrl": "https://drive.google.com/thumbnail?id=1sdz8d66hN-_mhcSYukJJk61TzLVi0Nis&sz=w512"
     }
   ],
   "submissionWindow": {
