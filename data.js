@@ -1,5 +1,5 @@
 window.F300_DATA = {
-  "updated": "4 Oct 2026 22:34",
+  "updated": "5 Oct 2026 15:51",
   "apiUrl": "https://script.google.com/macros/s/AKfycbwqNnwg6FTL6GKOw0774fQXbr4ASWXsEwhZkW8eCUmECfxS72pnhf5Tq9SwXCiFuHv2/exec",
   "standings": [
     {
