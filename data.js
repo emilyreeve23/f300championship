@@ -1,5 +1,5 @@
 window.F300_DATA = {
-  "updated": "11 Oct 2026 14:51",
+  "updated": "11 Oct 2026 15:25",
   "apiUrl": "https://script.google.com/macros/s/AKfycbwqNnwg6FTL6GKOw0774fQXbr4ASWXsEwhZkW8eCUmECfxS72pnhf5Tq9SwXCiFuHv2/exec",
   "standings": [
     {
@@ -106,7 +106,7 @@ window.F300_DATA = {
       "position": 11,
       "driver": "Nicholas Cleere",
       "number": 44,
-      "rounds": 2,
+      "rounds": 1,
       "wins": 0,
       "podiums": 0,
       "bestFinal": 9,
@@ -141,6 +141,16 @@ window.F300_DATA = {
       "podiums": 0,
       "bestFinal": 5,
       "points": 118
+    },
+    {
+      "position": 15,
+      "driver": "test",
+      "number": 0,
+      "rounds": 0,
+      "wins": 0,
+      "podiums": 0,
+      "bestFinal": "N/A",
+      "points": 0
     }
   ],
   "calendar": [
@@ -788,26 +798,6 @@ window.F300_DATA = {
       "h3Lap": "37.610",
       "finalLap": "37.333",
       "weekendBest": "37.198",
-      "notes": ""
-    },
-    {
-      "round": 5,
-      "track": "Lydd",
-      "driver": "Nicholas Cleere",
-      "h1Result": "-",
-      "h1Points": 0,
-      "h2Result": "-",
-      "h2Points": 0,
-      "h3Result": "-",
-      "h3Points": 0,
-      "finalResult": "-",
-      "finalPoints": 0,
-      "weekendTotal": 0,
-      "h1Lap": "-",
-      "h2Lap": "-",
-      "h3Lap": "-",
-      "finalLap": "-",
-      "weekendBest": "-",
       "notes": ""
     },
     {
