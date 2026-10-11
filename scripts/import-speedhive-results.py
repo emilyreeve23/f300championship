@@ -31,7 +31,7 @@ from zoneinfo import ZoneInfo
 import requests
 from speedhive.wrapper import SpeedhiveClient
 
-BOT_VERSION = "v1.2-f300-session-map-r2"
+BOT_VERSION = "v1.2-f300-only-session-map-r3"
 
 
 SESSION_PATTERNS = {
@@ -781,19 +781,72 @@ def is_f300_session(
     by_number: dict[str, str],
     by_name: dict[str, str],
 ) -> bool:
-    parent_context = str(session.get("_f300_parent_context") or "")
-    combined = f"{parent_context} {text_blob(session)} {text_blob(rows[:8])}"
+    """
+    Decide whether a Speedhive session belongs to F300.
 
-    if re.search(r"\bf\s*300\b", combined, flags=re.I):
+    IMPORTANT:
+    Driver numbers are NOT enough to identify a whole class. Other classes
+    can reuse the same kart numbers (#11, #16, #44, etc.).
+
+    If Speedhive supplies a parent/group label, that class label is treated
+    as authoritative. Only an F300-labelled group/session is accepted.
+    """
+
+    parent_context = str(
+        session.get("_f300_parent_context") or ""
+    ).strip()
+    own_name = session_name(session)
+
+    f300_pattern = re.compile(r"\\bf\\s*300\\b", flags=re.I)
+
+    # Strongest signal: the session itself says F300.
+    if f300_pattern.search(own_name):
         return True
 
-    # Fallback: if several competitors exactly match our known F300 roster,
-    # it is almost certainly the F300 class even if Speedhive omitted the label.
-    exact_matches = sum(
-        1 for row in rows
-        if row_matches_roster(row, by_number, by_name)
-    )
-    return exact_matches >= 2
+    # Speedhive's event page groups sessions by championship/class, e.g.
+    # F300 / Honda Junior / Bambino / Cadet / Rotax Senior.
+    #
+    # When a group/context exists, it is authoritative. This prevents a
+    # Honda Junior session being mistaken for F300 simply because it contains
+    # kart numbers also used by our championship.
+    if parent_context:
+        return bool(f300_pattern.search(parent_context))
+
+    # Some Speedhive feeds expose a result-class field even when the parent
+    # grouping is absent.
+    result_classes = {
+        str(result_class(row) or "").strip()
+        for row in rows
+        if isinstance(row, dict) and str(result_class(row) or "").strip()
+    }
+
+    if result_classes:
+        return any(
+            f300_pattern.search(class_name)
+            for class_name in result_classes
+        )
+
+    # Last-resort fallback ONLY when Speedhive supplied no usable class/group
+    # identity at all. Require strong name+number agreement, not number alone.
+    strong_matches = 0
+
+    for row in rows:
+        number = normalize_number(result_number(row))
+        name = normalize_name(result_name(row))
+
+        if (
+            number
+            and number in by_number
+            and name
+            and normalize_name(by_number[number]) == name
+        ):
+            strong_matches += 1
+            continue
+
+        if name and name in by_name:
+            strong_matches += 1
+
+    return strong_matches >= 2
 
 
 def scrape_personal_lap_rows_from_page(page: Any) -> list[dict[str, Any]]:
