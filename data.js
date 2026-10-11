@@ -1,5 +1,5 @@
 window.F300_DATA = {
-  "updated": "11 Oct 2026 15:25",
+  "updated": "11 Oct 2026 15:29",
   "apiUrl": "https://script.google.com/macros/s/AKfycbwqNnwg6FTL6GKOw0774fQXbr4ASWXsEwhZkW8eCUmECfxS72pnhf5Tq9SwXCiFuHv2/exec",
   "standings": [
     {
@@ -141,16 +141,6 @@ window.F300_DATA = {
       "podiums": 0,
       "bestFinal": 5,
       "points": 118
-    },
-    {
-      "position": 15,
-      "driver": "test",
-      "number": 0,
-      "rounds": 0,
-      "wins": 0,
-      "podiums": 0,
-      "bestFinal": "N/A",
-      "points": 0
     }
   ],
   "calendar": [
