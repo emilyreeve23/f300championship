@@ -1,5 +1,5 @@
 window.F300_DATA = {
-  "updated": "11 Oct 2026 15:29",
+  "updated": "11 Oct 2026 15:59",
   "apiUrl": "https://script.google.com/macros/s/AKfycbwqNnwg6FTL6GKOw0774fQXbr4ASWXsEwhZkW8eCUmECfxS72pnhf5Tq9SwXCiFuHv2/exec",
   "standings": [
     {
@@ -7,10 +7,10 @@ window.F300_DATA = {
       "driver": "James Price",
       "number": 8,
       "rounds": 5,
-      "wins": 2,
-      "podiums": 2,
+      "wins": 3,
+      "podiums": 3,
       "bestFinal": 1,
-      "points": 712
+      "points": 784
     },
     {
       "position": 2,
@@ -18,9 +18,9 @@ window.F300_DATA = {
       "number": 4,
       "rounds": 4,
       "wins": 0,
-      "podiums": 2,
+      "podiums": 3,
       "bestFinal": 2,
-      "points": 566
+      "points": 628
     },
     {
       "position": 3,
@@ -30,7 +30,7 @@ window.F300_DATA = {
       "wins": 0,
       "podiums": 1,
       "bestFinal": 2,
-      "points": 532
+      "points": 592
     },
     {
       "position": 4,
@@ -40,7 +40,7 @@ window.F300_DATA = {
       "wins": 0,
       "podiums": 1,
       "bestFinal": 3,
-      "points": 526
+      "points": 584
     },
     {
       "position": 5,
@@ -48,9 +48,9 @@ window.F300_DATA = {
       "number": 17,
       "rounds": 4,
       "wins": 2,
-      "podiums": 2,
+      "podiums": 3,
       "bestFinal": 1,
-      "points": 514
+      "points": 580
     },
     {
       "position": 6,
@@ -60,7 +60,7 @@ window.F300_DATA = {
       "wins": 0,
       "podiums": 1,
       "bestFinal": 3,
-      "points": 391
+      "points": 447
     },
     {
       "position": 7,
@@ -70,7 +70,7 @@ window.F300_DATA = {
       "wins": 0,
       "podiums": 0,
       "bestFinal": 7,
-      "points": 366
+      "points": 420
     },
     {
       "position": 8,
@@ -141,6 +141,16 @@ window.F300_DATA = {
       "podiums": 0,
       "bestFinal": 5,
       "points": 118
+    },
+    {
+      "position": 15,
+      "driver": "Rob Huelin",
+      "number": 52,
+      "rounds": 1,
+      "wins": 0,
+      "podiums": 0,
+      "bestFinal": 8,
+      "points": 52
     }
   ],
   "calendar": [
@@ -800,9 +810,9 @@ window.F300_DATA = {
       "h2Points": 28,
       "h3Result": "6",
       "h3Points": 28,
-      "finalResult": "-",
-      "finalPoints": 0,
-      "weekendTotal": 84,
+      "finalResult": "5",
+      "finalPoints": 58,
+      "weekendTotal": 142,
       "h1Lap": "38.253",
       "h2Lap": "38.368",
       "h3Lap": "39.105",
@@ -820,9 +830,9 @@ window.F300_DATA = {
       "h2Points": 27,
       "h3Result": "7",
       "h3Points": 27,
-      "finalResult": "-",
-      "finalPoints": 0,
-      "weekendTotal": 81,
+      "finalResult": "7",
+      "finalPoints": 54,
+      "weekendTotal": 135,
       "h1Lap": "39.890",
       "h2Lap": "40.223",
       "h3Lap": "39.754",
@@ -840,9 +850,9 @@ window.F300_DATA = {
       "h2Points": 36,
       "h3Result": "1",
       "h3Points": 36,
-      "finalResult": "-",
-      "finalPoints": 0,
-      "weekendTotal": 108,
+      "finalResult": "1",
+      "finalPoints": 72,
+      "weekendTotal": 180,
       "h1Lap": "36.906",
       "h2Lap": "36.621",
       "h3Lap": "37.045",
@@ -860,9 +870,9 @@ window.F300_DATA = {
       "h2Points": 33,
       "h3Result": "2",
       "h3Points": 33,
-      "finalResult": "-",
-      "finalPoints": 0,
-      "weekendTotal": 99,
+      "finalResult": "2",
+      "finalPoints": 66,
+      "weekendTotal": 165,
       "h1Lap": "36.972",
       "h2Lap": "37.191",
       "h3Lap": "37.404",
@@ -880,9 +890,9 @@ window.F300_DATA = {
       "h2Points": 31,
       "h3Result": "3",
       "h3Points": 31,
-      "finalResult": "-",
-      "finalPoints": 0,
-      "weekendTotal": 93,
+      "finalResult": "3",
+      "finalPoints": 62,
+      "weekendTotal": 155,
       "h1Lap": "37.365",
       "h2Lap": "37.171",
       "h3Lap": "37.692",
@@ -900,9 +910,9 @@ window.F300_DATA = {
       "h2Points": 30,
       "h3Result": "4",
       "h3Points": 30,
-      "finalResult": "-",
-      "finalPoints": 0,
-      "weekendTotal": 90,
+      "finalResult": "4",
+      "finalPoints": 60,
+      "weekendTotal": 150,
       "h1Lap": "37.570",
       "h2Lap": "37.733",
       "h3Lap": "38.151",
@@ -920,14 +930,34 @@ window.F300_DATA = {
       "h2Points": 29,
       "h3Result": "5",
       "h3Points": 29,
-      "finalResult": "-",
-      "finalPoints": 0,
-      "weekendTotal": 87,
+      "finalResult": "6",
+      "finalPoints": 56,
+      "weekendTotal": 143,
       "h1Lap": "37.850",
       "h2Lap": "37.763",
       "h3Lap": "38.150",
       "finalLap": "-",
       "weekendBest": "37.763",
+      "notes": ""
+    },
+    {
+      "round": 5,
+      "track": "Lydd",
+      "driver": "Rob Huelin",
+      "h1Result": "-",
+      "h1Points": 0,
+      "h2Result": "-",
+      "h2Points": 0,
+      "h3Result": "-",
+      "h3Points": 0,
+      "finalResult": "8",
+      "finalPoints": 52,
+      "weekendTotal": 52,
+      "h1Lap": "-",
+      "h2Lap": "-",
+      "h3Lap": "-",
+      "finalLap": "-",
+      "weekendBest": "-",
       "notes": ""
     }
   ],
