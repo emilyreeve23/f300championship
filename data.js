@@ -1,5 +1,5 @@
 window.F300_DATA = {
-  "updated": "11 Oct 2026 15:59",
+  "updated": "11 Oct 2026 16:00",
   "apiUrl": "https://script.google.com/macros/s/AKfycbwqNnwg6FTL6GKOw0774fQXbr4ASWXsEwhZkW8eCUmECfxS72pnhf5Tq9SwXCiFuHv2/exec",
   "standings": [
     {
@@ -7,10 +7,10 @@ window.F300_DATA = {
       "driver": "James Price",
       "number": 8,
       "rounds": 5,
-      "wins": 3,
-      "podiums": 3,
+      "wins": 2,
+      "podiums": 2,
       "bestFinal": 1,
-      "points": 784
+      "points": 712
     },
     {
       "position": 2,
@@ -18,9 +18,9 @@ window.F300_DATA = {
       "number": 4,
       "rounds": 4,
       "wins": 0,
-      "podiums": 3,
+      "podiums": 2,
       "bestFinal": 2,
-      "points": 628
+      "points": 566
     },
     {
       "position": 3,
@@ -30,7 +30,7 @@ window.F300_DATA = {
       "wins": 0,
       "podiums": 1,
       "bestFinal": 2,
-      "points": 592
+      "points": 532
     },
     {
       "position": 4,
@@ -40,7 +40,7 @@ window.F300_DATA = {
       "wins": 0,
       "podiums": 1,
       "bestFinal": 3,
-      "points": 584
+      "points": 526
     },
     {
       "position": 5,
@@ -48,9 +48,9 @@ window.F300_DATA = {
       "number": 17,
       "rounds": 4,
       "wins": 2,
-      "podiums": 3,
+      "podiums": 2,
       "bestFinal": 1,
-      "points": 580
+      "points": 514
     },
     {
       "position": 6,
@@ -60,7 +60,7 @@ window.F300_DATA = {
       "wins": 0,
       "podiums": 1,
       "bestFinal": 3,
-      "points": 447
+      "points": 391
     },
     {
       "position": 7,
@@ -70,7 +70,7 @@ window.F300_DATA = {
       "wins": 0,
       "podiums": 0,
       "bestFinal": 7,
-      "points": 420
+      "points": 366
     },
     {
       "position": 8,
@@ -149,8 +149,8 @@ window.F300_DATA = {
       "rounds": 1,
       "wins": 0,
       "podiums": 0,
-      "bestFinal": 8,
-      "points": 52
+      "bestFinal": "N/A",
+      "points": 78
     }
   ],
   "calendar": [
@@ -810,9 +810,9 @@ window.F300_DATA = {
       "h2Points": 28,
       "h3Result": "6",
       "h3Points": 28,
-      "finalResult": "5",
-      "finalPoints": 58,
-      "weekendTotal": 142,
+      "finalResult": "-",
+      "finalPoints": 0,
+      "weekendTotal": 84,
       "h1Lap": "38.253",
       "h2Lap": "38.368",
       "h3Lap": "39.105",
@@ -830,9 +830,9 @@ window.F300_DATA = {
       "h2Points": 27,
       "h3Result": "7",
       "h3Points": 27,
-      "finalResult": "7",
-      "finalPoints": 54,
-      "weekendTotal": 135,
+      "finalResult": "-",
+      "finalPoints": 0,
+      "weekendTotal": 81,
       "h1Lap": "39.890",
       "h2Lap": "40.223",
       "h3Lap": "39.754",
@@ -850,9 +850,9 @@ window.F300_DATA = {
       "h2Points": 36,
       "h3Result": "1",
       "h3Points": 36,
-      "finalResult": "1",
-      "finalPoints": 72,
-      "weekendTotal": 180,
+      "finalResult": "-",
+      "finalPoints": 0,
+      "weekendTotal": 108,
       "h1Lap": "36.906",
       "h2Lap": "36.621",
       "h3Lap": "37.045",
@@ -870,9 +870,9 @@ window.F300_DATA = {
       "h2Points": 33,
       "h3Result": "2",
       "h3Points": 33,
-      "finalResult": "2",
-      "finalPoints": 66,
-      "weekendTotal": 165,
+      "finalResult": "-",
+      "finalPoints": 0,
+      "weekendTotal": 99,
       "h1Lap": "36.972",
       "h2Lap": "37.191",
       "h3Lap": "37.404",
@@ -890,9 +890,9 @@ window.F300_DATA = {
       "h2Points": 31,
       "h3Result": "3",
       "h3Points": 31,
-      "finalResult": "3",
-      "finalPoints": 62,
-      "weekendTotal": 155,
+      "finalResult": "-",
+      "finalPoints": 0,
+      "weekendTotal": 93,
       "h1Lap": "37.365",
       "h2Lap": "37.171",
       "h3Lap": "37.692",
@@ -910,9 +910,9 @@ window.F300_DATA = {
       "h2Points": 30,
       "h3Result": "4",
       "h3Points": 30,
-      "finalResult": "4",
-      "finalPoints": 60,
-      "weekendTotal": 150,
+      "finalResult": "-",
+      "finalPoints": 0,
+      "weekendTotal": 90,
       "h1Lap": "37.570",
       "h2Lap": "37.733",
       "h3Lap": "38.151",
@@ -930,9 +930,9 @@ window.F300_DATA = {
       "h2Points": 29,
       "h3Result": "5",
       "h3Points": 29,
-      "finalResult": "6",
-      "finalPoints": 56,
-      "weekendTotal": 143,
+      "finalResult": "-",
+      "finalPoints": 0,
+      "weekendTotal": 87,
       "h1Lap": "37.850",
       "h2Lap": "37.763",
       "h3Lap": "38.150",
@@ -944,20 +944,20 @@ window.F300_DATA = {
       "round": 5,
       "track": "Lydd",
       "driver": "Rob Huelin",
-      "h1Result": "-",
-      "h1Points": 0,
-      "h2Result": "-",
-      "h2Points": 0,
-      "h3Result": "-",
-      "h3Points": 0,
-      "finalResult": "8",
-      "finalPoints": 52,
-      "weekendTotal": 52,
-      "h1Lap": "-",
-      "h2Lap": "-",
-      "h3Lap": "-",
+      "h1Result": "8",
+      "h1Points": 26,
+      "h2Result": "8",
+      "h2Points": 26,
+      "h3Result": "8",
+      "h3Points": 26,
+      "finalResult": "-",
+      "finalPoints": 0,
+      "weekendTotal": 78,
+      "h1Lap": "41.525",
+      "h2Lap": "41.622",
+      "h3Lap": "43.605",
       "finalLap": "-",
-      "weekendBest": "-",
+      "weekendBest": "41.525",
       "notes": ""
     }
   ],
@@ -6276,6 +6276,53 @@ window.F300_DATA = {
       "track": "Lydd",
       "sessionKey": "h1",
       "sessionName": "F300 Timed Qualifying",
+      "driver": "Rob Huelin",
+      "number": "52",
+      "best": 41.525,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 42.616,
+          "speed": 87.854,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 41.525,
+          "speed": 90.163,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 42.209,
+          "speed": 88.701,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 41.776,
+          "speed": 89.621,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 42.304,
+          "speed": 88.502,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 42.437,
+          "speed": 88.225,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 5,
+      "track": "Lydd",
+      "sessionKey": "h1",
+      "sessionName": "F300 Timed Qualifying",
       "driver": "Ryan Martin",
       "number": "17",
       "best": 36.972,
@@ -7093,6 +7140,89 @@ window.F300_DATA = {
           "lap": 14,
           "time": 39.22,
           "speed": 95.461,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 5,
+      "track": "Lydd",
+      "sessionKey": "h2",
+      "sessionName": "F300 Heat",
+      "driver": "Rob Huelin",
+      "number": "52",
+      "best": 41.622,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 42.994,
+          "speed": 87.082,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 41.622,
+          "speed": 89.952,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 42.178,
+          "speed": 88.767,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 43.413,
+          "speed": 86.241,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 46.631,
+          "speed": 80.29,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 44.335,
+          "speed": 84.448,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 45.46,
+          "speed": 82.358,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 43.257,
+          "speed": 86.552,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 46.517,
+          "speed": 80.487,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 47.81,
+          "speed": 78.31,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 47.763,
+          "speed": 78.387,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 45.422,
+          "speed": 82.427,
           "inPit": false
         }
       ]
@@ -7979,6 +8109,89 @@ window.F300_DATA = {
           "lap": 14,
           "time": 39.679,
           "speed": 94.357,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 5,
+      "track": "Lydd",
+      "sessionKey": "h3",
+      "sessionName": "F300 Pre-Final",
+      "driver": "Rob Huelin",
+      "number": "52",
+      "best": 43.605,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 43.681,
+          "speed": 85.712,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 43.605,
+          "speed": 85.862,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 44.328,
+          "speed": 84.461,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 44.099,
+          "speed": 84.9,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 45.462,
+          "speed": 82.354,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 46.993,
+          "speed": 79.671,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 47.779,
+          "speed": 78.361,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 48.916,
+          "speed": 76.539,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 44.825,
+          "speed": 83.525,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 44.418,
+          "speed": 84.29,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 44.956,
+          "speed": 83.281,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 44.542,
+          "speed": 84.055,
           "inPit": false
         }
       ]
