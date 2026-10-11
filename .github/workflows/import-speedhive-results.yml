@@ -1,11 +1,13 @@
 name: Import Speedhive Results
 
 on:
-  # GitHub cron is UTC. This broad Sunday window covers normal UK karting
-  # race hours in both GMT and BST; the importer itself checks the F300
-  # calendar and exits immediately on Sundays with no scheduled race.
+  # Every 10 minutes on Sundays, using UK local time.
+  # The importer itself checks the F300 Race Calendar and exits cleanly
+  # when today is not an active race day.
   schedule:
-    - cron: "*/30 6-20 * * 0"
+    - cron: "6,16,26,36,46,56 7-20 * * 0"
+      timezone: "Europe/London"
+
   workflow_dispatch:
     inputs:
       event:
@@ -25,16 +27,22 @@ on:
         type: boolean
 
 permissions:
-  contents: read
+  contents: write
+
+concurrency:
+  group: f300-speedhive-import
+  cancel-in-progress: false
 
 jobs:
   import-speedhive:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 12
 
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          ref: main
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -62,8 +70,8 @@ jobs:
           F300_TIMING_BOT_SECRET: ${{ secrets.F300_TIMING_BOT_SECRET }}
           SPEEDHIVE_ORG_ID: ${{ vars.SPEEDHIVE_ORG_ID }}
         run: |
-          # Scheduled runs are fully automatic and live. Manual runs keep the
-          # existing controls so you can still test a specific round/event.
+          # Scheduled runs are fully automatic and live.
+          # Manual runs keep the existing controls for testing.
           EVENT_VALUE="auto"
           ROUND_VALUE="0"
           DRY_RUN_VALUE="false"
@@ -88,3 +96,37 @@ jobs:
             --event "$EVENT_VALUE" \
             --round "$ROUND_VALUE" \
             $EXTRA
+
+      # After a live race-day import, immediately refresh the public app data.
+      # For a manual dry run we deliberately skip this.
+      - name: Set up Node.js
+        if: github.event_name == 'schedule' || inputs.dry_run == false
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Refresh app championship data
+        if: github.event_name == 'schedule' || inputs.dry_run == false
+        env:
+          F300_DATA_URL: ${{ secrets.F300_DATA_URL }}
+        run: node scripts/update-data.mjs
+
+      - name: Commit app data if changed
+        if: github.event_name == 'schedule' || inputs.dry_run == false
+        shell: bash
+        run: |
+          if git diff --quiet -- data.js; then
+            echo "No app data changes detected."
+            exit 0
+          fi
+
+          git config user.name "F300 Championship Bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add data.js
+          git commit -m "Update championship data after Speedhive import"
+
+          # Rebase onto the latest main in case another harmless automation
+          # committed while this race-day job was running.
+          git pull --rebase origin main
+          git push origin HEAD:main
