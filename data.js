@@ -1,5 +1,5 @@
 window.F300_DATA = {
-  "updated": "11 Oct 2026 13:47",
+  "updated": "11 Oct 2026 13:51",
   "apiUrl": "https://script.google.com/macros/s/AKfycbwqNnwg6FTL6GKOw0774fQXbr4ASWXsEwhZkW8eCUmECfxS72pnhf5Tq9SwXCiFuHv2/exec",
   "standings": [
     {
@@ -10,7 +10,7 @@ window.F300_DATA = {
       "wins": 2,
       "podiums": 2,
       "bestFinal": 1,
-      "points": 604
+      "points": 640
     },
     {
       "position": 2,
@@ -20,27 +20,27 @@ window.F300_DATA = {
       "wins": 0,
       "podiums": 2,
       "bestFinal": 2,
-      "points": 473
+      "points": 504
     },
     {
       "position": 3,
-      "driver": "Gary Woodward",
-      "number": 55,
-      "rounds": 4,
-      "wins": 0,
-      "podiums": 1,
-      "bestFinal": 2,
-      "points": 442
-    },
-    {
-      "position": 4,
       "driver": "Nye Cortizo-White",
       "number": 16,
       "rounds": 4,
       "wins": 0,
       "podiums": 1,
       "bestFinal": 3,
-      "points": 442
+      "points": 498
+    },
+    {
+      "position": 4,
+      "driver": "Gary Woodward",
+      "number": 55,
+      "rounds": 4,
+      "wins": 0,
+      "podiums": 1,
+      "bestFinal": 2,
+      "points": 472
     },
     {
       "position": 5,
@@ -50,27 +50,27 @@ window.F300_DATA = {
       "wins": 2,
       "podiums": 2,
       "bestFinal": 1,
-      "points": 415
+      "points": 448
     },
     {
       "position": 6,
-      "driver": "Jason Cooper",
-      "number": 69,
-      "rounds": 3,
-      "wins": 0,
-      "podiums": 1,
-      "bestFinal": 3,
-      "points": 304
-    },
-    {
-      "position": 7,
       "driver": "Jason Merritt",
       "number": 11,
       "rounds": 4,
       "wins": 0,
       "podiums": 0,
       "bestFinal": 7,
-      "points": 285
+      "points": 335
+    },
+    {
+      "position": 7,
+      "driver": "Jason Cooper",
+      "number": 69,
+      "rounds": 3,
+      "wins": 0,
+      "podiums": 1,
+      "bestFinal": 3,
+      "points": 333
     },
     {
       "position": 8,
@@ -84,6 +84,16 @@ window.F300_DATA = {
     },
     {
       "position": 9,
+      "driver": "Nicholas Cleere",
+      "number": 44,
+      "rounds": 2,
+      "wins": 0,
+      "podiums": 0,
+      "bestFinal": 9,
+      "points": 159
+    },
+    {
+      "position": 10,
       "driver": "Oliver Warner",
       "number": 46,
       "rounds": 1,
@@ -93,7 +103,7 @@ window.F300_DATA = {
       "points": 137
     },
     {
-      "position": 10,
+      "position": 11,
       "driver": "Jack Goodyer",
       "number": 116,
       "rounds": 1,
@@ -101,16 +111,6 @@ window.F300_DATA = {
       "podiums": 1,
       "bestFinal": 3,
       "points": 130
-    },
-    {
-      "position": 11,
-      "driver": "Nicholas Cleere",
-      "number": 44,
-      "rounds": 2,
-      "wins": 0,
-      "podiums": 0,
-      "bestFinal": 9,
-      "points": 128
     },
     {
       "position": 12,
@@ -796,18 +796,18 @@ window.F300_DATA = {
       "driver": "Nicholas Cleere",
       "h1Result": "-",
       "h1Points": 0,
-      "h2Result": "-",
-      "h2Points": 0,
+      "h2Result": "3",
+      "h2Points": 31,
       "h3Result": "-",
       "h3Points": 0,
       "finalResult": "-",
       "finalPoints": 0,
-      "weekendTotal": 0,
+      "weekendTotal": 31,
       "h1Lap": "-",
-      "h2Lap": "-",
+      "h2Lap": "43.853",
       "h3Lap": "-",
       "finalLap": "-",
-      "weekendBest": "-",
+      "weekendBest": "43.853",
       "notes": ""
     },
     {
@@ -816,18 +816,18 @@ window.F300_DATA = {
       "driver": "Nye Cortizo-White",
       "h1Result": "-",
       "h1Points": 0,
-      "h2Result": "-",
-      "h2Points": 0,
-      "h3Result": "-",
-      "h3Points": 0,
+      "h2Result": "6",
+      "h2Points": 28,
+      "h3Result": "6",
+      "h3Points": 28,
       "finalResult": "-",
       "finalPoints": 0,
-      "weekendTotal": 0,
+      "weekendTotal": 56,
       "h1Lap": "-",
-      "h2Lap": "-",
-      "h3Lap": "-",
+      "h2Lap": "44.174",
+      "h3Lap": "38.253",
       "finalLap": "-",
-      "weekendBest": "-",
+      "weekendBest": "38.253",
       "notes": ""
     },
     {
@@ -836,18 +836,18 @@ window.F300_DATA = {
       "driver": "Jason Merritt",
       "h1Result": "-",
       "h1Points": 0,
-      "h2Result": "-",
-      "h2Points": 0,
-      "h3Result": "-",
-      "h3Points": 0,
+      "h2Result": "11",
+      "h2Points": 23,
+      "h3Result": "7",
+      "h3Points": 27,
       "finalResult": "-",
       "finalPoints": 0,
-      "weekendTotal": 0,
+      "weekendTotal": 50,
       "h1Lap": "-",
-      "h2Lap": "-",
-      "h3Lap": "-",
+      "h2Lap": "45.288",
+      "h3Lap": "39.890",
       "finalLap": "-",
-      "weekendBest": "-",
+      "weekendBest": "39.890",
       "notes": ""
     },
     {
@@ -858,16 +858,16 @@ window.F300_DATA = {
       "h1Points": 0,
       "h2Result": "-",
       "h2Points": 0,
-      "h3Result": "-",
-      "h3Points": 0,
+      "h3Result": "1",
+      "h3Points": 36,
       "finalResult": "-",
       "finalPoints": 0,
-      "weekendTotal": 0,
+      "weekendTotal": 36,
       "h1Lap": "-",
       "h2Lap": "-",
-      "h3Lap": "-",
+      "h3Lap": "36.906",
       "finalLap": "-",
-      "weekendBest": "-",
+      "weekendBest": "36.906",
       "notes": ""
     },
     {
@@ -878,16 +878,16 @@ window.F300_DATA = {
       "h1Points": 0,
       "h2Result": "-",
       "h2Points": 0,
-      "h3Result": "-",
-      "h3Points": 0,
+      "h3Result": "2",
+      "h3Points": 33,
       "finalResult": "-",
       "finalPoints": 0,
-      "weekendTotal": 0,
+      "weekendTotal": 33,
       "h1Lap": "-",
       "h2Lap": "-",
-      "h3Lap": "-",
+      "h3Lap": "36.972",
       "finalLap": "-",
-      "weekendBest": "-",
+      "weekendBest": "36.972",
       "notes": ""
     },
     {
@@ -898,16 +898,16 @@ window.F300_DATA = {
       "h1Points": 0,
       "h2Result": "-",
       "h2Points": 0,
-      "h3Result": "-",
-      "h3Points": 0,
+      "h3Result": "3",
+      "h3Points": 31,
       "finalResult": "-",
       "finalPoints": 0,
-      "weekendTotal": 0,
+      "weekendTotal": 31,
       "h1Lap": "-",
       "h2Lap": "-",
-      "h3Lap": "-",
+      "h3Lap": "37.365",
       "finalLap": "-",
-      "weekendBest": "-",
+      "weekendBest": "37.365",
       "notes": ""
     },
     {
@@ -918,16 +918,16 @@ window.F300_DATA = {
       "h1Points": 0,
       "h2Result": "-",
       "h2Points": 0,
-      "h3Result": "-",
-      "h3Points": 0,
+      "h3Result": "4",
+      "h3Points": 30,
       "finalResult": "-",
       "finalPoints": 0,
-      "weekendTotal": 0,
+      "weekendTotal": 30,
       "h1Lap": "-",
       "h2Lap": "-",
-      "h3Lap": "-",
+      "h3Lap": "37.570",
       "finalLap": "-",
-      "weekendBest": "-",
+      "weekendBest": "37.570",
       "notes": ""
     },
     {
@@ -938,16 +938,16 @@ window.F300_DATA = {
       "h1Points": 0,
       "h2Result": "-",
       "h2Points": 0,
-      "h3Result": "-",
-      "h3Points": 0,
+      "h3Result": "5",
+      "h3Points": 29,
       "finalResult": "-",
       "finalPoints": 0,
-      "weekendTotal": 0,
+      "weekendTotal": 29,
       "h1Lap": "-",
       "h2Lap": "-",
-      "h3Lap": "-",
+      "h3Lap": "37.850",
       "finalLap": "-",
-      "weekendBest": "-",
+      "weekendBest": "37.850",
       "notes": ""
     }
   ],
