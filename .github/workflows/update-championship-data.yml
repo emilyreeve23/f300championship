@@ -4,8 +4,15 @@ on:
   workflow_dispatch:
 
   schedule:
-    # Runs automatically twice per day
+    # Normal spreadsheet -> app refresh, twice per day.
     - cron: "17 6,18 * * *"
+
+    # RACE-DAY HEARTBEAT:
+    # Every 10 minutes on Sundays, UK local time.
+    # The Speedhive importer itself checks the F300 Race Calendar.
+    # If today is not an active F300 race day, it exits without importing.
+    - cron: "8,18,28,38,48,58 7-21 * * 0"
+      timezone: "Europe/London"
 
 permissions:
   contents: write
@@ -17,6 +24,7 @@ concurrency:
 jobs:
   update-data:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - name: Checkout repository
@@ -24,6 +32,44 @@ jobs:
         with:
           ref: main
 
+      # These Python/Speedhive steps run ONLY for the 10-minute Sunday
+      # heartbeat above. Manual data refreshes and the normal twice-daily
+      # refresh do not run the timing importer.
+      - name: Set up Python for race-day import
+        if: github.event_name == 'schedule' && github.event.schedule == '8,18,28,38,48,58 7-21 * * 0'
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Speedhive client and browser
+        if: github.event_name == 'schedule' && github.event.schedule == '8,18,28,38,48,58 7-21 * * 0'
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "speedhive-tools==0.9.20" "requests>=2.32,<3" "playwright>=1.48,<2"
+          python -m playwright install --with-deps chromium
+
+      - name: Verify race-day importer
+        if: github.event_name == 'schedule' && github.event.schedule == '8,18,28,38,48,58 7-21 * * 0'
+        run: |
+          echo "Race-day heartbeat fired automatically."
+          grep -n 'BOT_VERSION = "v1.2-f300-semantic-order-r5"' scripts/import-speedhive-results.py
+          grep -n 'if __name__ == "__main__":' scripts/import-speedhive-results.py
+
+      - name: Import latest Speedhive results on race day
+        if: github.event_name == 'schedule' && github.event.schedule == '8,18,28,38,48,58 7-21 * * 0'
+        env:
+          F300_DATA_URL: ${{ secrets.F300_DATA_URL }}
+          F300_TIMING_BOT_SECRET: ${{ secrets.F300_TIMING_BOT_SECRET }}
+          SPEEDHIVE_ORG_ID: ${{ vars.SPEEDHIVE_ORG_ID }}
+        run: |
+          echo "Automatic race-day import: Event=auto, Round=0, Dry run=false"
+          python -u scripts/import-speedhive-results.py \
+            --event "auto" \
+            --round "0"
+
+      # Always refresh public app data after any trigger.
+      # On race-day heartbeat runs this happens AFTER Speedhive has written
+      # to the Google Sheet, so the app receives the newest results.
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -47,4 +93,8 @@ jobs:
 
           git add data.js
           git commit -m "Update championship data"
+
+          # Protect against another automation committing while this run
+          # was in progress.
+          git pull --rebase origin main
           git push origin HEAD:main

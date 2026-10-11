@@ -1,13 +1,9 @@
 name: Import Speedhive Results
 
 on:
-  # Every 10 minutes on Sundays, using UK local time.
-  # The importer itself checks the F300 Race Calendar and exits cleanly
-  # when today is not an active race day.
-  schedule:
-    - cron: "6,16,26,36,46,56 7-20 * * 0"
-      timezone: "Europe/London"
-
+  # Manual repair/test workflow.
+  # Automatic race-day importing is driven by update-championship-data.yml,
+  # whose scheduled trigger is already proven to run in this repository.
   workflow_dispatch:
     inputs:
       event:
@@ -16,7 +12,7 @@ on:
         default: "auto"
         type: string
       round:
-        description: "F300 championship round number (0 = auto-detect today's Sunday round)"
+        description: "F300 championship round number (0 = auto-detect today's race)"
         required: false
         default: "0"
         type: string
@@ -59,9 +55,7 @@ jobs:
         run: |
           echo "Importer file details:"
           ls -lh scripts/import-speedhive-results.py
-          echo "Expected bot version line:"
           grep -n 'BOT_VERSION = "v1.2-f300-semantic-order-r5"' scripts/import-speedhive-results.py
-          echo "Main entry point:"
           grep -n 'if __name__ == "__main__":' scripts/import-speedhive-results.py
 
       - name: Read and import Speedhive results
@@ -70,49 +64,30 @@ jobs:
           F300_TIMING_BOT_SECRET: ${{ secrets.F300_TIMING_BOT_SECRET }}
           SPEEDHIVE_ORG_ID: ${{ vars.SPEEDHIVE_ORG_ID }}
         run: |
-          # Scheduled runs are fully automatic and live.
-          # Manual runs keep the existing controls for testing.
-          EVENT_VALUE="auto"
-          ROUND_VALUE="0"
-          DRY_RUN_VALUE="false"
-
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            EVENT_VALUE="${{ inputs.event }}"
-            ROUND_VALUE="${{ inputs.round }}"
-            DRY_RUN_VALUE="${{ inputs.dry_run }}"
-          fi
-
           EXTRA=""
-          if [ "$DRY_RUN_VALUE" = "true" ]; then
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
             EXTRA="--dry-run"
           fi
 
-          echo "Trigger: ${{ github.event_name }}"
-          echo "Event/search: $EVENT_VALUE"
-          echo "Round: $ROUND_VALUE (0 means auto-detect from F300 Race Calendar)"
-          echo "Dry run: $DRY_RUN_VALUE"
-
           python -u scripts/import-speedhive-results.py \
-            --event "$EVENT_VALUE" \
-            --round "$ROUND_VALUE" \
+            --event "${{ inputs.event }}" \
+            --round "${{ inputs.round }}" \
             $EXTRA
 
-      # After a live race-day import, immediately refresh the public app data.
-      # For a manual dry run we deliberately skip this.
       - name: Set up Node.js
-        if: github.event_name == 'schedule' || inputs.dry_run == false
+        if: inputs.dry_run == false
         uses: actions/setup-node@v4
         with:
           node-version: "22"
 
       - name: Refresh app championship data
-        if: github.event_name == 'schedule' || inputs.dry_run == false
+        if: inputs.dry_run == false
         env:
           F300_DATA_URL: ${{ secrets.F300_DATA_URL }}
         run: node scripts/update-data.mjs
 
       - name: Commit app data if changed
-        if: github.event_name == 'schedule' || inputs.dry_run == false
+        if: inputs.dry_run == false
         shell: bash
         run: |
           if git diff --quiet -- data.js; then
@@ -122,11 +97,7 @@ jobs:
 
           git config user.name "F300 Championship Bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
           git add data.js
           git commit -m "Update championship data after Speedhive import"
-
-          # Rebase onto the latest main in case another harmless automation
-          # committed while this race-day job was running.
           git pull --rebase origin main
           git push origin HEAD:main
