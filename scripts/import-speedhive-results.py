@@ -31,7 +31,7 @@ from zoneinfo import ZoneInfo
 import requests
 from speedhive.wrapper import SpeedhiveClient
 
-BOT_VERSION = "v1.2-f300-sequential-r4"
+BOT_VERSION = "v1.2-f300-semantic-order-r5"
 
 
 SESSION_PATTERNS = {
@@ -1884,102 +1884,178 @@ def main() -> int:
         if looks_f300:
             f300_candidates.append((session, rows))
 
-    f300_candidates.sort(key=lambda item: session_sort_value(item[0]))
+    # Preserve Speedhive event/group order; session IDs are not chronological.
 
     warnings: list[str] = []
 
     # -----------------------------------------------------------------
-    # F300 RACE-DAY MAPPING — intentionally simple and deterministic.
+    # F300 RACE-DAY MAPPING
     #
-    # First, is_f300_session() has already restricted us to the F300
-    # class/group. From those confirmed F300 sessions:
+    # We have already restricted this list to the F300 group only.
     #
-    #   Practice / Warm-up -> IGNORE
-    #   first non-practice, non-Final session -> H1
-    #   second                              -> H2
-    #   third                               -> H3
-    #   actual Final                         -> Final
+    # Strong organiser-name rules:
+    #   Heat 1 / H1 / Race 1              -> H1
+    #   Heat 2 / H2 / Race 2              -> H2
+    #   Heat 3 / H3 / Race 3              -> H3
+    #   Qualifying / Timed Qualifying      -> H1
+    #   Pre-Final                          -> H3
+    #   actual Final                       -> Final
     #
-    # This deliberately does NOT depend on organisers using the same names
-    # each weekend. Examples:
+    # Generic/unusual remaining scoring sessions fill the unused H1/H2/H3
+    # slots in the ORIGINAL Speedhive event order. We deliberately never sort
+    # these by session ID because Speedhive IDs are not chronological.
     #
-    #   Qualifying, Heat, Pre-Final, Final -> H1, H2, H3, Final
-    #   Heat 1, Heat 2, Heat 3, Final      -> H1, H2, H3, Final
-    #   Qualifying, Heat                    -> H1, H2 (H3 remains blank)
-    #
-    # Session IDs are used for chronological/race-day order.
+    # Therefore today's naming:
+    #   Practice, Timed Qualifying, Heat, Pre-Final
+    # becomes:
+    #   ignore, H1, H2, H3.
     # -----------------------------------------------------------------
 
     mapped: dict[str, tuple[dict[str, Any], list[dict[str, Any]], str]] = {}
 
-    scoring_sessions: list[
+    explicit_heat_candidates: dict[
+        str,
+        list[tuple[dict[str, Any], list[dict[str, Any]]]]
+    ] = {
+        "h1": [],
+        "h2": [],
+        "h3": [],
+    }
+
+    qualifying_candidates: list[
+        tuple[dict[str, Any], list[dict[str, Any]]]
+    ] = []
+    pre_final_candidates: list[
         tuple[dict[str, Any], list[dict[str, Any]]]
     ] = []
     final_candidates: list[
         tuple[dict[str, Any], list[dict[str, Any]]]
     ] = []
+    fallback_candidates: list[
+        tuple[dict[str, Any], list[dict[str, Any]]]
+    ] = []
 
+    # IMPORTANT: iterate in the original event order.
     for session, rows in f300_candidates:
-        # IMPORTANT: use the session's own name for Practice/Final meaning.
-        # Parent context is only used to prove this belongs to F300.
         name = session_name(session)
 
         if is_practice_session(name):
+            continue
+
+        heat_key = explicit_heat_key(name)
+        if heat_key:
+            explicit_heat_candidates[heat_key].append((session, rows))
+            continue
+
+        if is_pre_final_session(name):
+            pre_final_candidates.append((session, rows))
             continue
 
         if is_actual_final_session(name):
             final_candidates.append((session, rows))
             continue
 
-        scoring_sessions.append((session, rows))
+        if is_qualifying_session(name):
+            qualifying_candidates.append((session, rows))
+            continue
 
-    scoring_sessions.sort(
-        key=lambda item: session_sort_value(item[0])
-    )
-    final_candidates.sort(
-        key=lambda item: session_sort_value(item[0])
-    )
+        # Generic "Heat", "Race", or unusual organiser labels all come here.
+        # Their original event order is preserved.
+        fallback_candidates.append((session, rows))
 
-    # Whatever scoring sessions have actually been published so far are
-    # mapped consecutively. Missing later heats simply stay blank.
-    for index, item in enumerate(scoring_sessions[:3]):
-        key = ("h1", "h2", "h3")[index]
+    # 1) Literal Heat 1 / Heat 2 / Heat 3 names always win.
+    for key in ("h1", "h2", "h3"):
+        values = explicit_heat_candidates[key]
+        if not values:
+            continue
+
+        session, rows = values[0]
+        mapped[key] = (
+            session,
+            rows,
+            f"Explicit session name -> {key.upper()}.",
+        )
+
+        if len(values) > 1:
+            warnings.append(
+                f"More than one explicit {key.upper()} session was found. "
+                "The first one in Speedhive event order was used."
+            )
+
+    # 2) Alternative naming used at Lydd and potentially other meetings.
+    # Qualifying is Heat 1 unless an explicit H1 already exists.
+    if "h1" not in mapped and qualifying_candidates:
+        session, rows = qualifying_candidates[0]
+        mapped["h1"] = (
+            session,
+            rows,
+            "Qualifying/Timed Qualifying -> H1.",
+        )
+
+        if len(qualifying_candidates) > 1:
+            warnings.append(
+                "More than one F300 Qualifying session was found. "
+                "The first one in Speedhive event order was used as H1."
+            )
+
+    # Pre-Final is Heat 3 unless an explicit H3 already exists.
+    if "h3" not in mapped and pre_final_candidates:
+        session, rows = pre_final_candidates[-1]
+        mapped["h3"] = (
+            session,
+            rows,
+            "Pre-Final -> H3.",
+        )
+
+        if len(pre_final_candidates) > 1:
+            warnings.append(
+                "More than one F300 Pre-Final was found. "
+                "The last one in Speedhive event order was used as H3."
+            )
+
+    # 3) Fill remaining H1/H2/H3 slots with whatever other F300 scoring
+    # sessions have actually been published, preserving original event order.
+    available_keys = [
+        key for key in ("h1", "h2", "h3")
+        if key not in mapped
+    ]
+
+    for key, item in zip(available_keys, fallback_candidates):
         session, rows = item
-
         mapped[key] = (
             session,
             rows,
             (
-                f"F300 race-day order: scoring session {index + 1} "
-                f"({session_name(session)}) -> {key.upper()}."
+                f"F300 event-order fallback: {session_name(session)} "
+                f"-> {key.upper()}."
             ),
         )
 
-    if len(scoring_sessions) > 3:
+    if len(fallback_candidates) > len(available_keys):
         extras = [
             session_name(item[0]) or str(item[0].get("id") or "?")
-            for item in scoring_sessions[3:]
+            for item in fallback_candidates[len(available_keys):]
         ]
         warnings.append(
-            "More than three non-practice F300 sessions were found before "
-            "the Final. H1/H2/H3 used the first three in race-day order; "
-            f"these extra sessions were not imported: {', '.join(extras)}"
+            "Extra F300 scoring sessions remained after H1/H2/H3 were filled "
+            f"and were not imported: {', '.join(extras)}"
         )
 
-    # Final is special: only an ACTUAL Final-labelled session may populate it.
+    # 4) Final is special and can only come from an actual Final-labelled
+    # session. Pre-Final can never populate Final.
     if final_candidates:
-        if len(final_candidates) > 1:
-            warnings.append(
-                "More than one actual F300 Final was found. "
-                "The latest Final was used."
-            )
-
         session, rows = final_candidates[-1]
         mapped["final"] = (
             session,
             rows,
             "Actual F300 Final -> Final.",
         )
+
+        if len(final_candidates) > 1:
+            warnings.append(
+                "More than one actual F300 Final was found. "
+                "The last one in Speedhive event order was used."
+            )
 
     print("\nF300 session mapping:")
     for key in ("h1", "h2", "h3", "final"):
