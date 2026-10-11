@@ -1,5 +1,5 @@
 window.F300_DATA = {
-  "updated": "11 Oct 2026 16:03",
+  "updated": "11 Oct 2026 16:10",
   "apiUrl": "https://script.google.com/macros/s/AKfycbwqNnwg6FTL6GKOw0774fQXbr4ASWXsEwhZkW8eCUmECfxS72pnhf5Tq9SwXCiFuHv2/exec",
   "standings": [
     {
@@ -206,7 +206,7 @@ window.F300_DATA = {
       "round": 4,
       "track": "Lydd",
       "date": "6th September",
-      "status": "Upcoming",
+      "status": "Complete",
       "dateKey": "2026-09-06",
       "notes": ""
     },
@@ -214,7 +214,7 @@ window.F300_DATA = {
       "round": 5,
       "track": "Lydd",
       "date": "11th October",
-      "status": "Upcoming",
+      "status": "Complete",
       "dateKey": "2026-10-11",
       "notes": ""
     }
