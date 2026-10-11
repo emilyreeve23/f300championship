@@ -31,7 +31,7 @@ from zoneinfo import ZoneInfo
 import requests
 from speedhive.wrapper import SpeedhiveClient
 
-BOT_VERSION = "v1.2-raceday-auto-30m"
+BOT_VERSION = "v1.2-semantic-session-mapping-r1"
 
 
 SESSION_PATTERNS = {
@@ -364,6 +364,29 @@ def is_practice_session(name: str) -> bool:
             "warmup",
             "test session",
             "testing",
+        )
+    )
+
+
+
+def is_qualifying_session(name: str) -> bool:
+    lowered = str(name or "").lower()
+    return bool(
+        re.search(
+            r"\b(?:timed\s+)?qual(?:i|ifying|ification|ifier)?\b",
+            lowered,
+            flags=re.I,
+        )
+    )
+
+
+def is_pre_final_session(name: str) -> bool:
+    lowered = str(name or "").lower()
+    return bool(
+        re.search(
+            r"\bpre[\s-]*final\b|\bprefinal\b",
+            lowered,
+            flags=re.I,
         )
     )
 
@@ -1666,33 +1689,11 @@ def main() -> int:
     race_context = f300_race_context(f300_feed, selected_round)
 
     client = SpeedhiveClient.create(timeout=30)
-
-    automatic_race_day_mode = args.round < 1
-
-    try:
-        event_id = pick_event_id(
-            client,
-            args.event,
-            race_context=race_context,
-        )
-    except RuntimeError as exc:
-        message = str(exc)
-
-        if (
-            automatic_race_day_mode
-            and (
-                "No visible Speedhive result matched" in message
-                or "event may not have been created yet" in message.lower()
-            )
-        ):
-            print(
-                "Speedhive event is not available yet. "
-                "Nothing was changed; the next 30-minute race-day check will try again.",
-                flush=True,
-            )
-            return 0
-
-        raise
+    event_id = pick_event_id(
+        client,
+        args.event,
+        race_context=race_context,
+    )
 
     event = client.get_event(event_id, include_sessions=True) or {}
     event_title = (
@@ -1765,65 +1766,107 @@ def main() -> int:
     f300_candidates.sort(key=lambda item: session_sort_value(item[0]))
 
     warnings: list[str] = []
-    scoring_before_final: list[tuple[dict[str, Any], list[dict[str, Any]]]] = []
+
+    qualifying_candidates: list[tuple[dict[str, Any], list[dict[str, Any]]]] = []
+    regular_candidates: list[tuple[dict[str, Any], list[dict[str, Any]]]] = []
+    pre_final_candidates: list[tuple[dict[str, Any], list[dict[str, Any]]]] = []
     final_candidates: list[tuple[dict[str, Any], list[dict[str, Any]]]] = []
 
+    # Classify by the session's own name. Parent/group context is useful for
+    # identifying F300, but must not decide whether a session is Qualifying,
+    # Pre-Final or Final.
     for session, rows in f300_candidates:
         name = session_name(session)
-        context = str(session.get("_f300_parent_context") or "")
-        label = f"{context} {name}".strip()
 
-        if is_practice_session(label):
+        if is_practice_session(name):
             continue
 
-        if is_actual_final_session(label):
+        if is_pre_final_session(name):
+            pre_final_candidates.append((session, rows))
+            continue
+
+        if is_actual_final_session(name):
             final_candidates.append((session, rows))
             continue
 
-        scoring_before_final.append((session, rows))
+        if is_qualifying_session(name):
+            qualifying_candidates.append((session, rows))
+            continue
 
-    if len(scoring_before_final) > 3:
-        extras = [
-            session_name(item[0]) or str(item[0].get("id") or "?")
-            for item in scoring_before_final[3:]
-        ]
+        regular_candidates.append((session, rows))
+
+    qualifying_candidates.sort(key=lambda item: session_sort_value(item[0]))
+    regular_candidates.sort(key=lambda item: session_sort_value(item[0]))
+    pre_final_candidates.sort(key=lambda item: session_sort_value(item[0]))
+    final_candidates.sort(key=lambda item: session_sort_value(item[0]))
+
+    if len(qualifying_candidates) > 1:
         warnings.append(
-            "More than three non-practice sessions were found before the Final. "
-            "The first three were mapped to H1/H2/H3 and these extra sessions "
-            f"were not imported: {', '.join(extras)}"
+            "More than one Qualifying-like F300 session was found. "
+            "The earliest Qualifying session was used as H1."
         )
 
-    if final_candidates and len(scoring_before_final) < 3:
+    if len(pre_final_candidates) > 1:
         warnings.append(
-            f"A Final was found but only {len(scoring_before_final)} scoring "
-            "session(s) were found before it."
+            "More than one Pre-Final-like F300 session was found. "
+            "The latest Pre-Final was used as H3."
         )
 
     if len(final_candidates) > 1:
         warnings.append(
-            "More than one Final-like session was found. "
+            "More than one actual Final-like F300 session was found. "
             "The latest Final was used."
         )
 
     mapped: dict[str, tuple[dict[str, Any], list[dict[str, Any]], str]] = {}
 
-    # F300 scoring rule: ignore Practice/Warm-up. If Qualifying exists it is
-    # normally the first scoring session and therefore becomes H1. If there
-    # is no Qualifying, the first Heat/race becomes H1 instead. The next two
-    # scoring sessions become H2/H3; the actual Final remains Final.
-    for index, item in enumerate(scoring_before_final[:3]):
-        key = ("h1", "h2", "h3")[index]
+    has_qualifying = bool(qualifying_candidates)
+    has_pre_final = bool(pre_final_candidates)
+
+    if has_qualifying:
+        session, rows = qualifying_candidates[0]
+        mapped["h1"] = (
+            session,
+            rows,
+            "Mapped Qualifying/Timed Qualifying explicitly to H1.",
+        )
+
+        # With Qualifying present, ordinary Heat/Race sessions begin at H2.
+        # If Pre-Final exists, it owns H3.
+        regular_keys = ["h2"] if has_pre_final else ["h2", "h3"]
+    else:
+        # No Qualifying: first ordinary Heat/Race becomes H1.
+        # Pre-Final still owns H3 when present.
+        regular_keys = ["h1", "h2"] if has_pre_final else ["h1", "h2", "h3"]
+
+    for key, item in zip(regular_keys, regular_candidates):
         session, rows = item
         mapped[key] = (
             session,
             rows,
             (
-                (
-                    f"Mapped Timed Qualifying/Qualifying as {key.upper()} because it is the first scoring session."
-                    if index == 0 and re.search(r"\bqual(?:i|ifying|ification)?\b", session_name(session), flags=re.I)
-                    else f"Mapped by race-day order: non-practice scoring session {index + 1} → {key.upper()}."
-                )
+                f"Mapped {session_name(session)} to {key.upper()} "
+                + ("after Qualifying." if has_qualifying
+                   else "because no Qualifying session was present.")
             ),
+        )
+
+    if len(regular_candidates) > len(regular_keys):
+        extras = [
+            session_name(item[0]) or str(item[0].get("id") or "?")
+            for item in regular_candidates[len(regular_keys):]
+        ]
+        warnings.append(
+            "More ordinary F300 scoring sessions were found than the H1/H2/H3 "
+            f"layout can hold. These were not imported: {', '.join(extras)}"
+        )
+
+    if has_pre_final:
+        session, rows = pre_final_candidates[-1]
+        mapped["h3"] = (
+            session,
+            rows,
+            "Mapped Pre-Final explicitly to H3 as the last scoring race before the Final.",
         )
 
     if final_candidates:
@@ -1831,8 +1874,15 @@ def main() -> int:
         mapped["final"] = (
             session,
             rows,
-            "Mapped because this is the actual Final (Pre-Final is not treated as Final).",
+            "Mapped the actual Final explicitly to Final.",
         )
+
+    print("\nSemantic F300 session mapping:")
+    for key in ("h1", "h2", "h3", "final"):
+        if key in mapped:
+            print(f"  {key.upper():>5} <- {session_name(mapped[key][0])}")
+        else:
+            print(f"  {key.upper():>5} <- not published/found yet")
 
     ordered_keys = ["h1", "h2", "h3", "final"]
     session_payloads: list[dict[str, Any]] = []
@@ -1927,6 +1977,7 @@ def main() -> int:
         "eventId": str(event_id),
         "round": selected_round,
         "warnings": warnings,
+        "replaceSessionKeys": ["h1", "h2", "h3", "final"],
         "sessions": session_payloads,
     }
 

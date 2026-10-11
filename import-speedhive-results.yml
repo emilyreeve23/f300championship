@@ -5,7 +5,7 @@ on:
   # race hours in both GMT and BST; the importer itself checks the F300
   # calendar and exits immediately on Sundays with no scheduled race.
   schedule:
-    - cron: "*/30 7-19 * * 0"
+    - cron: "*/30 6-20 * * 0"
   workflow_dispatch:
     inputs:
       event:
@@ -52,7 +52,7 @@ jobs:
           echo "Importer file details:"
           ls -lh scripts/import-speedhive-results.py
           echo "Expected bot version line:"
-          grep -n 'BOT_VERSION = "v1.2-raceday-auto-30m"' scripts/import-speedhive-results.py
+          grep -n 'BOT_VERSION = "v1.2-semantic-session-mapping-r1"' scripts/import-speedhive-results.py
           echo "Main entry point:"
           grep -n 'if __name__ == "__main__":' scripts/import-speedhive-results.py
 
