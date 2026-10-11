@@ -1,5 +1,5 @@
 window.F300_DATA = {
-  "updated": "11 Oct 2026 14:49",
+  "updated": "11 Oct 2026 14:51",
   "apiUrl": "https://script.google.com/macros/s/AKfycbwqNnwg6FTL6GKOw0774fQXbr4ASWXsEwhZkW8eCUmECfxS72pnhf5Tq9SwXCiFuHv2/exec",
   "standings": [
     {
@@ -10,7 +10,7 @@ window.F300_DATA = {
       "wins": 2,
       "podiums": 2,
       "bestFinal": 1,
-      "points": 604
+      "points": 712
     },
     {
       "position": 2,
@@ -20,7 +20,7 @@ window.F300_DATA = {
       "wins": 0,
       "podiums": 2,
       "bestFinal": 2,
-      "points": 473
+      "points": 566
     },
     {
       "position": 3,
@@ -30,7 +30,7 @@ window.F300_DATA = {
       "wins": 0,
       "podiums": 1,
       "bestFinal": 2,
-      "points": 442
+      "points": 532
     },
     {
       "position": 4,
@@ -40,7 +40,7 @@ window.F300_DATA = {
       "wins": 0,
       "podiums": 1,
       "bestFinal": 3,
-      "points": 442
+      "points": 526
     },
     {
       "position": 5,
@@ -50,7 +50,7 @@ window.F300_DATA = {
       "wins": 2,
       "podiums": 2,
       "bestFinal": 1,
-      "points": 415
+      "points": 514
     },
     {
       "position": 6,
@@ -60,7 +60,7 @@ window.F300_DATA = {
       "wins": 0,
       "podiums": 1,
       "bestFinal": 3,
-      "points": 304
+      "points": 391
     },
     {
       "position": 7,
@@ -70,7 +70,7 @@ window.F300_DATA = {
       "wins": 0,
       "podiums": 0,
       "bestFinal": 7,
-      "points": 285
+      "points": 366
     },
     {
       "position": 8,
@@ -814,140 +814,140 @@ window.F300_DATA = {
       "round": 5,
       "track": "Lydd",
       "driver": "Nye Cortizo-White",
-      "h1Result": "-",
-      "h1Points": 0,
-      "h2Result": "-",
-      "h2Points": 0,
-      "h3Result": "-",
-      "h3Points": 0,
+      "h1Result": "6",
+      "h1Points": 28,
+      "h2Result": "6",
+      "h2Points": 28,
+      "h3Result": "6",
+      "h3Points": 28,
       "finalResult": "-",
       "finalPoints": 0,
-      "weekendTotal": 0,
-      "h1Lap": "-",
-      "h2Lap": "-",
-      "h3Lap": "-",
+      "weekendTotal": 84,
+      "h1Lap": "38.253",
+      "h2Lap": "38.368",
+      "h3Lap": "39.105",
       "finalLap": "-",
-      "weekendBest": "-",
+      "weekendBest": "38.253",
       "notes": ""
     },
     {
       "round": 5,
       "track": "Lydd",
       "driver": "Jason Merritt",
-      "h1Result": "-",
-      "h1Points": 0,
-      "h2Result": "-",
-      "h2Points": 0,
-      "h3Result": "-",
-      "h3Points": 0,
+      "h1Result": "7",
+      "h1Points": 27,
+      "h2Result": "7",
+      "h2Points": 27,
+      "h3Result": "7",
+      "h3Points": 27,
       "finalResult": "-",
       "finalPoints": 0,
-      "weekendTotal": 0,
-      "h1Lap": "-",
-      "h2Lap": "-",
-      "h3Lap": "-",
+      "weekendTotal": 81,
+      "h1Lap": "39.890",
+      "h2Lap": "40.223",
+      "h3Lap": "39.754",
       "finalLap": "-",
-      "weekendBest": "-",
+      "weekendBest": "39.754",
       "notes": ""
     },
     {
       "round": 5,
       "track": "Lydd",
       "driver": "James Price",
-      "h1Result": "-",
-      "h1Points": 0,
-      "h2Result": "-",
-      "h2Points": 0,
-      "h3Result": "-",
-      "h3Points": 0,
+      "h1Result": "1",
+      "h1Points": 36,
+      "h2Result": "1",
+      "h2Points": 36,
+      "h3Result": "1",
+      "h3Points": 36,
       "finalResult": "-",
       "finalPoints": 0,
-      "weekendTotal": 0,
-      "h1Lap": "-",
-      "h2Lap": "-",
-      "h3Lap": "-",
+      "weekendTotal": 108,
+      "h1Lap": "36.906",
+      "h2Lap": "36.621",
+      "h3Lap": "37.045",
       "finalLap": "-",
-      "weekendBest": "-",
+      "weekendBest": "36.621",
       "notes": ""
     },
     {
       "round": 5,
       "track": "Lydd",
       "driver": "Ryan Martin",
-      "h1Result": "-",
-      "h1Points": 0,
-      "h2Result": "-",
-      "h2Points": 0,
-      "h3Result": "-",
-      "h3Points": 0,
+      "h1Result": "2",
+      "h1Points": 33,
+      "h2Result": "2",
+      "h2Points": 33,
+      "h3Result": "2",
+      "h3Points": 33,
       "finalResult": "-",
       "finalPoints": 0,
-      "weekendTotal": 0,
-      "h1Lap": "-",
-      "h2Lap": "-",
-      "h3Lap": "-",
+      "weekendTotal": 99,
+      "h1Lap": "36.972",
+      "h2Lap": "37.191",
+      "h3Lap": "37.404",
       "finalLap": "-",
-      "weekendBest": "-",
+      "weekendBest": "36.972",
       "notes": ""
     },
     {
       "round": 5,
       "track": "Lydd",
       "driver": "Jack Reeve",
-      "h1Result": "-",
-      "h1Points": 0,
-      "h2Result": "-",
-      "h2Points": 0,
-      "h3Result": "-",
-      "h3Points": 0,
+      "h1Result": "3",
+      "h1Points": 31,
+      "h2Result": "3",
+      "h2Points": 31,
+      "h3Result": "3",
+      "h3Points": 31,
       "finalResult": "-",
       "finalPoints": 0,
-      "weekendTotal": 0,
-      "h1Lap": "-",
-      "h2Lap": "-",
-      "h3Lap": "-",
+      "weekendTotal": 93,
+      "h1Lap": "37.365",
+      "h2Lap": "37.171",
+      "h3Lap": "37.692",
       "finalLap": "-",
-      "weekendBest": "-",
+      "weekendBest": "37.171",
       "notes": ""
     },
     {
       "round": 5,
       "track": "Lydd",
       "driver": "Gary Woodward",
-      "h1Result": "-",
-      "h1Points": 0,
-      "h2Result": "-",
-      "h2Points": 0,
-      "h3Result": "-",
-      "h3Points": 0,
+      "h1Result": "4",
+      "h1Points": 30,
+      "h2Result": "4",
+      "h2Points": 30,
+      "h3Result": "4",
+      "h3Points": 30,
       "finalResult": "-",
       "finalPoints": 0,
-      "weekendTotal": 0,
-      "h1Lap": "-",
-      "h2Lap": "-",
-      "h3Lap": "-",
+      "weekendTotal": 90,
+      "h1Lap": "37.570",
+      "h2Lap": "37.733",
+      "h3Lap": "38.151",
       "finalLap": "-",
-      "weekendBest": "-",
+      "weekendBest": "37.570",
       "notes": ""
     },
     {
       "round": 5,
       "track": "Lydd",
       "driver": "Jason Cooper",
-      "h1Result": "-",
-      "h1Points": 0,
-      "h2Result": "-",
-      "h2Points": 0,
-      "h3Result": "-",
-      "h3Points": 0,
+      "h1Result": "5",
+      "h1Points": 29,
+      "h2Result": "5",
+      "h2Points": 29,
+      "h3Result": "5",
+      "h3Points": 29,
       "finalResult": "-",
       "finalPoints": 0,
-      "weekendTotal": 0,
-      "h1Lap": "-",
-      "h2Lap": "-",
-      "h3Lap": "-",
+      "weekendTotal": 87,
+      "h1Lap": "37.850",
+      "h2Lap": "37.763",
+      "h3Lap": "38.150",
       "finalLap": "-",
-      "weekendBest": "-",
+      "weekendBest": "37.763",
       "notes": ""
     }
   ],
@@ -5852,217 +5852,27 @@ window.F300_DATA = {
       "round": 5,
       "track": "Lydd",
       "sessionKey": "h1",
-      "sessionName": "F300 Pre-Final",
+      "sessionName": "F300 Timed Qualifying",
       "driver": "Gary Woodward",
       "number": "55",
-      "best": 38.151,
+      "best": 37.57,
       "laps": [
         {
           "lap": 1,
-          "time": 41.151,
-          "speed": 90.982,
+          "time": 40.401,
+          "speed": 92.671,
           "inPit": false
         },
         {
           "lap": 2,
-          "time": 38.515,
-          "speed": 97.209,
+          "time": 38.284,
+          "speed": 97.795,
           "inPit": false
         },
         {
           "lap": 3,
-          "time": 38.264,
-          "speed": 97.847,
-          "inPit": false
-        },
-        {
-          "lap": 4,
-          "time": 38.281,
-          "speed": 97.803,
-          "inPit": false
-        },
-        {
-          "lap": 5,
-          "time": 38.151,
-          "speed": 98.136,
-          "inPit": false
-        },
-        {
-          "lap": 6,
-          "time": 38.301,
-          "speed": 97.752,
-          "inPit": false
-        },
-        {
-          "lap": 7,
-          "time": 38.259,
-          "speed": 97.859,
-          "inPit": false
-        },
-        {
-          "lap": 8,
-          "time": 39.411,
-          "speed": 94.999,
-          "inPit": false
-        },
-        {
-          "lap": 9,
-          "time": 38.59,
-          "speed": 97.02,
-          "inPit": false
-        },
-        {
-          "lap": 10,
-          "time": 38.344,
-          "speed": 97.642,
-          "inPit": false
-        },
-        {
-          "lap": 11,
-          "time": 38.244,
-          "speed": 97.898,
-          "inPit": false
-        },
-        {
-          "lap": 12,
-          "time": 38.296,
-          "speed": 97.765,
-          "inPit": false
-        },
-        {
-          "lap": 13,
-          "time": 38.715,
-          "speed": 96.707,
-          "inPit": false
-        },
-        {
-          "lap": 14,
-          "time": 38.658,
-          "speed": 96.849,
-          "inPit": false
-        }
-      ]
-    },
-    {
-      "round": 5,
-      "track": "Lydd",
-      "sessionKey": "h1",
-      "sessionName": "F300 Pre-Final",
-      "driver": "Jack Reeve",
-      "number": "4",
-      "best": 37.692,
-      "laps": [
-        {
-          "lap": 1,
-          "time": 44.781,
-          "speed": 83.607,
-          "inPit": false
-        },
-        {
-          "lap": 2,
-          "time": 39.674,
-          "speed": 94.369,
-          "inPit": false
-        },
-        {
-          "lap": 3,
-          "time": 37.79,
-          "speed": 99.074,
-          "inPit": false
-        },
-        {
-          "lap": 4,
-          "time": 37.922,
-          "speed": 98.729,
-          "inPit": false
-        },
-        {
-          "lap": 5,
-          "time": 38.621,
-          "speed": 96.942,
-          "inPit": false
-        },
-        {
-          "lap": 6,
-          "time": 37.799,
-          "speed": 99.05,
-          "inPit": false
-        },
-        {
-          "lap": 7,
-          "time": 37.711,
-          "speed": 99.281,
-          "inPit": false
-        },
-        {
-          "lap": 8,
-          "time": 37.745,
-          "speed": 99.192,
-          "inPit": false
-        },
-        {
-          "lap": 9,
-          "time": 37.692,
-          "speed": 99.331,
-          "inPit": false
-        },
-        {
-          "lap": 10,
-          "time": 37.926,
-          "speed": 98.719,
-          "inPit": false
-        },
-        {
-          "lap": 11,
-          "time": 38.261,
-          "speed": 97.854,
-          "inPit": false
-        },
-        {
-          "lap": 12,
-          "time": 37.981,
-          "speed": 98.576,
-          "inPit": false
-        },
-        {
-          "lap": 13,
-          "time": 38.087,
-          "speed": 98.301,
-          "inPit": false
-        },
-        {
-          "lap": 14,
-          "time": 38.771,
-          "speed": 96.567,
-          "inPit": false
-        }
-      ]
-    },
-    {
-      "round": 5,
-      "track": "Lydd",
-      "sessionKey": "h1",
-      "sessionName": "F300 Pre-Final",
-      "driver": "James Price",
-      "number": "8",
-      "best": 37.045,
-      "laps": [
-        {
-          "lap": 1,
-          "time": 39.399,
-          "speed": 95.028,
-          "inPit": false
-        },
-        {
-          "lap": 2,
-          "time": 37.641,
-          "speed": 99.466,
-          "inPit": false
-        },
-        {
-          "lap": 3,
-          "time": 37.403,
-          "speed": 100.099,
+          "time": 37.907,
+          "speed": 98.768,
           "inPit": false
         },
         {
@@ -6073,62 +5883,20 @@ window.F300_DATA = {
         },
         {
           "lap": 5,
-          "time": 37.12,
-          "speed": 100.862,
+          "time": 37.926,
+          "speed": 98.719,
           "inPit": false
         },
         {
           "lap": 6,
-          "time": 37.332,
-          "speed": 100.289,
+          "time": 38.078,
+          "speed": 98.324,
           "inPit": false
         },
         {
           "lap": 7,
-          "time": 37.189,
-          "speed": 100.675,
-          "inPit": false
-        },
-        {
-          "lap": 8,
-          "time": 37.142,
-          "speed": 100.802,
-          "inPit": false
-        },
-        {
-          "lap": 9,
-          "time": 37.045,
-          "speed": 101.066,
-          "inPit": false
-        },
-        {
-          "lap": 10,
-          "time": 37.271,
-          "speed": 100.453,
-          "inPit": false
-        },
-        {
-          "lap": 11,
-          "time": 37.455,
-          "speed": 99.96,
-          "inPit": false
-        },
-        {
-          "lap": 12,
-          "time": 37.532,
-          "speed": 99.755,
-          "inPit": false
-        },
-        {
-          "lap": 13,
-          "time": 37.462,
-          "speed": 99.941,
-          "inPit": false
-        },
-        {
-          "lap": 14,
-          "time": 38.044,
-          "speed": 98.412,
+          "time": 38.471,
+          "speed": 97.32,
           "inPit": false
         }
       ]
@@ -6137,93 +5905,133 @@ window.F300_DATA = {
       "round": 5,
       "track": "Lydd",
       "sessionKey": "h1",
-      "sessionName": "F300 Pre-Final",
-      "driver": "Jason Cooper",
-      "number": "69",
-      "best": 38.15,
+      "sessionName": "F300 Timed Qualifying",
+      "driver": "Jack Reeve",
+      "number": "4",
+      "best": 37.365,
       "laps": [
         {
           "lap": 1,
-          "time": 41.412,
-          "speed": 90.409,
+          "time": 37.72,
+          "speed": 99.258,
           "inPit": false
         },
         {
           "lap": 2,
-          "time": 38.685,
-          "speed": 96.782,
+          "time": 37.566,
+          "speed": 99.665,
           "inPit": false
         },
         {
           "lap": 3,
-          "time": 38.337,
-          "speed": 97.66,
+          "time": 37.365,
+          "speed": 100.201,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 5,
+      "track": "Lydd",
+      "sessionKey": "h1",
+      "sessionName": "F300 Timed Qualifying",
+      "driver": "James Price",
+      "number": "8",
+      "best": 36.906,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 38.282,
+          "speed": 97.801,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 37.102,
+          "speed": 100.911,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 36.906,
+          "speed": 101.447,
           "inPit": false
         },
         {
           "lap": 4,
-          "time": 38.15,
-          "speed": 98.139,
+          "time": 36.927,
+          "speed": 101.389,
           "inPit": false
         },
         {
           "lap": 5,
-          "time": 38.172,
-          "speed": 98.082,
+          "time": 36.923,
+          "speed": 101.4,
           "inPit": false
         },
         {
           "lap": 6,
-          "time": 38.153,
-          "speed": 98.131,
+          "time": 39.196,
+          "speed": 95.52,
           "inPit": false
         },
         {
           "lap": 7,
-          "time": 38.237,
-          "speed": 97.916,
+          "time": 37.21,
+          "speed": 100.618,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 5,
+      "track": "Lydd",
+      "sessionKey": "h1",
+      "sessionName": "F300 Timed Qualifying",
+      "driver": "Jason Cooper",
+      "number": "69",
+      "best": 37.85,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 38.787,
+          "speed": 96.527,
           "inPit": false
         },
         {
-          "lap": 8,
-          "time": 39.305,
-          "speed": 95.255,
+          "lap": 2,
+          "time": 38.148,
+          "speed": 98.144,
           "inPit": false
         },
         {
-          "lap": 9,
-          "time": 38.725,
-          "speed": 96.682,
+          "lap": 3,
+          "time": 37.938,
+          "speed": 98.687,
           "inPit": false
         },
         {
-          "lap": 10,
-          "time": 38.216,
-          "speed": 97.969,
+          "lap": 4,
+          "time": 37.942,
+          "speed": 98.677,
           "inPit": false
         },
         {
-          "lap": 11,
-          "time": 39.956,
-          "speed": 93.703,
+          "lap": 5,
+          "time": 38.041,
+          "speed": 98.42,
           "inPit": false
         },
         {
-          "lap": 12,
-          "time": 41.313,
-          "speed": 90.625,
+          "lap": 6,
+          "time": 37.85,
+          "speed": 98.917,
           "inPit": false
         },
         {
-          "lap": 13,
-          "time": 41.086,
-          "speed": 91.126,
-          "inPit": false
-        },
-        {
-          "lap": 14,
-          "time": 42.376,
-          "speed": 88.352,
+          "lap": 7,
+          "time": 39,
+          "speed": 96,
           "inPit": false
         }
       ]
@@ -6235,7 +6043,7 @@ window.F300_DATA = {
       "sessionName": "Honda Junior Timed Qualifying",
       "driver": "Jason Merritt",
       "number": "11",
-      "best": 39.754,
+      "best": 39.89,
       "laps": [
         {
           "lap": 1,
@@ -6245,8 +6053,8 @@ window.F300_DATA = {
         },
         {
           "lap": 1,
-          "time": 43.103,
-          "speed": 86.862,
+          "time": 41.97,
+          "speed": 89.207,
           "inPit": false
         },
         {
@@ -6257,8 +6065,8 @@ window.F300_DATA = {
         },
         {
           "lap": 2,
-          "time": 40.6,
-          "speed": 92.217,
+          "time": 40.862,
+          "speed": 91.625,
           "inPit": false
         },
         {
@@ -6269,8 +6077,8 @@ window.F300_DATA = {
         },
         {
           "lap": 3,
-          "time": 40.584,
-          "speed": 92.253,
+          "time": 40.252,
+          "speed": 93.014,
           "inPit": false
         },
         {
@@ -6281,8 +6089,8 @@ window.F300_DATA = {
         },
         {
           "lap": 4,
-          "time": 39.754,
-          "speed": 94.179,
+          "time": 40.458,
+          "speed": 92.54,
           "inPit": false
         },
         {
@@ -6293,8 +6101,8 @@ window.F300_DATA = {
         },
         {
           "lap": 5,
-          "time": 40.2,
-          "speed": 93.134,
+          "time": 39.89,
+          "speed": 93.858,
           "inPit": false
         },
         {
@@ -6305,50 +6113,14 @@ window.F300_DATA = {
         },
         {
           "lap": 6,
-          "time": 40.18,
-          "speed": 93.181,
+          "time": 40.029,
+          "speed": 93.532,
           "inPit": false
         },
         {
           "lap": 7,
-          "time": 40.41,
-          "speed": 92.65,
-          "inPit": false
-        },
-        {
-          "lap": 8,
-          "time": 40.452,
-          "speed": 92.554,
-          "inPit": false
-        },
-        {
-          "lap": 9,
-          "time": 40.554,
-          "speed": 92.321,
-          "inPit": false
-        },
-        {
-          "lap": 10,
-          "time": 42.25,
-          "speed": 88.615,
-          "inPit": false
-        },
-        {
-          "lap": 11,
-          "time": 42.857,
-          "speed": 87.36,
-          "inPit": false
-        },
-        {
-          "lap": 12,
-          "time": 41.712,
-          "speed": 89.758,
-          "inPit": false
-        },
-        {
-          "lap": 13,
-          "time": 41.219,
-          "speed": 90.832,
+          "time": 40.312,
+          "speed": 92.876,
           "inPit": false
         }
       ]
@@ -6407,616 +6179,12 @@ window.F300_DATA = {
       "sessionName": "Honda Junior Timed Qualifying",
       "driver": "Nye Cortizo-White",
       "number": "16",
-      "best": 39.105,
+      "best": 38.253,
       "laps": [
         {
           "lap": 1,
           "time": 44.844,
           "speed": 83.489,
-          "inPit": false
-        },
-        {
-          "lap": 1,
-          "time": 42.183,
-          "speed": 88.756,
-          "inPit": false
-        },
-        {
-          "lap": 2,
-          "time": 44.578,
-          "speed": 83.988,
-          "inPit": false
-        },
-        {
-          "lap": 2,
-          "time": 39.237,
-          "speed": 95.42,
-          "inPit": false
-        },
-        {
-          "lap": 3,
-          "time": 44.354,
-          "speed": 84.412,
-          "inPit": false
-        },
-        {
-          "lap": 3,
-          "time": 39.155,
-          "speed": 95.62,
-          "inPit": false
-        },
-        {
-          "lap": 4,
-          "time": 44.174,
-          "speed": 84.756,
-          "inPit": false
-        },
-        {
-          "lap": 4,
-          "time": 39.24,
-          "speed": 95.413,
-          "inPit": false
-        },
-        {
-          "lap": 5,
-          "time": 44.238,
-          "speed": 84.633,
-          "inPit": false
-        },
-        {
-          "lap": 5,
-          "time": 39.185,
-          "speed": 95.547,
-          "inPit": false
-        },
-        {
-          "lap": 6,
-          "time": 44.255,
-          "speed": 84.601,
-          "inPit": false
-        },
-        {
-          "lap": 6,
-          "time": 39.105,
-          "speed": 95.742,
-          "inPit": false
-        },
-        {
-          "lap": 7,
-          "time": 39.486,
-          "speed": 94.818,
-          "inPit": false
-        },
-        {
-          "lap": 8,
-          "time": 39.133,
-          "speed": 95.674,
-          "inPit": false
-        },
-        {
-          "lap": 9,
-          "time": 39.294,
-          "speed": 95.282,
-          "inPit": false
-        },
-        {
-          "lap": 10,
-          "time": 39.222,
-          "speed": 95.457,
-          "inPit": false
-        },
-        {
-          "lap": 11,
-          "time": 39.513,
-          "speed": 94.754,
-          "inPit": false
-        },
-        {
-          "lap": 12,
-          "time": 39.26,
-          "speed": 95.364,
-          "inPit": false
-        },
-        {
-          "lap": 13,
-          "time": 39.18,
-          "speed": 95.559,
-          "inPit": false
-        },
-        {
-          "lap": 14,
-          "time": 39.679,
-          "speed": 94.357,
-          "inPit": false
-        }
-      ]
-    },
-    {
-      "round": 5,
-      "track": "Lydd",
-      "sessionKey": "h1",
-      "sessionName": "F300 Pre-Final",
-      "driver": "Ryan Martin",
-      "number": "17",
-      "best": 37.404,
-      "laps": [
-        {
-          "lap": 1,
-          "time": 40.568,
-          "speed": 92.289,
-          "inPit": false
-        },
-        {
-          "lap": 2,
-          "time": 37.913,
-          "speed": 98.752,
-          "inPit": false
-        },
-        {
-          "lap": 3,
-          "time": 37.692,
-          "speed": 99.331,
-          "inPit": false
-        },
-        {
-          "lap": 4,
-          "time": 37.407,
-          "speed": 100.088,
-          "inPit": false
-        },
-        {
-          "lap": 5,
-          "time": 37.435,
-          "speed": 100.013,
-          "inPit": false
-        },
-        {
-          "lap": 6,
-          "time": 37.474,
-          "speed": 99.909,
-          "inPit": false
-        },
-        {
-          "lap": 7,
-          "time": 38.05,
-          "speed": 98.397,
-          "inPit": false
-        },
-        {
-          "lap": 8,
-          "time": 37.462,
-          "speed": 99.941,
-          "inPit": false
-        },
-        {
-          "lap": 9,
-          "time": 37.404,
-          "speed": 100.096,
-          "inPit": false
-        },
-        {
-          "lap": 10,
-          "time": 37.549,
-          "speed": 99.71,
-          "inPit": false
-        },
-        {
-          "lap": 11,
-          "time": 37.654,
-          "speed": 99.432,
-          "inPit": false
-        },
-        {
-          "lap": 12,
-          "time": 38.018,
-          "speed": 98.48,
-          "inPit": false
-        },
-        {
-          "lap": 13,
-          "time": 37.651,
-          "speed": 99.44,
-          "inPit": false
-        },
-        {
-          "lap": 14,
-          "time": 37.944,
-          "speed": 98.672,
-          "inPit": false
-        }
-      ]
-    },
-    {
-      "round": 5,
-      "track": "Lydd",
-      "sessionKey": "h2",
-      "sessionName": "F300 Timed Qualifying",
-      "driver": "Gary Woodward",
-      "number": "55",
-      "best": 37.57,
-      "laps": [
-        {
-          "lap": 1,
-          "time": 40.401,
-          "speed": 92.671,
-          "inPit": false
-        },
-        {
-          "lap": 2,
-          "time": 38.284,
-          "speed": 97.795,
-          "inPit": false
-        },
-        {
-          "lap": 3,
-          "time": 37.907,
-          "speed": 98.768,
-          "inPit": false
-        },
-        {
-          "lap": 4,
-          "time": 37.57,
-          "speed": 99.654,
-          "inPit": false
-        },
-        {
-          "lap": 5,
-          "time": 37.926,
-          "speed": 98.719,
-          "inPit": false
-        },
-        {
-          "lap": 6,
-          "time": 38.078,
-          "speed": 98.324,
-          "inPit": false
-        },
-        {
-          "lap": 7,
-          "time": 38.471,
-          "speed": 97.32,
-          "inPit": false
-        }
-      ]
-    },
-    {
-      "round": 5,
-      "track": "Lydd",
-      "sessionKey": "h2",
-      "sessionName": "F300 Timed Qualifying",
-      "driver": "Jack Reeve",
-      "number": "4",
-      "best": 37.365,
-      "laps": [
-        {
-          "lap": 1,
-          "time": 37.72,
-          "speed": 99.258,
-          "inPit": false
-        },
-        {
-          "lap": 2,
-          "time": 37.566,
-          "speed": 99.665,
-          "inPit": false
-        },
-        {
-          "lap": 3,
-          "time": 37.365,
-          "speed": 100.201,
-          "inPit": false
-        }
-      ]
-    },
-    {
-      "round": 5,
-      "track": "Lydd",
-      "sessionKey": "h2",
-      "sessionName": "F300 Timed Qualifying",
-      "driver": "James Price",
-      "number": "8",
-      "best": 36.906,
-      "laps": [
-        {
-          "lap": 1,
-          "time": 38.282,
-          "speed": 97.801,
-          "inPit": false
-        },
-        {
-          "lap": 2,
-          "time": 37.102,
-          "speed": 100.911,
-          "inPit": false
-        },
-        {
-          "lap": 3,
-          "time": 36.906,
-          "speed": 101.447,
-          "inPit": false
-        },
-        {
-          "lap": 4,
-          "time": 36.927,
-          "speed": 101.389,
-          "inPit": false
-        },
-        {
-          "lap": 5,
-          "time": 36.923,
-          "speed": 101.4,
-          "inPit": false
-        },
-        {
-          "lap": 6,
-          "time": 39.196,
-          "speed": 95.52,
-          "inPit": false
-        },
-        {
-          "lap": 7,
-          "time": 37.21,
-          "speed": 100.618,
-          "inPit": false
-        }
-      ]
-    },
-    {
-      "round": 5,
-      "track": "Lydd",
-      "sessionKey": "h2",
-      "sessionName": "F300 Timed Qualifying",
-      "driver": "Jason Cooper",
-      "number": "69",
-      "best": 37.85,
-      "laps": [
-        {
-          "lap": 1,
-          "time": 38.787,
-          "speed": 96.527,
-          "inPit": false
-        },
-        {
-          "lap": 2,
-          "time": 38.148,
-          "speed": 98.144,
-          "inPit": false
-        },
-        {
-          "lap": 3,
-          "time": 37.938,
-          "speed": 98.687,
-          "inPit": false
-        },
-        {
-          "lap": 4,
-          "time": 37.942,
-          "speed": 98.677,
-          "inPit": false
-        },
-        {
-          "lap": 5,
-          "time": 38.041,
-          "speed": 98.42,
-          "inPit": false
-        },
-        {
-          "lap": 6,
-          "time": 37.85,
-          "speed": 98.917,
-          "inPit": false
-        },
-        {
-          "lap": 7,
-          "time": 39,
-          "speed": 96,
-          "inPit": false
-        }
-      ]
-    },
-    {
-      "round": 5,
-      "track": "Lydd",
-      "sessionKey": "h2",
-      "sessionName": "Honda Junior Heat",
-      "driver": "Jason Merritt",
-      "number": "11",
-      "best": 39.89,
-      "laps": [
-        {
-          "lap": 1,
-          "time": 52.373,
-          "speed": 71.487,
-          "inPit": false
-        },
-        {
-          "lap": 1,
-          "time": 41.97,
-          "speed": 89.207,
-          "inPit": false
-        },
-        {
-          "lap": 2,
-          "time": 46.221,
-          "speed": 81.002,
-          "inPit": false
-        },
-        {
-          "lap": 2,
-          "time": 40.862,
-          "speed": 91.625,
-          "inPit": false
-        },
-        {
-          "lap": 3,
-          "time": 45.535,
-          "speed": 82.222,
-          "inPit": false
-        },
-        {
-          "lap": 3,
-          "time": 40.252,
-          "speed": 93.014,
-          "inPit": false
-        },
-        {
-          "lap": 4,
-          "time": 45.583,
-          "speed": 82.136,
-          "inPit": false
-        },
-        {
-          "lap": 4,
-          "time": 40.458,
-          "speed": 92.54,
-          "inPit": false
-        },
-        {
-          "lap": 5,
-          "time": 45.423,
-          "speed": 82.425,
-          "inPit": false
-        },
-        {
-          "lap": 5,
-          "time": 39.89,
-          "speed": 93.858,
-          "inPit": false
-        },
-        {
-          "lap": 6,
-          "time": 45.617,
-          "speed": 82.075,
-          "inPit": false
-        },
-        {
-          "lap": 6,
-          "time": 40.029,
-          "speed": 93.532,
-          "inPit": false
-        },
-        {
-          "lap": 7,
-          "time": 45.507,
-          "speed": 82.273,
-          "inPit": false
-        },
-        {
-          "lap": 7,
-          "time": 40.312,
-          "speed": 92.876,
-          "inPit": false
-        },
-        {
-          "lap": 9,
-          "time": 52.647,
-          "speed": 71.115,
-          "inPit": false
-        },
-        {
-          "lap": 10,
-          "time": 45.803,
-          "speed": 81.741,
-          "inPit": false
-        }
-      ]
-    },
-    {
-      "round": 5,
-      "track": "Lydd",
-      "sessionKey": "h2",
-      "sessionName": "Honda Junior Heat",
-      "driver": "Nicholas Cleere",
-      "number": "44",
-      "best": 43.706,
-      "laps": [
-        {
-          "lap": 1,
-          "time": 45.579,
-          "speed": 82.143,
-          "inPit": false
-        },
-        {
-          "lap": 2,
-          "time": 44.599,
-          "speed": 83.948,
-          "inPit": false
-        },
-        {
-          "lap": 3,
-          "time": 43.839,
-          "speed": 85.403,
-          "inPit": false
-        },
-        {
-          "lap": 4,
-          "time": 43.706,
-          "speed": 85.663,
-          "inPit": false
-        },
-        {
-          "lap": 5,
-          "time": 43.785,
-          "speed": 85.509,
-          "inPit": false
-        },
-        {
-          "lap": 6,
-          "time": 44.253,
-          "speed": 84.604,
-          "inPit": false
-        },
-        {
-          "lap": 7,
-          "time": 44.598,
-          "speed": 83.95,
-          "inPit": false
-        },
-        {
-          "lap": 8,
-          "time": 43.838,
-          "speed": 85.405,
-          "inPit": false
-        },
-        {
-          "lap": 9,
-          "time": 43.77,
-          "speed": 85.538,
-          "inPit": false
-        },
-        {
-          "lap": 10,
-          "time": 43.889,
-          "speed": 85.306,
-          "inPit": false
-        },
-        {
-          "lap": 11,
-          "time": 44.333,
-          "speed": 84.452,
-          "inPit": false
-        },
-        {
-          "lap": 12,
-          "time": 44.597,
-          "speed": 83.952,
-          "inPit": false
-        }
-      ]
-    },
-    {
-      "round": 5,
-      "track": "Lydd",
-      "sessionKey": "h2",
-      "sessionName": "Honda Junior Heat",
-      "driver": "Nye Cortizo-White",
-      "number": "16",
-      "best": 38.253,
-      "laps": [
-        {
-          "lap": 1,
-          "time": 46.836,
-          "speed": 79.939,
           "inPit": false
         },
         {
@@ -7027,8 +6195,8 @@ window.F300_DATA = {
         },
         {
           "lap": 2,
-          "time": 44.426,
-          "speed": 84.275,
+          "time": 44.578,
+          "speed": 83.988,
           "inPit": false
         },
         {
@@ -7039,8 +6207,8 @@ window.F300_DATA = {
         },
         {
           "lap": 3,
-          "time": 44.751,
-          "speed": 83.663,
+          "time": 44.354,
+          "speed": 84.412,
           "inPit": false
         },
         {
@@ -7051,8 +6219,8 @@ window.F300_DATA = {
         },
         {
           "lap": 4,
-          "time": 44.604,
-          "speed": 83.939,
+          "time": 44.174,
+          "speed": 84.756,
           "inPit": false
         },
         {
@@ -7063,8 +6231,8 @@ window.F300_DATA = {
         },
         {
           "lap": 5,
-          "time": 45.211,
-          "speed": 82.812,
+          "time": 44.238,
+          "speed": 84.633,
           "inPit": false
         },
         {
@@ -7075,8 +6243,8 @@ window.F300_DATA = {
         },
         {
           "lap": 6,
-          "time": 44.314,
-          "speed": 84.488,
+          "time": 44.255,
+          "speed": 84.601,
           "inPit": false
         },
         {
@@ -7087,44 +6255,8 @@ window.F300_DATA = {
         },
         {
           "lap": 7,
-          "time": 44.348,
-          "speed": 84.423,
-          "inPit": false
-        },
-        {
-          "lap": 7,
           "time": 38.951,
           "speed": 96.121,
-          "inPit": false
-        },
-        {
-          "lap": 8,
-          "time": 44.227,
-          "speed": 84.654,
-          "inPit": false
-        },
-        {
-          "lap": 9,
-          "time": 44.287,
-          "speed": 84.539,
-          "inPit": false
-        },
-        {
-          "lap": 10,
-          "time": 44.307,
-          "speed": 84.501,
-          "inPit": false
-        },
-        {
-          "lap": 11,
-          "time": 44.568,
-          "speed": 84.006,
-          "inPit": false
-        },
-        {
-          "lap": 12,
-          "time": 44.503,
-          "speed": 84.129,
           "inPit": false
         }
       ]
@@ -7132,7 +6264,7 @@ window.F300_DATA = {
     {
       "round": 5,
       "track": "Lydd",
-      "sessionKey": "h2",
+      "sessionKey": "h1",
       "sessionName": "F300 Timed Qualifying",
       "driver": "Ryan Martin",
       "number": "17",
@@ -7185,7 +6317,7 @@ window.F300_DATA = {
     {
       "round": 5,
       "track": "Lydd",
-      "sessionKey": "h3",
+      "sessionKey": "h2",
       "sessionName": "F300 Heat",
       "driver": "Gary Woodward",
       "number": "55",
@@ -7280,7 +6412,7 @@ window.F300_DATA = {
     {
       "round": 5,
       "track": "Lydd",
-      "sessionKey": "h3",
+      "sessionKey": "h2",
       "sessionName": "F300 Heat",
       "driver": "Jack Reeve",
       "number": "4",
@@ -7375,7 +6507,7 @@ window.F300_DATA = {
     {
       "round": 5,
       "track": "Lydd",
-      "sessionKey": "h3",
+      "sessionKey": "h2",
       "sessionName": "F300 Heat",
       "driver": "James Price",
       "number": "8",
@@ -7470,7 +6602,7 @@ window.F300_DATA = {
     {
       "round": 5,
       "track": "Lydd",
-      "sessionKey": "h3",
+      "sessionKey": "h2",
       "sessionName": "F300 Heat",
       "driver": "Jason Cooper",
       "number": "69",
@@ -7565,16 +6697,16 @@ window.F300_DATA = {
     {
       "round": 5,
       "track": "Lydd",
-      "sessionKey": "h3",
-      "sessionName": "Honda Junior Pre-Final",
+      "sessionKey": "h2",
+      "sessionName": "Honda Junior Heat",
       "driver": "Jason Merritt",
       "number": "11",
       "best": 40.223,
       "laps": [
         {
           "lap": 1,
-          "time": 48.146,
-          "speed": 77.763,
+          "time": 52.373,
+          "speed": 71.487,
           "inPit": false
         },
         {
@@ -7585,8 +6717,8 @@ window.F300_DATA = {
         },
         {
           "lap": 2,
-          "time": 45.691,
-          "speed": 81.942,
+          "time": 46.221,
+          "speed": 81.002,
           "inPit": false
         },
         {
@@ -7597,8 +6729,8 @@ window.F300_DATA = {
         },
         {
           "lap": 3,
-          "time": 45.177,
-          "speed": 82.874,
+          "time": 45.535,
+          "speed": 82.222,
           "inPit": false
         },
         {
@@ -7609,8 +6741,8 @@ window.F300_DATA = {
         },
         {
           "lap": 4,
-          "time": 44.751,
-          "speed": 83.663,
+          "time": 45.583,
+          "speed": 82.136,
           "inPit": false
         },
         {
@@ -7621,8 +6753,8 @@ window.F300_DATA = {
         },
         {
           "lap": 5,
-          "time": 45.048,
-          "speed": 83.111,
+          "time": 45.423,
+          "speed": 82.425,
           "inPit": false
         },
         {
@@ -7633,8 +6765,8 @@ window.F300_DATA = {
         },
         {
           "lap": 6,
-          "time": 44.699,
-          "speed": 83.76,
+          "time": 45.617,
+          "speed": 82.075,
           "inPit": false
         },
         {
@@ -7645,8 +6777,8 @@ window.F300_DATA = {
         },
         {
           "lap": 7,
-          "time": 45.682,
-          "speed": 81.958,
+          "time": 45.507,
+          "speed": 82.273,
           "inPit": false
         },
         {
@@ -7657,20 +6789,14 @@ window.F300_DATA = {
         },
         {
           "lap": 8,
-          "time": 45.752,
-          "speed": 81.832,
-          "inPit": false
-        },
-        {
-          "lap": 8,
           "time": 41.466,
           "speed": 90.291,
           "inPit": false
         },
         {
           "lap": 9,
-          "time": 45.839,
-          "speed": 81.677,
+          "time": 52.647,
+          "speed": 71.115,
           "inPit": false
         },
         {
@@ -7681,8 +6807,8 @@ window.F300_DATA = {
         },
         {
           "lap": 10,
-          "time": 46.036,
-          "speed": 81.328,
+          "time": 45.803,
+          "speed": 81.741,
           "inPit": false
         },
         {
@@ -7693,20 +6819,8 @@ window.F300_DATA = {
         },
         {
           "lap": 11,
-          "time": 45.21,
-          "speed": 82.814,
-          "inPit": false
-        },
-        {
-          "lap": 11,
           "time": 43.678,
           "speed": 85.718,
-          "inPit": false
-        },
-        {
-          "lap": 12,
-          "time": 45.938,
-          "speed": 81.501,
           "inPit": false
         },
         {
@@ -7719,6 +6833,892 @@ window.F300_DATA = {
           "lap": 13,
           "time": 42.23,
           "speed": 88.657,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 5,
+      "track": "Lydd",
+      "sessionKey": "h2",
+      "sessionName": "Honda Junior Heat",
+      "driver": "Nicholas Cleere",
+      "number": "44",
+      "best": 43.706,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 45.579,
+          "speed": 82.143,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 44.599,
+          "speed": 83.948,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 43.839,
+          "speed": 85.403,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 43.706,
+          "speed": 85.663,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 43.785,
+          "speed": 85.509,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 44.253,
+          "speed": 84.604,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 44.598,
+          "speed": 83.95,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 43.838,
+          "speed": 85.405,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 43.77,
+          "speed": 85.538,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 43.889,
+          "speed": 85.306,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 44.333,
+          "speed": 84.452,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 44.597,
+          "speed": 83.952,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 5,
+      "track": "Lydd",
+      "sessionKey": "h2",
+      "sessionName": "Honda Junior Heat",
+      "driver": "Nye Cortizo-White",
+      "number": "16",
+      "best": 38.368,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 46.836,
+          "speed": 79.939,
+          "inPit": false
+        },
+        {
+          "lap": 1,
+          "time": 41.022,
+          "speed": 91.268,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 44.426,
+          "speed": 84.275,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 38.761,
+          "speed": 96.592,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 44.751,
+          "speed": 83.663,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 38.544,
+          "speed": 97.136,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 44.604,
+          "speed": 83.939,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 38.826,
+          "speed": 96.43,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 45.211,
+          "speed": 82.812,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 38.368,
+          "speed": 97.581,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 44.314,
+          "speed": 84.488,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 38.461,
+          "speed": 97.345,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 44.348,
+          "speed": 84.423,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 38.71,
+          "speed": 96.719,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 44.227,
+          "speed": 84.654,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 38.982,
+          "speed": 96.044,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 44.287,
+          "speed": 84.539,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 38.881,
+          "speed": 96.294,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 44.307,
+          "speed": 84.501,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 38.968,
+          "speed": 96.079,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 44.568,
+          "speed": 84.006,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 39.155,
+          "speed": 95.62,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 44.503,
+          "speed": 84.129,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 39.243,
+          "speed": 95.406,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 39.211,
+          "speed": 95.483,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 39.22,
+          "speed": 95.461,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 5,
+      "track": "Lydd",
+      "sessionKey": "h2",
+      "sessionName": "F300 Heat",
+      "driver": "Ryan Martin",
+      "number": "17",
+      "best": 37.191,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 39.298,
+          "speed": 95.272,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 37.31,
+          "speed": 100.348,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 37.898,
+          "speed": 98.791,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 38.077,
+          "speed": 98.327,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 37.268,
+          "speed": 100.462,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 37.337,
+          "speed": 100.276,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 37.191,
+          "speed": 100.67,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 37.736,
+          "speed": 99.216,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 37.282,
+          "speed": 100.424,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 37.283,
+          "speed": 100.421,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 37.357,
+          "speed": 100.222,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 37.693,
+          "speed": 99.329,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 37.917,
+          "speed": 98.742,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 37.94,
+          "speed": 98.682,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 5,
+      "track": "Lydd",
+      "sessionKey": "h3",
+      "sessionName": "F300 Pre-Final",
+      "driver": "Gary Woodward",
+      "number": "55",
+      "best": 38.151,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 41.151,
+          "speed": 90.982,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 38.515,
+          "speed": 97.209,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 38.264,
+          "speed": 97.847,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 38.281,
+          "speed": 97.803,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 38.151,
+          "speed": 98.136,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 38.301,
+          "speed": 97.752,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 38.259,
+          "speed": 97.859,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 39.411,
+          "speed": 94.999,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 38.59,
+          "speed": 97.02,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 38.344,
+          "speed": 97.642,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 38.244,
+          "speed": 97.898,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 38.296,
+          "speed": 97.765,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 38.715,
+          "speed": 96.707,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 38.658,
+          "speed": 96.849,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 5,
+      "track": "Lydd",
+      "sessionKey": "h3",
+      "sessionName": "F300 Pre-Final",
+      "driver": "Jack Reeve",
+      "number": "4",
+      "best": 37.692,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 44.781,
+          "speed": 83.607,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 39.674,
+          "speed": 94.369,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 37.79,
+          "speed": 99.074,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 37.922,
+          "speed": 98.729,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 38.621,
+          "speed": 96.942,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 37.799,
+          "speed": 99.05,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 37.711,
+          "speed": 99.281,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 37.745,
+          "speed": 99.192,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 37.692,
+          "speed": 99.331,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 37.926,
+          "speed": 98.719,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 38.261,
+          "speed": 97.854,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 37.981,
+          "speed": 98.576,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 38.087,
+          "speed": 98.301,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 38.771,
+          "speed": 96.567,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 5,
+      "track": "Lydd",
+      "sessionKey": "h3",
+      "sessionName": "F300 Pre-Final",
+      "driver": "James Price",
+      "number": "8",
+      "best": 37.045,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 39.399,
+          "speed": 95.028,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 37.641,
+          "speed": 99.466,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 37.403,
+          "speed": 100.099,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 37.57,
+          "speed": 99.654,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 37.12,
+          "speed": 100.862,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 37.332,
+          "speed": 100.289,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 37.189,
+          "speed": 100.675,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 37.142,
+          "speed": 100.802,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 37.045,
+          "speed": 101.066,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 37.271,
+          "speed": 100.453,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 37.455,
+          "speed": 99.96,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 37.532,
+          "speed": 99.755,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 37.462,
+          "speed": 99.941,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 38.044,
+          "speed": 98.412,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 5,
+      "track": "Lydd",
+      "sessionKey": "h3",
+      "sessionName": "F300 Pre-Final",
+      "driver": "Jason Cooper",
+      "number": "69",
+      "best": 38.15,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 41.412,
+          "speed": 90.409,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 38.685,
+          "speed": 96.782,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 38.337,
+          "speed": 97.66,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 38.15,
+          "speed": 98.139,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 38.172,
+          "speed": 98.082,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 38.153,
+          "speed": 98.131,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 38.237,
+          "speed": 97.916,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 39.305,
+          "speed": 95.255,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 38.725,
+          "speed": 96.682,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 38.216,
+          "speed": 97.969,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 39.956,
+          "speed": 93.703,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 41.313,
+          "speed": 90.625,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 41.086,
+          "speed": 91.126,
+          "inPit": false
+        },
+        {
+          "lap": 14,
+          "time": 42.376,
+          "speed": 88.352,
+          "inPit": false
+        }
+      ]
+    },
+    {
+      "round": 5,
+      "track": "Lydd",
+      "sessionKey": "h3",
+      "sessionName": "Honda Junior Pre-Final",
+      "driver": "Jason Merritt",
+      "number": "11",
+      "best": 39.754,
+      "laps": [
+        {
+          "lap": 1,
+          "time": 48.146,
+          "speed": 77.763,
+          "inPit": false
+        },
+        {
+          "lap": 1,
+          "time": 43.103,
+          "speed": 86.862,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 45.691,
+          "speed": 81.942,
+          "inPit": false
+        },
+        {
+          "lap": 2,
+          "time": 40.6,
+          "speed": 92.217,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 45.177,
+          "speed": 82.874,
+          "inPit": false
+        },
+        {
+          "lap": 3,
+          "time": 40.584,
+          "speed": 92.253,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 44.751,
+          "speed": 83.663,
+          "inPit": false
+        },
+        {
+          "lap": 4,
+          "time": 39.754,
+          "speed": 94.179,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 45.048,
+          "speed": 83.111,
+          "inPit": false
+        },
+        {
+          "lap": 5,
+          "time": 40.2,
+          "speed": 93.134,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 44.699,
+          "speed": 83.76,
+          "inPit": false
+        },
+        {
+          "lap": 6,
+          "time": 40.18,
+          "speed": 93.181,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 45.682,
+          "speed": 81.958,
+          "inPit": false
+        },
+        {
+          "lap": 7,
+          "time": 40.41,
+          "speed": 92.65,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 45.752,
+          "speed": 81.832,
+          "inPit": false
+        },
+        {
+          "lap": 8,
+          "time": 40.452,
+          "speed": 92.554,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 45.839,
+          "speed": 81.677,
+          "inPit": false
+        },
+        {
+          "lap": 9,
+          "time": 40.554,
+          "speed": 92.321,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 46.036,
+          "speed": 81.328,
+          "inPit": false
+        },
+        {
+          "lap": 10,
+          "time": 42.25,
+          "speed": 88.615,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 45.21,
+          "speed": 82.814,
+          "inPit": false
+        },
+        {
+          "lap": 11,
+          "time": 42.857,
+          "speed": 87.36,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 45.938,
+          "speed": 81.501,
+          "inPit": false
+        },
+        {
+          "lap": 12,
+          "time": 41.712,
+          "speed": 89.758,
+          "inPit": false
+        },
+        {
+          "lap": 13,
+          "time": 41.219,
+          "speed": 90.832,
           "inPit": false
         }
       ]
@@ -7813,7 +7813,7 @@ window.F300_DATA = {
       "sessionName": "Honda Junior Pre-Final",
       "driver": "Nye Cortizo-White",
       "number": "16",
-      "best": 38.368,
+      "best": 39.105,
       "laps": [
         {
           "lap": 1,
@@ -7823,8 +7823,8 @@ window.F300_DATA = {
         },
         {
           "lap": 1,
-          "time": 41.022,
-          "speed": 91.268,
+          "time": 42.183,
+          "speed": 88.756,
           "inPit": false
         },
         {
@@ -7835,8 +7835,8 @@ window.F300_DATA = {
         },
         {
           "lap": 2,
-          "time": 38.761,
-          "speed": 96.592,
+          "time": 39.237,
+          "speed": 95.42,
           "inPit": false
         },
         {
@@ -7847,8 +7847,8 @@ window.F300_DATA = {
         },
         {
           "lap": 3,
-          "time": 38.544,
-          "speed": 97.136,
+          "time": 39.155,
+          "speed": 95.62,
           "inPit": false
         },
         {
@@ -7859,8 +7859,8 @@ window.F300_DATA = {
         },
         {
           "lap": 4,
-          "time": 38.826,
-          "speed": 96.43,
+          "time": 39.24,
+          "speed": 95.413,
           "inPit": false
         },
         {
@@ -7871,8 +7871,8 @@ window.F300_DATA = {
         },
         {
           "lap": 5,
-          "time": 38.368,
-          "speed": 97.581,
+          "time": 39.185,
+          "speed": 95.547,
           "inPit": false
         },
         {
@@ -7883,8 +7883,8 @@ window.F300_DATA = {
         },
         {
           "lap": 6,
-          "time": 38.461,
-          "speed": 97.345,
+          "time": 39.105,
+          "speed": 95.742,
           "inPit": false
         },
         {
@@ -7895,8 +7895,8 @@ window.F300_DATA = {
         },
         {
           "lap": 7,
-          "time": 38.71,
-          "speed": 96.719,
+          "time": 39.486,
+          "speed": 94.818,
           "inPit": false
         },
         {
@@ -7907,8 +7907,8 @@ window.F300_DATA = {
         },
         {
           "lap": 8,
-          "time": 38.982,
-          "speed": 96.044,
+          "time": 39.133,
+          "speed": 95.674,
           "inPit": false
         },
         {
@@ -7919,8 +7919,8 @@ window.F300_DATA = {
         },
         {
           "lap": 9,
-          "time": 38.881,
-          "speed": 96.294,
+          "time": 39.294,
+          "speed": 95.282,
           "inPit": false
         },
         {
@@ -7931,8 +7931,8 @@ window.F300_DATA = {
         },
         {
           "lap": 10,
-          "time": 38.968,
-          "speed": 96.079,
+          "time": 39.222,
+          "speed": 95.457,
           "inPit": false
         },
         {
@@ -7943,8 +7943,8 @@ window.F300_DATA = {
         },
         {
           "lap": 11,
-          "time": 39.155,
-          "speed": 95.62,
+          "time": 39.513,
+          "speed": 94.754,
           "inPit": false
         },
         {
@@ -7955,20 +7955,20 @@ window.F300_DATA = {
         },
         {
           "lap": 12,
-          "time": 39.243,
-          "speed": 95.406,
+          "time": 39.26,
+          "speed": 95.364,
           "inPit": false
         },
         {
           "lap": 13,
-          "time": 39.211,
-          "speed": 95.483,
+          "time": 39.18,
+          "speed": 95.559,
           "inPit": false
         },
         {
           "lap": 14,
-          "time": 39.22,
-          "speed": 95.461,
+          "time": 39.679,
+          "speed": 94.357,
           "inPit": false
         }
       ]
@@ -7977,93 +7977,93 @@ window.F300_DATA = {
       "round": 5,
       "track": "Lydd",
       "sessionKey": "h3",
-      "sessionName": "F300 Heat",
+      "sessionName": "F300 Pre-Final",
       "driver": "Ryan Martin",
       "number": "17",
-      "best": 37.191,
+      "best": 37.404,
       "laps": [
         {
           "lap": 1,
-          "time": 39.298,
-          "speed": 95.272,
+          "time": 40.568,
+          "speed": 92.289,
           "inPit": false
         },
         {
           "lap": 2,
-          "time": 37.31,
-          "speed": 100.348,
+          "time": 37.913,
+          "speed": 98.752,
           "inPit": false
         },
         {
           "lap": 3,
-          "time": 37.898,
-          "speed": 98.791,
+          "time": 37.692,
+          "speed": 99.331,
           "inPit": false
         },
         {
           "lap": 4,
-          "time": 38.077,
-          "speed": 98.327,
+          "time": 37.407,
+          "speed": 100.088,
           "inPit": false
         },
         {
           "lap": 5,
-          "time": 37.268,
-          "speed": 100.462,
+          "time": 37.435,
+          "speed": 100.013,
           "inPit": false
         },
         {
           "lap": 6,
-          "time": 37.337,
-          "speed": 100.276,
+          "time": 37.474,
+          "speed": 99.909,
           "inPit": false
         },
         {
           "lap": 7,
-          "time": 37.191,
-          "speed": 100.67,
+          "time": 38.05,
+          "speed": 98.397,
           "inPit": false
         },
         {
           "lap": 8,
-          "time": 37.736,
-          "speed": 99.216,
+          "time": 37.462,
+          "speed": 99.941,
           "inPit": false
         },
         {
           "lap": 9,
-          "time": 37.282,
-          "speed": 100.424,
+          "time": 37.404,
+          "speed": 100.096,
           "inPit": false
         },
         {
           "lap": 10,
-          "time": 37.283,
-          "speed": 100.421,
+          "time": 37.549,
+          "speed": 99.71,
           "inPit": false
         },
         {
           "lap": 11,
-          "time": 37.357,
-          "speed": 100.222,
+          "time": 37.654,
+          "speed": 99.432,
           "inPit": false
         },
         {
           "lap": 12,
-          "time": 37.693,
-          "speed": 99.329,
+          "time": 38.018,
+          "speed": 98.48,
           "inPit": false
         },
         {
           "lap": 13,
-          "time": 37.917,
-          "speed": 98.742,
+          "time": 37.651,
+          "speed": 99.44,
           "inPit": false
         },
         {
           "lap": 14,
-          "time": 37.94,
-          "speed": 98.682,
+          "time": 37.944,
+          "speed": 98.672,
           "inPit": false
         }
       ]
