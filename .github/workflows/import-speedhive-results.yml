@@ -52,7 +52,7 @@ jobs:
           echo "Importer file details:"
           ls -lh scripts/import-speedhive-results.py
           echo "Expected bot version line:"
-          grep -n 'BOT_VERSION = "v1.2-f300-session-map-r2"' scripts/import-speedhive-results.py
+          grep -n 'BOT_VERSION = "v1.2-f300-only-session-map-r3"' scripts/import-speedhive-results.py
           echo "Main entry point:"
           grep -n 'if __name__ == "__main__":' scripts/import-speedhive-results.py
 
