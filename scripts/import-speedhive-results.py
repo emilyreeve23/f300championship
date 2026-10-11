@@ -23,14 +23,15 @@ import os
 import re
 import sys
 from collections import defaultdict
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from typing import Any, Iterable
 from urllib.parse import parse_qs, quote_plus, urlparse
+from zoneinfo import ZoneInfo
 
 import requests
 from speedhive.wrapper import SpeedhiveClient
 
-BOT_VERSION = "v1.2-speedhive-laps"
+BOT_VERSION = "v1.2-f300-session-map-r2"
 
 
 SESSION_PATTERNS = {
@@ -65,8 +66,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--round",
         type=int,
-        required=True,
-        help="F300 championship round number",
+        default=0,
+        help="F300 championship round number; use 0 to auto-detect today's race from the F300 calendar",
     )
     parser.add_argument(
         "--dry-run",
@@ -367,6 +368,78 @@ def is_practice_session(name: str) -> bool:
     )
 
 
+
+def is_qualifying_session(name: str) -> bool:
+    """
+    Alternative F300 naming used by some organisers:
+      Timed Qualifying / Qualifying = Heat 1
+    """
+    lowered = str(name or "").lower()
+    return bool(
+        re.search(
+            r"\b(?:timed\s+)?qual(?:i|ifying|ification|ifier)?\b",
+            lowered,
+            flags=re.I,
+        )
+    )
+
+
+def is_pre_final_session(name: str) -> bool:
+    """
+    Alternative F300 naming used by some organisers:
+      Pre-Final = Heat 3
+    """
+    lowered = str(name or "").lower()
+    return bool(
+        re.search(
+            r"\bpre[\s-]*final\b|\bprefinal\b",
+            lowered,
+            flags=re.I,
+        )
+    )
+
+
+def explicit_heat_key(name: str) -> str | None:
+    """
+    Prefer literal Heat 1 / Heat 2 / Heat 3 (and H1/H2/H3 / Race 1/2/3)
+    whenever the organiser supplies those names.
+    """
+    lowered = str(name or "").lower()
+
+    patterns = {
+        "h1": (
+            r"\bheat\s*(?:1|one)\b",
+            r"\bh1\b",
+            r"\brace\s*(?:1|one)\b",
+        ),
+        "h2": (
+            r"\bheat\s*(?:2|two)\b",
+            r"\bh2\b",
+            r"\brace\s*(?:2|two)\b",
+        ),
+        "h3": (
+            r"\bheat\s*(?:3|three)\b",
+            r"\bh3\b",
+            r"\brace\s*(?:3|three)\b",
+        ),
+    }
+
+    for key, choices in patterns.items():
+        if any(re.search(pattern, lowered, flags=re.I) for pattern in choices):
+            return key
+
+    return None
+
+
+def is_generic_heat_or_race(name: str) -> bool:
+    """
+    Generic labels such as simply 'F300 Heat' are allocated to the next
+    available heat slot after the explicit reservations below.
+    """
+    lowered = str(name or "").lower()
+    return bool(re.search(r"\b(?:heat|race)\b", lowered, flags=re.I))
+
+
 def is_actual_final_session(name: str) -> bool:
     lowered = name.lower()
 
@@ -642,6 +715,45 @@ def f300_race_context(
         f"Round {round_number} could not be found in the published F300 Race Calendar."
     )
 
+
+def f300_round_for_date(
+    data: dict[str, Any],
+    target_date_key: str,
+) -> int | None:
+    """Return the single active F300 round whose calendar weekend includes target_date_key."""
+    matches: list[int] = []
+
+    for item in data.get("calendar", []):
+        status = str(item.get("status", "")).strip().lower()
+        if status == "cancelled":
+            continue
+
+        try:
+            round_number = int(item.get("round"))
+        except (TypeError, ValueError):
+            continue
+
+        if round_number < 1:
+            continue
+
+        try:
+            context = f300_race_context(data, round_number)
+        except RuntimeError:
+            continue
+
+        if target_date_key in (context.get("dateKeys") or [context.get("dateKey")]):
+            matches.append(round_number)
+
+    matches = sorted(set(matches))
+
+    if len(matches) > 1:
+        raise RuntimeError(
+            f"More than one F300 round matches {target_date_key}: "
+            + ", ".join(str(value) for value in matches)
+            + ". The scheduled importer will not guess."
+        )
+
+    return matches[0] if matches else None
 
 
 
@@ -1588,22 +1700,68 @@ def main() -> int:
     args = parse_args()
 
     print(
-        f"Requested event/search: {args.event} | F300 round: {args.round} | dry_run={args.dry_run}",
+        f"Requested event/search: {args.event} | requested F300 round: {args.round} | dry_run={args.dry_run}",
         flush=True,
     )
 
-    if args.round < 1:
-        raise RuntimeError("Round must be 1 or greater.")
-
     f300_feed = fetch_f300_feed()
-    race_context = f300_race_context(f300_feed, args.round)
+    selected_round = args.round
+
+    if selected_round < 1:
+        uk_now = datetime.now(ZoneInfo("Europe/London"))
+        today_key = uk_now.date().isoformat()
+
+        # Scheduled GitHub runs only happen on Sundays, but keep this guard in
+        # the importer as well so an accidental scheduled/manual auto run on a
+        # different day cannot import the wrong event.
+        if uk_now.weekday() != 6:
+            print(
+                f"Automatic race-day import skipped: {today_key} is not Sunday in Europe/London.",
+                flush=True,
+            )
+            return 0
+
+        selected_round = f300_round_for_date(f300_feed, today_key) or 0
+
+        if selected_round < 1:
+            print(
+                f"Automatic race-day import skipped: no non-cancelled F300 round is scheduled for {today_key}.",
+                flush=True,
+            )
+            return 0
+
+        print(
+            f"Automatic race-day import selected F300 Round {selected_round} for {today_key}.",
+            flush=True,
+        )
+
+    race_context = f300_race_context(f300_feed, selected_round)
 
     client = SpeedhiveClient.create(timeout=30)
-    event_id = pick_event_id(
-        client,
-        args.event,
-        race_context=race_context,
-    )
+
+    automatic_race_day_mode = args.round < 1
+
+    try:
+        event_id = pick_event_id(
+            client,
+            args.event,
+            race_context=race_context,
+        )
+    except RuntimeError as exc:
+        message = str(exc)
+
+        if (
+            automatic_race_day_mode
+            and "No visible Speedhive result matched" in message
+        ):
+            print(
+                "Speedhive event is not available yet. "
+                "Nothing was changed; the next scheduled check will try again.",
+                flush=True,
+            )
+            return 0
+
+        raise
 
     event = client.get_event(event_id, include_sessions=True) or {}
     event_title = (
@@ -1613,7 +1771,7 @@ def main() -> int:
 
     print(f"Event: {event_title}")
     print(f"Event ID: {event_id}")
-    print(f"F300 round: {args.round}")
+    print(f"F300 round: {selected_round}")
     print(
         f"F300 calendar: {race_context['track']} · "
         f"{', '.join(race_context.get('dateKeys') or [race_context['dateKey']])}"
@@ -1676,67 +1834,189 @@ def main() -> int:
     f300_candidates.sort(key=lambda item: session_sort_value(item[0]))
 
     warnings: list[str] = []
-    scoring_before_final: list[tuple[dict[str, Any], list[dict[str, Any]]]] = []
-    final_candidates: list[tuple[dict[str, Any], list[dict[str, Any]]]] = []
 
-    for session, rows in f300_candidates:
-        name = session_name(session)
-        context = str(session.get("_f300_parent_context") or "")
-        label = f"{context} {name}".strip()
-
-        if is_practice_session(label):
-            continue
-
-        if is_actual_final_session(label):
-            final_candidates.append((session, rows))
-            continue
-
-        scoring_before_final.append((session, rows))
-
-    if len(scoring_before_final) > 3:
-        extras = [
-            session_name(item[0]) or str(item[0].get("id") or "?")
-            for item in scoring_before_final[3:]
-        ]
-        warnings.append(
-            "More than three non-practice sessions were found before the Final. "
-            "The first three were mapped to H1/H2/H3 and these extra sessions "
-            f"were not imported: {', '.join(extras)}"
-        )
-
-    if final_candidates and len(scoring_before_final) < 3:
-        warnings.append(
-            f"A Final was found but only {len(scoring_before_final)} scoring "
-            "session(s) were found before it."
-        )
-
-    if len(final_candidates) > 1:
-        warnings.append(
-            "More than one Final-like session was found. "
-            "The latest Final was used."
-        )
+    # -----------------------------------------------------------------
+    # F300 SESSION MAPPING RULES
+    #
+    # 1. Practice / warm-up is never scored.
+    # 2. Literal Heat 1 / Heat 2 / Heat 3 names always win.
+    # 3. Alternative organiser naming:
+    #       Qualifying / Timed Qualifying -> H1
+    #       generic Heat                   -> H2 when Qualifying exists
+    #       Pre-Final                      -> H3
+    #       actual Final                   -> Final
+    # 4. If there is no Qualifying, the first ordinary Heat/Race becomes H1.
+    # 5. Pre-Final can NEVER become H1/H2 or Final.
+    # 6. Only a session whose OWN name is the actual Final can populate Final.
+    # -----------------------------------------------------------------
 
     mapped: dict[str, tuple[dict[str, Any], list[dict[str, Any]], str]] = {}
 
-    for index, item in enumerate(scoring_before_final[:3]):
-        key = ("h1", "h2", "h3")[index]
+    explicit_candidates: dict[str, list[tuple[dict[str, Any], list[dict[str, Any]]]]] = {
+        "h1": [],
+        "h2": [],
+        "h3": [],
+    }
+    qualifying_candidates: list[tuple[dict[str, Any], list[dict[str, Any]]]] = []
+    pre_final_candidates: list[tuple[dict[str, Any], list[dict[str, Any]]]] = []
+    final_candidates: list[tuple[dict[str, Any], list[dict[str, Any]]]] = []
+    generic_candidates: list[tuple[dict[str, Any], list[dict[str, Any]]]] = []
+    unknown_scoring_candidates: list[tuple[dict[str, Any], list[dict[str, Any]]]] = []
+
+    for session, rows in f300_candidates:
+        # Deliberately classify from the SESSION NAME ONLY.
+        # Parent context may say F300 / Final group etc. and must not alter
+        # the meaning of the actual race session.
+        name = session_name(session)
+
+        if is_practice_session(name):
+            continue
+
+        heat_key = explicit_heat_key(name)
+        if heat_key:
+            explicit_candidates[heat_key].append((session, rows))
+            continue
+
+        if is_pre_final_session(name):
+            pre_final_candidates.append((session, rows))
+            continue
+
+        if is_actual_final_session(name):
+            final_candidates.append((session, rows))
+            continue
+
+        if is_qualifying_session(name):
+            qualifying_candidates.append((session, rows))
+            continue
+
+        if is_generic_heat_or_race(name):
+            generic_candidates.append((session, rows))
+            continue
+
+        # Last-resort scoring fallback. This preserves the old behaviour for
+        # organisers with unusual labels, but only AFTER the strong semantic
+        # reservations above have been made.
+        unknown_scoring_candidates.append((session, rows))
+
+    for values in explicit_candidates.values():
+        values.sort(key=lambda item: session_sort_value(item[0]))
+    qualifying_candidates.sort(key=lambda item: session_sort_value(item[0]))
+    pre_final_candidates.sort(key=lambda item: session_sort_value(item[0]))
+    final_candidates.sort(key=lambda item: session_sort_value(item[0]))
+    generic_candidates.sort(key=lambda item: session_sort_value(item[0]))
+    unknown_scoring_candidates.sort(key=lambda item: session_sort_value(item[0]))
+
+    # A) Literal Heat 1 / 2 / 3 names are authoritative.
+    for key in ("h1", "h2", "h3"):
+        values = explicit_candidates[key]
+        if not values:
+            continue
+
+        if len(values) > 1:
+            warnings.append(
+                f"More than one explicit {key.upper()} session was found. "
+                "The earliest one was used."
+            )
+
+        session, rows = values[0]
+        mapped[key] = (
+            session,
+            rows,
+            f"Mapped explicitly from the session name to {key.upper()}.",
+        )
+
+    # B) Alternative naming rule: Qualifying is H1, but only when H1 wasn't
+    # already explicitly named.
+    if "h1" not in mapped and qualifying_candidates:
+        if len(qualifying_candidates) > 1:
+            warnings.append(
+                "More than one Qualifying session was found. "
+                "The earliest one was used as H1."
+            )
+
+        session, rows = qualifying_candidates[0]
+        mapped["h1"] = (
+            session,
+            rows,
+            "Alternative F300 mapping: Qualifying/Timed Qualifying -> H1.",
+        )
+
+    # C) Alternative naming rule: Pre-Final is H3, unless an explicit H3
+    # already exists. It is NEVER treated as the actual Final.
+    if "h3" not in mapped and pre_final_candidates:
+        if len(pre_final_candidates) > 1:
+            warnings.append(
+                "More than one Pre-Final session was found. "
+                "The latest one was used as H3."
+            )
+
+        session, rows = pre_final_candidates[-1]
+        mapped["h3"] = (
+            session,
+            rows,
+            "Alternative F300 mapping: Pre-Final -> H3.",
+        )
+
+    # D) Fill any remaining H1/H2/H3 positions with ordinary Heat/Race
+    # sessions in race-day order. This gives:
+    #   with Qualifying: F300 Heat -> H2
+    #   without Qualifying: first F300 Heat -> H1
+    # Pre-Final has already reserved H3 above.
+    fallback_candidates = sorted(
+        generic_candidates + unknown_scoring_candidates,
+        key=lambda item: session_sort_value(item[0]),
+    )
+
+    available_keys = [
+        key for key in ("h1", "h2", "h3")
+        if key not in mapped
+    ]
+
+    for key, item in zip(available_keys, fallback_candidates):
         session, rows = item
         mapped[key] = (
             session,
             rows,
             (
-                f"Mapped by race-day order: non-practice scoring session "
-                f"{index + 1} → {key.upper()}."
+                f"Fallback race-day mapping: {session_name(session)} -> "
+                f"{key.upper()} after explicit F300 naming rules."
             ),
         )
 
+    if len(fallback_candidates) > len(available_keys):
+        extras = [
+            session_name(item[0]) or str(item[0].get("id") or "?")
+            for item in fallback_candidates[len(available_keys):]
+        ]
+        warnings.append(
+            "Extra non-practice F300 scoring sessions were found after H1/H2/H3 "
+            f"were filled and were not imported: {', '.join(extras)}"
+        )
+
+    # E) Final is populated ONLY by the actual Final session name.
     if final_candidates:
+        if len(final_candidates) > 1:
+            warnings.append(
+                "More than one actual Final session was found. "
+                "The latest one was used."
+            )
+
         session, rows = final_candidates[-1]
         mapped["final"] = (
             session,
             rows,
-            "Mapped because this is the actual Final (Pre-Final is not treated as Final).",
+            "Mapped explicitly from the actual Final session name.",
         )
+
+    print("\nF300 session mapping:")
+    for key in ("h1", "h2", "h3", "final"):
+        if key in mapped:
+            print(
+                f"  {key.upper():>5} <- {session_name(mapped[key][0])} "
+                f"({mapped[key][2]})"
+            )
+        else:
+            print(f"  {key.upper():>5} <- not published/found yet")
 
     ordered_keys = ["h1", "h2", "h3", "final"]
     session_payloads: list[dict[str, Any]] = []
@@ -1829,8 +2109,9 @@ def main() -> int:
         "secret": os.environ.get("F300_TIMING_BOT_SECRET", ""),
         "source": "Speedhive",
         "eventId": str(event_id),
-        "round": args.round,
+        "round": selected_round,
         "warnings": warnings,
+        "replaceSessionKeys": ["h1", "h2", "h3", "final"],
         "sessions": session_payloads,
     }
 
