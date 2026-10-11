@@ -1,6 +1,11 @@
 name: Import Speedhive Results
 
 on:
+  # GitHub cron is UTC. This broad Sunday window covers normal UK karting
+  # race hours in both GMT and BST; the importer itself checks the F300
+  # calendar and exits immediately on Sundays with no scheduled race.
+  schedule:
+    - cron: "*/30 6-20 * * 0"
   workflow_dispatch:
     inputs:
       event:
@@ -9,9 +14,9 @@ on:
         default: "auto"
         type: string
       round:
-        description: "F300 championship round number"
-        required: true
-        default: "4"
+        description: "F300 championship round number (0 = auto-detect today's Sunday round)"
+        required: false
+        default: "0"
         type: string
       dry_run:
         description: "Test only - do not write to Google Sheets"
@@ -47,7 +52,7 @@ jobs:
           echo "Importer file details:"
           ls -lh scripts/import-speedhive-results.py
           echo "Expected bot version line:"
-          grep -n 'BOT_VERSION = "v1.2-speedhive-laps"' scripts/import-speedhive-results.py
+          grep -n 'BOT_VERSION = "v1.2-f300-session-map-r2"' scripts/import-speedhive-results.py
           echo "Main entry point:"
           grep -n 'if __name__ == "__main__":' scripts/import-speedhive-results.py
 
@@ -57,12 +62,29 @@ jobs:
           F300_TIMING_BOT_SECRET: ${{ secrets.F300_TIMING_BOT_SECRET }}
           SPEEDHIVE_ORG_ID: ${{ vars.SPEEDHIVE_ORG_ID }}
         run: |
+          # Scheduled runs are fully automatic and live. Manual runs keep the
+          # existing controls so you can still test a specific round/event.
+          EVENT_VALUE="auto"
+          ROUND_VALUE="0"
+          DRY_RUN_VALUE="false"
+
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            EVENT_VALUE="${{ inputs.event }}"
+            ROUND_VALUE="${{ inputs.round }}"
+            DRY_RUN_VALUE="${{ inputs.dry_run }}"
+          fi
+
           EXTRA=""
-          if [ "${{ inputs.dry_run }}" = "true" ]; then
+          if [ "$DRY_RUN_VALUE" = "true" ]; then
             EXTRA="--dry-run"
           fi
 
+          echo "Trigger: ${{ github.event_name }}"
+          echo "Event/search: $EVENT_VALUE"
+          echo "Round: $ROUND_VALUE (0 means auto-detect from F300 Race Calendar)"
+          echo "Dry run: $DRY_RUN_VALUE"
+
           python -u scripts/import-speedhive-results.py \
-            --event "${{ inputs.event }}" \
-            --round "${{ inputs.round }}" \
+            --event "$EVENT_VALUE" \
+            --round "$ROUND_VALUE" \
             $EXTRA
