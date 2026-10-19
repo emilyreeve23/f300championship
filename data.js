@@ -1,5 +1,5 @@
 window.F300_DATA = {
-  "updated": "18 Oct 2026 10:16",
+  "updated": "19 Oct 2026 14:30",
   "apiUrl": "https://script.google.com/macros/s/AKfycbwqNnwg6FTL6GKOw0774fQXbr4ASWXsEwhZkW8eCUmECfxS72pnhf5Tq9SwXCiFuHv2/exec",
   "standings": [
     {
@@ -9249,9 +9249,9 @@ window.F300_DATA = {
     }
   ],
   "submissionWindow": {
-    "open": true,
-    "round": 5,
-    "track": "Lydd",
-    "closes": "18 Oct 2026 23:59"
+    "open": false,
+    "nextRound": null,
+    "nextTrack": "",
+    "nextOpens": ""
   }
 };
